@@ -1,4 +1,4 @@
-package uoc.edu.avalldeperas.eatsafe.ui.theme
+package edu.uoc.avalldeperas.eatsafe.ui.theme
 
 import android.app.Activity
 import android.os.Build

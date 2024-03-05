@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace = "uoc.edu.avalldeperas.eatsafe"
+    namespace = "edu.uoc.avalldeperas.eatsafe"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "uoc.edu.avalldeperas.eatsafe"
+        applicationId = "edu.uoc.avalldeperas.eatsafe"
         minSdk = 27
         targetSdk = 34
         versionCode = 1

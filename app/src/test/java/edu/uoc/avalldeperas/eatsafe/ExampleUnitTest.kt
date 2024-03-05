@@ -1,4 +1,4 @@
-package uoc.edu.avalldeperas.eatsafe
+package edu.uoc.avalldeperas.eatsafe
 
 import org.junit.Test
 

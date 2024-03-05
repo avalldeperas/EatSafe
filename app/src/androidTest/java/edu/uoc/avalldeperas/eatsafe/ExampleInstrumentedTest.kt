@@ -1,4 +1,4 @@
-package uoc.edu.avalldeperas.eatsafe
+package edu.uoc.avalldeperas.eatsafe
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -19,6 +19,6 @@ class ExampleInstrumentedTest {
     fun useAppContext() {
         // Context of the app under test.
         val appContext = InstrumentationRegistry.getInstrumentation().targetContext
-        assertEquals("uoc.edu.avalldeperas.eatsafe", appContext.packageName)
+        assertEquals("edu.uoc.avalldeperas.eatsafe", appContext.packageName)
     }
 }
