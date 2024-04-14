@@ -1,7 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.auth.register.presentation
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,20 +15,19 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.CONFIRM_PASSWORD_TEXT_FIELD
@@ -44,9 +42,9 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 fun RegisterScreen(
     toLogin: () -> Unit, toHome: () -> Unit, registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
-    val email by registerViewModel.email.collectAsState()
-    val password by registerViewModel.password.collectAsState()
-    val confirmPassword by registerViewModel.confirmPassword.collectAsState()
+    val email by registerViewModel.email.collectAsStateWithLifecycle()
+    val password by registerViewModel.password.collectAsStateWithLifecycle()
+    val confirmPassword by registerViewModel.confirmPassword.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -78,7 +76,8 @@ fun RegisterScreen(
             onValueChange = { registerViewModel.updatePassword(it) },
             leadingIcon = Icons.Filled.Lock,
             contentDescription = PASSWORD_TEXT_FIELD,
-            label = R.string.password
+            label = R.string.password,
+            visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         AuthTextField(
@@ -86,7 +85,8 @@ fun RegisterScreen(
             onValueChange = { registerViewModel.updateConfirmPassword(it) },
             leadingIcon = Icons.Filled.Lock,
             contentDescription = CONFIRM_PASSWORD_TEXT_FIELD,
-            label = R.string.confirm_password
+            label = R.string.confirm_password,
+            visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
         Button(

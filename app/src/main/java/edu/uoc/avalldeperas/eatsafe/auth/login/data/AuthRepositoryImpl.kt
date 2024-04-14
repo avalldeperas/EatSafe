@@ -26,4 +26,18 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
             false
         }
     }
+
+    override suspend fun passwordReset(email: String): Boolean {
+        return try {
+            Firebase.auth.sendPasswordResetEmail(email).await()
+            true
+        } catch (e: Exception) {
+            Log.d("avb", "signUp failure: ${e.message}")
+            false
+        }
+    }
+
+    override suspend fun signOut(): Boolean {
+        TODO("Not yet implemented")
+    }
 }

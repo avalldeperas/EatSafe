@@ -5,11 +5,12 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class ValidateRegisterInputUseCaseTest {
-    private val validateRegisterInputUseCase = ValidateRegisterInputUseCase()
+
+    private val testee = ValidateRegisterInputUseCase()
 
     @Test
     fun whenAllInputsAreCorrect_thenReturnsValidValidationType() {
-        val result = validateRegisterInputUseCase.invoke(
+        val result = testee.invoke(
             "email@gmail.com",
             "123456",
             "123456"
@@ -19,13 +20,13 @@ class ValidateRegisterInputUseCaseTest {
 
     @Test
     fun whenEmailNotSet_thenReturnsEmptyFieldValidationType() {
-        val result = validateRegisterInputUseCase.invoke("", "password", "")
+        val result = testee.invoke("", "password", "")
         assertEquals(RegisterInputValidationType.EmptyField, result)
     }
 
     @Test
     fun whenEmailNotCorrect_thenReturnsInvalidEmailValidationType() {
-        val result = validateRegisterInputUseCase.invoke(
+        val result = testee.invoke(
             "not_anEmail!23",
             "123456",
             "123456"
@@ -35,7 +36,7 @@ class ValidateRegisterInputUseCaseTest {
 
     @Test
     fun whenPasswordsDoNotMatch_thenReturnsPasswordDoNotMatchValidationType() {
-        val result = validateRegisterInputUseCase.invoke(
+        val result = testee.invoke(
             "email@gmail.com",
             "123456",
             "654321"
@@ -45,7 +46,7 @@ class ValidateRegisterInputUseCaseTest {
 
     @Test
     fun whenPasswordLengthLessThan6Chars_thenReturnsPasswordTooShortValidationType() {
-        val result = validateRegisterInputUseCase.invoke(
+        val result = testee.invoke(
             "email@gmail.com",
             "12345",
             "12345"

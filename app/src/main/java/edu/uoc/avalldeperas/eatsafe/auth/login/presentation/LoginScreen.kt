@@ -16,7 +16,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -26,10 +25,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.EATSAFE_LOGO
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
@@ -47,8 +48,8 @@ fun LoginScreen(
     toRegister: () -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    val email by loginViewModel.email.collectAsState()
-    val password by loginViewModel.password.collectAsState()
+    val email by loginViewModel.email.collectAsStateWithLifecycle()
+    val password by loginViewModel.password.collectAsStateWithLifecycle()
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -80,7 +81,8 @@ fun LoginScreen(
             onValueChange = { loginViewModel.updatePassword(it) },
             leadingIcon = Icons.Filled.Lock,
             contentDescription = PASSWORD_TEXT_FIELD,
-            label = R.string.password
+            label = R.string.password,
+            visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Text(
