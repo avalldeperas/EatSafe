@@ -10,4 +10,6 @@ object ContentDescriptionConstants {
     const val CONFIRM_PASSWORD_TEXT_FIELD = "confirm-password-text-field"
     const val FORGOT_EMAIL_TEXT_FIELD = "forgot-email-text-field"
     const val FORGOT_BACK = "forgot-back"
+    const val PROFILE_IMAGE = "profile-image"
+    const val EDIT_PROFILE_ICON = "edit-profile-icon"
 }

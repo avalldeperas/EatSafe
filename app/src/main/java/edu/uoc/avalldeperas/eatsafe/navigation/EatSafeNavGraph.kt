@@ -9,14 +9,16 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import edu.uoc.avalldeperas.eatsafe.explore.HomeScreen
 
 @Composable
 fun EatSafeNavGraph(
     navController: NavHostController = rememberNavController(),
-    startDestination: String = Feature.Auth.route
 ) {
     val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
+    val startDestination = getStartDestination()
     Log.d("avb", currentNavBackStackEntry?.destination?.route ?: startDestination)
 
     NavHost(navController = navController, startDestination = startDestination) {
@@ -36,4 +38,8 @@ fun EatSafeNavGraph(
             }
         }
     }
+}
+fun getStartDestination(): String {
+    val currentUser = Firebase.auth.currentUser
+    return if (currentUser != null) Feature.Home.route else Feature.Auth.route
 }

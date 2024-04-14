@@ -37,7 +37,13 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
         }
     }
 
-    override suspend fun signOut(): Boolean {
-        TODO("Not yet implemented")
+    override fun signOut(): Boolean {
+        return try {
+            Firebase.auth.signOut()
+            true
+        } catch (e: Exception) {
+            Log.d("avb", "logout failure: ${e.message}")
+            false
+        }
     }
 }

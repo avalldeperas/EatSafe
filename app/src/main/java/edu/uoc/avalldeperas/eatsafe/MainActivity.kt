@@ -8,11 +8,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import dagger.hilt.android.AndroidEntryPoint
-import edu.uoc.avalldeperas.eatsafe.ui.theme.EatSafeTheme
 import edu.uoc.avalldeperas.eatsafe.navigation.EatSafeNavGraph
+import edu.uoc.avalldeperas.eatsafe.ui.theme.EatSafeTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
