@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">EatSafe</string>
+    <string name="welcome_eatsafe" translatable="false">Welcome to EatSafe</string>
+    <string name="forgot_password">Forgot password?</string>
+    <string name="no_account_yet">Don\'t have an account? Sign up</string>
+    <string name="login_button">Log in</string>
+    <string name="email">E-mail</string>
+    <string name="password">Password</string>
 </resources>

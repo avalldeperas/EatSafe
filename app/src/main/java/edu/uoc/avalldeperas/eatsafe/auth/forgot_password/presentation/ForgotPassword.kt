@@ -1,4 +1,4 @@
-package edu.uoc.avalldeperas.eatsafe.auth.presentation
+package edu.uoc.avalldeperas.eatsafe.auth.forgot_password.presentation
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
