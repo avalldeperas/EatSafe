@@ -3,7 +3,10 @@
     <string name="welcome_eatsafe" translatable="false">Welcome to EatSafe</string>
     <string name="forgot_password">Forgot password?</string>
     <string name="no_account_yet">Don\'t have an account? Sign up</string>
+    <string name="already_account">"Already have an account? Log in"</string>
     <string name="login_button">Log in</string>
+    <string name="signup_button">Sign up</string>
     <string name="email">E-mail</string>
     <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
 </resources>
