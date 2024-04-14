@@ -14,8 +14,6 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -28,7 +26,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -39,6 +36,8 @@ import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.EMAI
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.FORGOT_PASSWORD
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.PASSWORD_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.REGISTER_LINK
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthTextField
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
@@ -68,33 +67,20 @@ fun LoginScreen(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+        AuthTextField(
             value = email,
             onValueChange = { loginViewModel.updateEmail(it) },
-            leadingIcon = {
-                Icon(imageVector = Icons.Filled.Email, contentDescription = EMAIL_TEXT_FIELD)
-            },
-            label = { Text(text = stringResource(R.string.email)) },
-            singleLine = true,
-            maxLines = 1
+            leadingIcon = Icons.Filled.Email,
+            contentDescription = EMAIL_TEXT_FIELD,
+            label = R.string.email
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        OutlinedTextField(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
+        AuthTextField(
             value = password,
             onValueChange = { loginViewModel.updatePassword(it) },
-            leadingIcon = {
-                Icon(imageVector = Icons.Filled.Lock, contentDescription = PASSWORD_TEXT_FIELD)
-            },
-            label = { Text(text = stringResource(R.string.password)) },
-            singleLine = true,
-            maxLines = 1,
-            visualTransformation = PasswordVisualTransformation()
+            leadingIcon = Icons.Filled.Lock,
+            contentDescription = PASSWORD_TEXT_FIELD,
+            label = R.string.password
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Text(
@@ -122,12 +108,10 @@ fun LoginScreen(
             Text(text = stringResource(R.string.login_button), fontSize = 16.sp)
         }
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
-        Text(
-            text = stringResource(R.string.no_account_yet),
-            modifier = Modifier
-                .clickable { toRegister() }
-                .semantics { this.contentDescription = REGISTER_LINK },
-            fontSize = 16.sp
+        AuthFooterText(
+            textRes = R.string.no_account_yet,
+            onClick = { toRegister() },
+            contentDescription = REGISTER_LINK
         )
     }
 }
