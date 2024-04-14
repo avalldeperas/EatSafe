@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation(libs.firebase.auth)
     implementation(libs.hilt.android)
+    implementation(libs.androidx.lifecycle.runtime.compose)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
