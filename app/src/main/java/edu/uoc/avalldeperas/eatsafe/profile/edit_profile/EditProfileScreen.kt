@@ -1,12 +1,11 @@
-package edu.uoc.avalldeperas.eatsafe.profile.presentation
+package edu.uoc.avalldeperas.eatsafe.profile.edit_profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
-import androidx.compose.material3.Button
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -17,29 +16,24 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 
 @Composable
-fun ProfileScreen(toEditProfile: () -> Unit, onLogout: () -> Unit) {
+fun EditProfileScreen(toProfile: () -> Unit) {
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.LightGray),
+        modifier = Modifier.fillMaxSize().background(Color.Yellow),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Profile Screen")
-        IconButton(onClick = { toEditProfile() }) {
+        Text(text = "Edit Profile Screen")
+        IconButton(onClick = { toProfile() }) {
             Icon(
-                imageVector = Icons.Filled.AccountCircle,
-                contentDescription = "edit-profile-icon"
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                contentDescription = "back-edit-profile-icon"
             )
-        }
-        Button(onClick = { onLogout() }) {
-            Text("Log out")
         }
     }
 }
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun ProfileScreenPreview() {
-    ProfileScreen({}, {})
+fun EditProfileScreenPreview() {
+    EditProfileScreen({})
 }

@@ -5,8 +5,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import edu.uoc.avalldeperas.eatsafe.explore.presentation.ExploreScreen
 import edu.uoc.avalldeperas.eatsafe.favorites.presentation.FavoritesScreen
-import edu.uoc.avalldeperas.eatsafe.profile.presentation.EditProfileScreen
-import edu.uoc.avalldeperas.eatsafe.profile.presentation.ProfileScreen
+import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.EditProfileScreen
+import edu.uoc.avalldeperas.eatsafe.profile.details.presentation.ProfileScreen
 
 fun NavGraphBuilder.homeGraph(
     navController: NavHostController,
@@ -23,7 +23,7 @@ fun NavGraphBuilder.homeGraph(
     composable(route = Screen.Profile.route) {
         ProfileScreen(
             toEditProfile = { navController.navigate(route = Screen.EditProfile.route) },
-            onLogout = { authNavController.navigate(route = Screen.Login.route) }
+            toLogin = { authNavController.navigate(route = Screen.Login.route) }
         )
     }
 
