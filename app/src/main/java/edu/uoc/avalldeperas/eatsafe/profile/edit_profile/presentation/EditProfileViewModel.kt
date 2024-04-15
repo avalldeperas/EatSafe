@@ -1,6 +1,8 @@
 package edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Firebase
@@ -16,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class EditProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository
-): ViewModel() {
+) : ViewModel() {
 
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
@@ -24,7 +26,7 @@ class EditProfileViewModel @Inject constructor(
     private val _displayName = MutableStateFlow("")
     val displayName = _displayName.asStateFlow()
 
-    private val _intolerances =  MutableStateFlow(emptyList<Intolerance>())
+    private val _intolerances = MutableStateFlow(emptyList<Intolerance>())
     val intolerances = _intolerances.asStateFlow()
 
     init {
@@ -45,14 +47,12 @@ class EditProfileViewModel @Inject constructor(
         Log.d("avb", "indexOf = $indexOf")
     }
 
-    fun onSaveEdit() {
+    fun onSaveEdit(context: Context) {
         viewModelScope.launch {
             val result = authRepository.updateProfile(_displayName.value)
-            if (result) {
-                Log.d("avb", "saved successfully!")
-            } else {
-                Log.d("avb", "couldn't save profile... check error!")
-            }
+            val displayResult =
+                if (result) "Profile saved successfully." else "Error on saving profile, please try again."
+            Toast.makeText(context, displayResult, Toast.LENGTH_SHORT).show()
         }
     }
 }
