@@ -39,7 +39,7 @@ import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.FORGOT_BACK
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.FORGOT_EMAIL_TEXT_FIELD
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthTextField
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 import kotlinx.coroutines.launch
 
@@ -91,7 +91,7 @@ fun ForgotPasswordScreen(
                 textAlign = TextAlign.Center
             )
             Spacer(modifier = Modifier.padding(vertical = 24.dp))
-            AuthTextField(
+            AppTextField(
                 value = email,
                 onValueChange = { forgotPasswordViewModel.updateEmail(it) },
                 leadingIcon = Icons.Filled.Email,

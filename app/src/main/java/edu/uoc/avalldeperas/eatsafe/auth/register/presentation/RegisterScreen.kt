@@ -35,7 +35,7 @@ import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.EMAI
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.LOGIN_LINK
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.PASSWORD_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthTextField
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
@@ -63,7 +63,7 @@ fun RegisterScreen(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
-        AuthTextField(
+        AppTextField(
             value = email,
             onValueChange = { registerViewModel.updateEmail(it) },
             leadingIcon = Icons.Filled.Email,
@@ -71,7 +71,7 @@ fun RegisterScreen(
             label = R.string.email
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        AuthTextField(
+        AppTextField(
             value = password,
             onValueChange = { registerViewModel.updatePassword(it) },
             leadingIcon = Icons.Filled.Lock,
@@ -80,7 +80,7 @@ fun RegisterScreen(
             visualTransformation = PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        AuthTextField(
+        AppTextField(
             value = confirmPassword,
             onValueChange = { registerViewModel.updateConfirmPassword(it) },
             leadingIcon = Icons.Filled.Lock,

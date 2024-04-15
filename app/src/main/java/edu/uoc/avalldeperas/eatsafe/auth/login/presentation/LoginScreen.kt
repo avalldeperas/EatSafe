@@ -38,7 +38,7 @@ import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.FORG
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.PASSWORD_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.REGISTER_LINK
 import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthTextField
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
@@ -68,7 +68,7 @@ fun LoginScreen(
             fontWeight = FontWeight.Bold
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
-        AuthTextField(
+        AppTextField(
             value = email,
             onValueChange = { loginViewModel.updateEmail(it) },
             leadingIcon = Icons.Filled.Email,
@@ -76,7 +76,7 @@ fun LoginScreen(
             label = R.string.email
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
-        AuthTextField(
+        AppTextField(
             value = password,
             onValueChange = { loginViewModel.updatePassword(it) },
             leadingIcon = Icons.Filled.Lock,

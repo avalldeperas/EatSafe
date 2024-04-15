@@ -7,11 +7,16 @@
     <string name="login_button">Log in</string>
     <string name="logout_button">Log out</string>
     <string name="send_email_button">Send email</string>
+    <string name="save">Save</string>
     <string name="signup_button">Sign up</string>
     <string name="email">E-mail</string>
+    <string name="user_full_name">Your name</string>
+    <string name="user_location">Current city</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="forgot_password_info">Enter your email associated with your account and we will email you a link to reset your password.</string>
     <string name="forgot_password_email_sent">Forgot password email sent.</string>
-    <string name="intolerances_header">Intolerances</string>
+    <string name="intolerances">Intolerances</string>
+    <string name="edit_profile_header">Edit Profile</string>
+    <string name="personal_details_header">Personal Details</string>
 </resources>

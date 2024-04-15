@@ -9,16 +9,19 @@ import androidx.compose.ui.graphics.vector.ImageVector
 data class Intolerance(
     val label: String = "",
     val icon: ImageVector = Icons.Filled.Info,
+    var enabled: Boolean = false,
 ) {
     fun intolerances(): List<Intolerance> {
         return listOf(
             Intolerance(
                 label = "Gluten",
-                icon = Icons.Filled.Search
+                icon = Icons.Filled.Search,
+                enabled = false
             ),
             Intolerance(
-                label = "Favorite",
-                icon = Icons.Filled.Favorite
+                label = "Lactose",
+                icon = Icons.Filled.Favorite,
+                enabled = false
             )
         )
     }

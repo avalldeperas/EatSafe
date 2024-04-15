@@ -11,5 +11,9 @@ object ContentDescriptionConstants {
     const val FORGOT_EMAIL_TEXT_FIELD = "forgot-email-text-field"
     const val FORGOT_BACK = "forgot-back"
     const val PROFILE_IMAGE = "profile-image"
+    const val USER_LOCATION_TEXT_FIELD = "user-location-text-field"
     const val EDIT_PROFILE_ICON = "edit-profile-icon"
+    const val EDIT_PROFILE_EMAIL = "edit-profile-email"
+    const val EDIT_PROFILE_FULL_NAME = "edit-profile-full-name"
+    const val EDIT_PROFILE_BACK_ICON = "edit-profile-back-icon"
 }

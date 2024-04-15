@@ -22,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -49,7 +50,9 @@ fun ProfileScreen(
     toLogin: () -> Unit,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val email = profileViewModel.email.collectAsStateWithLifecycle()
+    val email by profileViewModel.email.collectAsStateWithLifecycle()
+    val displayName by profileViewModel.displayName.collectAsStateWithLifecycle()
+
     Column(Modifier.fillMaxSize()) {
         Column(
             modifier = Modifier
@@ -69,9 +72,9 @@ fun ProfileScreen(
                 )
                 Column {
                     Text(
-                        text = "Jane Doe",
+                        text = "Hello Albert Valldeperas!",
                         color = DARK_GREEN,
-                        fontSize = 24.sp,
+                        fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
                     )
                     Row(verticalAlignment = Alignment.CenterVertically) {
@@ -105,7 +108,7 @@ fun ProfileScreen(
         ) {
             Column(Modifier.padding(16.dp)) {
                 Text(
-                    text = stringResource(R.string.intolerances_header),
+                    text = stringResource(R.string.intolerances),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold
                 )
@@ -116,7 +119,7 @@ fun ProfileScreen(
                 }
             }
             Text(
-                text = email.value,
+                text = email,
                 modifier = Modifier.padding(16.dp),
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
