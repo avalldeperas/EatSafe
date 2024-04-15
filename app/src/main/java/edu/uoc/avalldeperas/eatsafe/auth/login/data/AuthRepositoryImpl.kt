@@ -2,6 +2,7 @@ package edu.uoc.avalldeperas.eatsafe.auth.login.data
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -45,5 +46,25 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
             Log.d("avb", "logout failure: ${e.message}")
             false
         }
+    }
+
+    override suspend fun updateProfile(displayName: String): Boolean {
+        val currentUser = Firebase.auth.currentUser!!
+        val request = buildUpdateProfileRequest(displayName)
+
+        return try {
+            currentUser.updateProfile(request).await()
+            Firebase.auth.updateCurrentUser(currentUser)
+            true
+        } catch (e: Exception) {
+            Log.d("avb", "logout failure: ${e.message}")
+            false
+        }
+    }
+
+    private fun buildUpdateProfileRequest(displayName: String): UserProfileChangeRequest {
+        return UserProfileChangeRequest.Builder()
+            .setDisplayName(displayName)
+            .build()
     }
 }

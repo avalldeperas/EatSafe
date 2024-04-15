@@ -14,13 +14,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun AuthTextField(
+fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     leadingIcon: ImageVector,
     contentDescription: String,
     @StringRes label: Int,
-    visualTransformation: VisualTransformation = VisualTransformation.None
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    enabled: Boolean = true
 ) {
     OutlinedTextField(
         modifier = Modifier
@@ -36,6 +37,7 @@ fun AuthTextField(
         label = { Text(text = stringResource(id = label)) },
         singleLine = true,
         maxLines = 1,
-        visualTransformation = visualTransformation
+        visualTransformation = visualTransformation,
+        enabled = enabled
     )
 }

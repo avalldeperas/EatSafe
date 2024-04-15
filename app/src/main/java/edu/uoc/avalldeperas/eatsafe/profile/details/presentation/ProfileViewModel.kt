@@ -20,8 +20,13 @@ class ProfileViewModel @Inject constructor(
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
 
+    private val _displayName = MutableStateFlow("User")
+    val displayName = _displayName.asStateFlow()
+
     init {
-        _email.value = Firebase.auth.currentUser?.email!!
+        val currentUser = Firebase.auth.currentUser
+        _email.value = currentUser?.email!!
+        if (currentUser.displayName != null) _displayName.value = currentUser.displayName!!
     }
 
     fun onLogoutClick(toLogin: () -> Unit) {
