@@ -55,7 +55,7 @@ import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
-fun DetailViewScreen(navigateBack: () -> Unit) {
+fun DetailViewScreen(navigateBack: () -> Unit, toAddReview: () -> Unit) {
 
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -96,7 +96,7 @@ fun DetailViewScreen(navigateBack: () -> Unit) {
             AppHorizontalDivider(top = 16.dp)
             DetailAbout(modifier = Modifier)
             AppHorizontalDivider(top = 16.dp)
-            DetailReviews(modifier = Modifier)
+            DetailReviews(modifier = Modifier, toAddReview = toAddReview)
         }
     }
 }
@@ -111,14 +111,14 @@ fun AppHorizontalDivider(top: Dp, color: Color = Color.Gray) {
 }
 
 @Composable
-fun DetailReviews(modifier: Modifier) {
+fun DetailReviews(modifier: Modifier, toAddReview: () -> Unit) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 24.dp, end = 8.dp, top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        ReviewHeader()
+        ReviewHeader(toAddReview = toAddReview)
         repeat(3) {
             ReviewItem()
         }
@@ -176,7 +176,7 @@ fun ReviewItem() {
 }
 
 @Composable
-fun ReviewHeader() {
+fun ReviewHeader(toAddReview: () -> Unit) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -188,7 +188,7 @@ fun ReviewHeader() {
             fontSize = 20.sp
         )
         Button(
-            onClick = { },
+            onClick = { toAddReview() },
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White,
                 contentColor = MAIN_GREEN
@@ -314,5 +314,5 @@ fun SafetySection(modifier: Modifier) {
 @Composable
 @Preview(showSystemUi = true, showBackground = true)
 fun DetailViewScreenPreview() {
-    DetailViewScreen({})
+    DetailViewScreen({}, {})
 }

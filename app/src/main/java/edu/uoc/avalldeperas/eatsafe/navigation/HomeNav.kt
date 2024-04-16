@@ -9,6 +9,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreMapScre
 import edu.uoc.avalldeperas.eatsafe.favorites.presentation.FavoritesScreen
 import edu.uoc.avalldeperas.eatsafe.profile.details.presentation.ProfileScreen
 import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.EditProfileScreen
+import edu.uoc.avalldeperas.eatsafe.reviews.presentation.AddReviewScreen
 
 fun NavGraphBuilder.homeGraph(
     navController: NavHostController,
@@ -27,8 +28,13 @@ fun NavGraphBuilder.homeGraph(
 
     composable(route = Screen.ExploreDetail.route) {
         DetailViewScreen(
-            navigateBack = { navController.popBackStack() }
+            navigateBack = { navController.popBackStack() },
+            toAddReview = { navController.navigate(route = Screen.AddReview.route) }
         )
+    }
+
+    composable(route = Screen.AddReview.route) {
+        AddReviewScreen(backToDetail = { navController.popBackStack() })
     }
 
     composable(route = Screen.Favorites.route) {
