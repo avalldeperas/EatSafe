@@ -14,5 +14,6 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     data object ExploreList : Screen("explore_list", R.string.app_name)
     data object ExploreMap : Screen("explore_map", R.string.app_name)
     data object ExploreDetail : Screen("explore_detail", R.string.app_name)
+    data object AddReview : Screen("add_review", R.string.app_name)
     data object Test : Screen("test", R.string.app_name)
 }

@@ -19,4 +19,9 @@
     <string name="intolerances">Intolerances</string>
     <string name="edit_profile_header">Edit Profile</string>
     <string name="personal_details_header">Personal Details</string>
+    <string name="add_review_header">Add a review</string>
+    <string name="add_review_placeholder">Describe your experience with this establishment between 20 word and 100 words.</string>
+    <string name="add_review_description_header">Description</string>
+    <string name="rating_label">Rating</string>
+    <string name="safety_label">Safety</string>
 </resources>
