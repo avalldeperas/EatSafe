@@ -51,7 +51,6 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val email by profileViewModel.email.collectAsStateWithLifecycle()
-    val displayName by profileViewModel.displayName.collectAsStateWithLifecycle()
 
     Column(Modifier.fillMaxSize()) {
         Column(

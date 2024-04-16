@@ -60,7 +60,7 @@ data class BottomNavigationItem(
             BottomNavigationItem(
                 label = "Explore",
                 icon = Icons.Filled.Search,
-                route = Screen.Explore.route
+                route = Screen.ExploreMap.route
             ),
             BottomNavigationItem(
                 label = "Favorite",

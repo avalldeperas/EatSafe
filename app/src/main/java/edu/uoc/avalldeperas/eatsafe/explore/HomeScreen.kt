@@ -22,7 +22,7 @@ fun HomeScreen(
         NavHost(
             modifier = Modifier.padding(paddingValues),
             navController = homeNavController,
-            startDestination = Screen.Explore.route
+            startDestination = Screen.ExploreMap.route
         ) {
             homeGraph(homeNavController, authNavController)
         }
