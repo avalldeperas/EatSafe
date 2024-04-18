@@ -41,7 +41,7 @@ fun NavGraphBuilder.homeGraph(
     }
 
     composable(route = Screen.Favorites.route) {
-        FavoritesScreen({})
+        FavoritesScreen(toDetailView = { navController.navigate(Screen.ExploreDetail.route) })
     }
 
     composable(route = Screen.Profile.route) {
