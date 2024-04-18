@@ -36,12 +36,12 @@ import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.Place
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
-fun PlaceItem(place: Place, onRowClick: () -> Unit, isFavorites: Boolean = false) {
+fun PlaceItem(place: Place, onRowClick: (String) -> Unit, isFavorites: Boolean = false) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp)
-            .clickable { onRowClick() },
+            .clickable { onRowClick(place.placeId) },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
@@ -99,7 +99,7 @@ fun PlaceItem(place: Place, onRowClick: () -> Unit, isFavorites: Boolean = false
                 )
             }
             Row(modifier = Modifier.padding(start = 4.dp)) {
-                SafetySectionWithNumber(modifier = Modifier.weight(1f), place.averageRating)
+                SafetySectionWithNumber(modifier = Modifier.weight(1f), place.averageSafety)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = place.averageRating.toString())
                     Icon(

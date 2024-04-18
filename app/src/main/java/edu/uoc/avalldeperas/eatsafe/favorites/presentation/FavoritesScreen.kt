@@ -18,7 +18,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.composables.PlaceItem
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.getDummyPlaces
 
 @Composable
-fun FavoritesScreen(toDetailView: () -> Unit) {
+fun FavoritesScreen(toDetailView: (String) -> Unit) {
     val places = getDummyPlaces()
 
     Column(

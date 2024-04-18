@@ -7,6 +7,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.detail_view.presentation.DetailViewS
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreListScreen
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreMapScreen
 import edu.uoc.avalldeperas.eatsafe.favorites.presentation.FavoritesScreen
+import edu.uoc.avalldeperas.eatsafe.navigation.Constants.PLACE_ID_PARAM
 import edu.uoc.avalldeperas.eatsafe.profile.details.presentation.ProfileScreen
 import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.EditProfileScreen
 import edu.uoc.avalldeperas.eatsafe.reviews.presentation.AddReviewScreen
@@ -18,18 +19,22 @@ fun NavGraphBuilder.homeGraph(
     composable(route = Screen.ExploreMap.route) {
         ExploreMapScreen(
             toggleView = { navController.navigate(route = Screen.ExploreList.route) },
-            toDetail = { navController.navigate(route = Screen.ExploreDetail.route) }
+            toDetailView = { placeId ->
+                navController.navigate(route = Screen.ExploreDetail.route + "/{$placeId}")
+            }
         )
     }
 
     composable(route = Screen.ExploreList.route) {
         ExploreListScreen(
             toggleView = { navController.navigate(route = Screen.ExploreMap.route) },
-            toDetailView = { navController.navigate(route = Screen.ExploreDetail.route) }
+            toDetailView = { placeId ->
+                navController.navigate(route = Screen.ExploreDetail.route + "/{$placeId}")
+            }
         )
     }
 
-    composable(route = Screen.ExploreDetail.route) {
+    composable(route = Screen.ExploreDetail.route + "/{$PLACE_ID_PARAM}") {
         DetailViewScreen(
             navigateBack = { navController.popBackStack() },
             toAddReview = { navController.navigate(route = Screen.AddReview.route) }
@@ -41,7 +46,9 @@ fun NavGraphBuilder.homeGraph(
     }
 
     composable(route = Screen.Favorites.route) {
-        FavoritesScreen(toDetailView = { navController.navigate(Screen.ExploreDetail.route) })
+        FavoritesScreen(toDetailView = { placeId ->
+            navController.navigate(Screen.ExploreDetail.route + "/{$placeId}")
+        })
     }
 
     composable(route = Screen.Profile.route) {
