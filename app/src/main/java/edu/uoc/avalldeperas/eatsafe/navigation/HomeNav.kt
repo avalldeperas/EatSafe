@@ -23,7 +23,10 @@ fun NavGraphBuilder.homeGraph(
     }
 
     composable(route = Screen.ExploreList.route) {
-        ExploreListScreen(toggleView = { navController.navigate(route = Screen.ExploreMap.route) })
+        ExploreListScreen(
+            toggleView = { navController.navigate(route = Screen.ExploreMap.route) },
+            toDetailView = { navController.navigate(route = Screen.ExploreDetail.route) }
+        )
     }
 
     composable(route = Screen.ExploreDetail.route) {

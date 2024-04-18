@@ -29,11 +29,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.CONFIRM_PASSWORD_TEXT_FIELD
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.LOGIN_LINK
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.PASSWORD_TEXT_FIELD
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.CONFIRM_PASSWORD_TEXT_FIELD
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LOGIN_LINK
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PASSWORD_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
 import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN

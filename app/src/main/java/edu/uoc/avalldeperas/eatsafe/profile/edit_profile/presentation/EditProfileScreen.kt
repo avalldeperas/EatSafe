@@ -36,11 +36,11 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.EDIT_PROFILE_BACK_ICON
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.EDIT_PROFILE_EMAIL
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.PROFILE_IMAGE
-import edu.uoc.avalldeperas.eatsafe.auth.common.ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_BACK_ICON
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_EMAIL
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PROFILE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.profile.composables.AllergyButton
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
