@@ -26,7 +26,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.Place
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.PlaceType
 
 @Composable
-fun ExploreListScreen(toggleView: () -> Unit, toDetailView: () -> Unit) {
+fun ExploreListScreen(toggleView: () -> Unit, toDetailView: (String) -> Unit) {
     val places = getDummyPlaces()
     var showSheet by remember { mutableStateOf(false) }
 
@@ -69,6 +69,7 @@ fun getDummyPlaces(): List<Place> {
             name = "Racó del Plà",
             address = "Carrer de Llacuna 85, Barcelona",
             averageRating = 4.5,
+            averageSafety = 4.2,
             placeType = PlaceType.Restaurant,
             distance = 100,
             image = R.drawable.restaurant_detail

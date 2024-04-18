@@ -28,4 +28,5 @@ object ContentDescriptionConstants {
 
     // components
     const val SAFETY_SECTION_CHECK_ICON = "safety-section-check-icon"
+    const val AVERAGE_RATING_SECTION_STAR_ICON = "average-rating-section-star-icon"
 }

@@ -17,3 +17,7 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     data object AddReview : Screen("add_review", R.string.app_name)
     data object Test : Screen("test", R.string.app_name)
 }
+
+object Constants {
+    const val PLACE_ID_PARAM = "placeId"
+}

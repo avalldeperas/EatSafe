@@ -50,13 +50,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
+import androidx.hilt.navigation.compose.hiltViewModel
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
-fun DetailViewScreen(navigateBack: () -> Unit, toAddReview: () -> Unit) {
-
+fun DetailViewScreen(
+    navigateBack: () -> Unit,
+    toAddReview: () -> Unit,
+    detailViewModel: DetailViewModel = hiltViewModel()
+) {
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
@@ -92,7 +96,11 @@ fun DetailViewScreen(navigateBack: () -> Unit, toAddReview: () -> Unit) {
                     .shadow(1.dp, RoundedCornerShape(1.dp)),
                 contentScale = ContentScale.Crop,
             )
-            DetailHeader(navigateBack = navigateBack, paddingValues = paddingValues)
+            DetailHeader(
+                navigateBack = navigateBack,
+                paddingValues = paddingValues,
+                placeId = detailViewModel.placeId
+            )
             AppHorizontalDivider(top = 16.dp)
             DetailAbout(modifier = Modifier)
             AppHorizontalDivider(top = 16.dp)
@@ -239,7 +247,7 @@ fun InfoElement(imageVector: ImageVector, text: String) {
 }
 
 @Composable
-fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues) {
+fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues, placeId: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -249,7 +257,7 @@ fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues) {
     ) {
         Icon(imageVector = Icons.Default.Build, contentDescription = "")
         Text(
-            text = "Racó del Plà (id = )",
+            text = "Racó del Plà (id = $placeId)",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(0.7f),
