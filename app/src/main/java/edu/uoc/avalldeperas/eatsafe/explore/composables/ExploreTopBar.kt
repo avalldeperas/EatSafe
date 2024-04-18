@@ -1,4 +1,4 @@
-package edu.uoc.avalldeperas.eatsafe.explore.list_map.composables
+package edu.uoc.avalldeperas.eatsafe.explore.composables
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
