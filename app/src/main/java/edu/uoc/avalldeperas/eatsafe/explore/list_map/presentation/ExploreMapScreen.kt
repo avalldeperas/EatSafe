@@ -34,9 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
-import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerInfoWindow
@@ -46,21 +46,17 @@ import edu.uoc.avalldeperas.eatsafe.explore.composables.AverageRatingSection
 import edu.uoc.avalldeperas.eatsafe.explore.composables.ExploreTopBar
 import edu.uoc.avalldeperas.eatsafe.explore.composables.FilterBottomSheet
 import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.Place
+import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+
 
 @Composable
 fun ExploreMapScreen(
     toggleView: () -> Unit,
     toDetailView: (String) -> Unit,
-    viewModel: MapViewModel = hiltViewModel()
+    exploreViewModel: ExploreViewModel
 ) {
+    val places by exploreViewModel.places.collectAsStateWithLifecycle()
     var showSheet by remember { mutableStateOf(false) }
-    val user = LatLng(41.40087607460614, 2.201410275782167)
-    val places = getMapPlaces()
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(user, 15f)
-    }
-    val uiSettings = remember { MapUiSettings(zoomControlsEnabled = false) }
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -85,12 +81,11 @@ fun ExploreMapScreen(
                 verticalArrangement = Arrangement.Center
             ) {
                 GoogleMapView(
-                    cameraPositionState = cameraPositionState,
-                    viewModel = viewModel,
-                    uiSettings = uiSettings,
+                    viewModel = exploreViewModel,
                     places = places,
                     onInfoWindowClick = toDetailView
                 )
+
                 if (showSheet) {
                     FilterBottomSheet { showSheet = false }
                 }
@@ -99,14 +94,23 @@ fun ExploreMapScreen(
     }
 }
 
+
 @Composable
 fun GoogleMapView(
-    cameraPositionState: CameraPositionState,
-    viewModel: MapViewModel,
-    uiSettings: MapUiSettings,
+    viewModel: ExploreViewModel,
     places: List<Place>,
     onInfoWindowClick: (String) -> Unit
 ) {
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(viewModel.currentLocation, 15f)
+    }
+    val uiSettings = remember {
+        MapUiSettings(
+            zoomControlsEnabled = false,
+            myLocationButtonEnabled = true
+        )
+    }
+
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
@@ -131,7 +135,9 @@ fun GoogleMapView(
 @Composable
 fun InfoWindow(place: Place) {
     Box(
-        modifier = Modifier.background(color = Color.White).clip(RoundedCornerShape(16.dp))
+        modifier = Modifier
+            .background(color = Color.White)
+            .clip(RoundedCornerShape(16.dp))
     ) {
         Row(
             modifier = Modifier.padding(16.dp),
@@ -190,53 +196,18 @@ fun InfoWindow(place: Place) {
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun InfoWindowPreview() {
-    InfoWindow(getMapPlaces()[2])
-}
-
-fun getMapPlaces(): List<Place> {
-    return listOf(
-        Place(
-            placeId = "1",
-            name = "Xorús",
-            address = "Rambla del Poblenou, 105, Barcelona",
-            latitude = 41.4030615965374,
-            longitude = 2.1986885043302578
-        ),
-        Place(
-            placeId = "2",
-            name = "Can Recasens",
-            address = "Rambla del Poblenou, 102, Barcelona",
-            latitude = 41.40269141325675, longitude = 2.199825760890306
-        ),
-        Place(
-            placeId = "3",
-            name = "Restaurant Puerto Escondido",
-            address = "Carrer de Marià Aguiló, 26, Sant Martí, 08005 Barcelona",
-            latitude = 41.40352834633225, longitude = 2.1997828455445676
-        ),
-        Place(
-            placeId = "4",
-            name = "Can Culleres",
-            address = "C/ de Bilbao, 79, Sant Martí, 08005 Barcelona",
-            latitude = 41.403866335474774, longitude = 2.2022504779200354
-        ),
-        Place(
-            placeId = "5",
-            name = "Sala Beckett",
-            address = "Carrer de Bilbao, 79, Sant Martí, 08005 Barcelona",
-            latitude = 41.40352834633225, longitude = 2.1997828455445676
-        ),
-        Place(
-            placeId = "6",
-            name = "ApriBocca - Italian Restaurant",
-            address = "Plaça de Sant Bernat Calbó, 6, Sant Martí, 08005 Barcelona",
-            41.40010007133809, 2.2050399753930434
-        )
+    val testPlace = Place(
+        placeId = "1",
+        name = "Xorús",
+        address = "Rambla del Poblenou, 105, Barcelona",
+        latitude = 41.4030615965374,
+        longitude = 2.1986885043302578
     )
+    InfoWindow(testPlace)
 }
 
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ExploreMapScreenPreview() {
-    ExploreMapScreen({}, {})
+    ExploreMapScreen({}, {}, hiltViewModel())
 }

@@ -14,6 +14,11 @@ object ContentDescriptionConstants {
     const val PROFILE_IMAGE = "profile-image"
     const val USER_LOCATION_TEXT_FIELD = "user-location-text-field"
 
+    // Explore
+    const val LIST_MAP_TOGGLE_ICON = "list-map-toggle-icon"
+    const val FILTER_ICON = "filter-icon"
+
+
     // edit profile
     const val EDIT_PROFILE_ICON = "edit-profile-icon"
     const val EDIT_PROFILE_EMAIL = "edit-profile-email"

@@ -1,4 +1,4 @@
-package edu.uoc.avalldeperas.eatsafe.explore.list_map.domain
+package edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model
 
 import edu.uoc.avalldeperas.eatsafe.R
 

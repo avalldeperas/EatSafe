@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import edu.uoc.avalldeperas.eatsafe.explore.detail_view.presentation.DetailViewScreen
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreListScreen
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreMapScreen
+import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreViewModel
 import edu.uoc.avalldeperas.eatsafe.favorites.presentation.FavoritesScreen
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants.PLACE_ID_PARAM
 import edu.uoc.avalldeperas.eatsafe.profile.details.presentation.ProfileScreen
@@ -14,14 +15,16 @@ import edu.uoc.avalldeperas.eatsafe.reviews.presentation.AddReviewScreen
 
 fun NavGraphBuilder.homeGraph(
     navController: NavHostController,
-    authNavController: NavHostController
+    authNavController: NavHostController,
+    exploreViewModel: ExploreViewModel
 ) {
     composable(route = Screen.ExploreMap.route) {
         ExploreMapScreen(
             toggleView = { navController.navigate(route = Screen.ExploreList.route) },
             toDetailView = { placeId ->
                 navController.navigate(route = Screen.ExploreDetail.route + "/{$placeId}")
-            }
+            },
+            exploreViewModel = exploreViewModel
         )
     }
 
@@ -30,7 +33,8 @@ fun NavGraphBuilder.homeGraph(
             toggleView = { navController.navigate(route = Screen.ExploreMap.route) },
             toDetailView = { placeId ->
                 navController.navigate(route = Screen.ExploreDetail.route + "/{$placeId}")
-            }
+            },
+            exploreViewModel = exploreViewModel
         )
     }
 
