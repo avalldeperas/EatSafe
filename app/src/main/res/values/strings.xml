@@ -25,4 +25,5 @@
     <string name="rating_label">Rating</string>
     <string name="safety_label">Safety</string>
     <string name="favorites_header">Favorites</string>
+    <string name="search_hint">Search...</string>
 </resources>

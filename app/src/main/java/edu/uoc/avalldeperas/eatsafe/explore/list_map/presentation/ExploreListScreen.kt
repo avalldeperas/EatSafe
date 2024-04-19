@@ -18,16 +18,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import edu.uoc.avalldeperas.eatsafe.R
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.explore.composables.ExploreTopBar
 import edu.uoc.avalldeperas.eatsafe.explore.composables.FilterBottomSheet
 import edu.uoc.avalldeperas.eatsafe.explore.composables.PlaceItem
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.Place
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.PlaceType
 
 @Composable
-fun ExploreListScreen(toggleView: () -> Unit, toDetailView: (String) -> Unit) {
-    val places = getDummyPlaces()
+fun ExploreListScreen(
+    toggleView: () -> Unit,
+    toDetailView: (String) -> Unit,
+    exploreViewModel: ExploreViewModel
+) {
+    val places by exploreViewModel.places.collectAsStateWithLifecycle()
     var showSheet by remember { mutableStateOf(false) }
 
     Column(
@@ -62,23 +65,8 @@ fun ExploreListScreen(toggleView: () -> Unit, toDetailView: (String) -> Unit) {
     }
 }
 
-fun getDummyPlaces(): List<Place> {
-    return (1..10).map {
-        Place(
-            placeId = it.toString(),
-            name = "Racó del Plà",
-            address = "Carrer de Llacuna 85, Barcelona",
-            averageRating = 4.5,
-            averageSafety = 4.2,
-            placeType = PlaceType.Restaurant,
-            distance = 100,
-            image = R.drawable.restaurant_detail
-        )
-    }
-}
-
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ExploreListScreenPreview() {
-    ExploreListScreen({}, {})
+    ExploreListScreen({}, {}, hiltViewModel())
 }

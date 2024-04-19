@@ -32,7 +32,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_FAVOR
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_VIEW_PLACE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_VIEW_PLACE_TYPE_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_VIEW_STAR_ICON
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.Place
+import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
