@@ -18,7 +18,12 @@ class UsersRepositoryImpl @Inject constructor() : UsersRepository {
         get() = TODO("Not yet implemented")
 
     override suspend fun getUser(userId: String): User? {
-        return db.document(userId).get().await().toObject()
+        return try {
+            db.document(userId).get().await().toObject()
+        } catch (e: Exception) {
+            Log.d("avb", "getUser exception: ${e.message} ")
+            null
+        }
     }
 
     override suspend fun save(user: User): Boolean {
@@ -39,7 +44,8 @@ class UsersRepositoryImpl @Inject constructor() : UsersRepository {
                 CURRENT_CITY, user.currentCity,
                 LATITUDE, user.latitude,
                 LONGITUDE, user.longitude,
-                GEOHASH, geoHash
+                GEOHASH, geoHash,
+                INTOLERANCES, user.intolerances
             ).await()
             Log.d("avb", "update success: $result")
             true
@@ -58,5 +64,6 @@ class UsersRepositoryImpl @Inject constructor() : UsersRepository {
         const val LATITUDE = "latitude"
         const val LONGITUDE = "longitude"
         const val GEOHASH = "geohash"
+        const val INTOLERANCES = "intolerances"
     }
 }

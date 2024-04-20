@@ -100,7 +100,10 @@ fun ProfileScreen(
                         )
                     }
                 }
-                IconButton(onClick = { toEditProfile() }, modifier = Modifier.align(Alignment.Top)) {
+                IconButton(
+                    onClick = { toEditProfile() },
+                    modifier = Modifier.align(Alignment.Top)
+                ) {
                     Icon(
                         imageVector = Icons.Filled.Edit, contentDescription = EDIT_PROFILE_ICON
                     )
@@ -118,7 +121,11 @@ fun ProfileScreen(
                 )
                 FlowRow(Modifier.fillMaxWidth()) {
                     Intolerance().intolerances().forEach {
-                        AllergyButton(imageVector = it.icon, text = it.label)
+                        AllergyButton(
+                            imageVector = it.icon,
+                            text = it.label,
+                            enabled = user.intolerances.contains(it.label)
+                        )
                     }
                 }
             }
