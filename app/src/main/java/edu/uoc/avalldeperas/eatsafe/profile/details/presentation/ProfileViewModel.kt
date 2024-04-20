@@ -11,6 +11,7 @@ import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 import edu.uoc.avalldeperas.eatsafe.auth.register.data.UsersRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -37,7 +38,7 @@ class ProfileViewModel @Inject constructor(
         viewModelScope.launch {
             if (_user.value.currentCity.isEmpty()) {
                 Log.d("avb", "We don't have have user... ${user.value}")
-                _user.value = usersRepository.getUser(currentUser.uid)!!
+                _user.update { usersRepository.getUser(currentUser.uid)!! }
             }
         }
     }

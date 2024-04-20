@@ -16,6 +16,7 @@ import edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases.EditProfile
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases.ValidateEditProfileInputUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,7 +30,7 @@ class EditProfileViewModel @Inject constructor(
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
 
-    private val _displayName = MutableStateFlow("")
+    private val _displayName = MutableStateFlow("User")
     val displayName = _displayName.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
@@ -48,9 +49,7 @@ class EditProfileViewModel @Inject constructor(
         viewModelScope.launch {
             if (_user.value.currentCity.isEmpty()) {
                 Log.d("avb", "We don't have have user... ${user.value}")
-                val user = usersRepository.getUser(currentUser.uid)!!
-                _user.value = user
-                _user.value = _user.value.copy(uid = currentUser.uid)
+                _user.update { usersRepository.getUser(currentUser.uid)!! }
             }
         }
     }

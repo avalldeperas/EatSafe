@@ -51,7 +51,7 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun EditProfileScreen(
-    toProfile: () -> Unit,
+    backToProfile: () -> Unit,
     editProfileViewModel: EditProfileViewModel = hiltViewModel()
 ) {
     val email by editProfileViewModel.email.collectAsStateWithLifecycle()
@@ -71,7 +71,7 @@ fun EditProfileScreen(
                     )
                 },
                 navigationIcon = {
-                    IconButton(onClick = { toProfile() }) {
+                    IconButton(onClick = { backToProfile() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = EDIT_PROFILE_BACK_ICON,
