@@ -2,6 +2,7 @@ package edu.uoc.avalldeperas.eatsafe.auth.login.data
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
@@ -9,13 +10,18 @@ import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepositoryImpl @Inject constructor() : AuthRepository {
-    override suspend fun signIn(email: String, password: String): Boolean {
+    override suspend fun signIn(email: String, password: String): String {
         return try {
             Firebase.auth.signInWithEmailAndPassword(email, password).await()
-            true
+            ""
         } catch (e: Exception) {
             Log.d("avb", "signIn failure: ${e.message}")
-            false
+            when(e) {
+                is FirebaseAuthInvalidCredentialsException -> "Invalid credentials"
+                else -> {
+                    "An error occurred, please try again"
+                }
+            }
         }
     }
 
@@ -29,13 +35,13 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
         }
     }
 
-    override suspend fun passwordReset(email: String): Boolean {
+    override suspend fun passwordReset(email: String): String {
         return try {
             Firebase.auth.sendPasswordResetEmail(email).await()
-            true
+            ""
         } catch (e: Exception) {
             Log.d("avb", "password reset failure: ${e.message}")
-            false
+            "An error ocurred"
         }
     }
 
