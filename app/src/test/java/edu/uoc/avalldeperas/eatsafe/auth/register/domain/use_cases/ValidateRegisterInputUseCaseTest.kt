@@ -13,14 +13,15 @@ class ValidateRegisterInputUseCaseTest {
         val result = testee.invoke(
             "email@gmail.com",
             "123456",
-            "123456"
+            "123456",
+            "Barcelona"
         )
         assertEquals(RegisterInputValidationType.Valid, result)
     }
 
     @Test
     fun whenEmailNotSet_thenReturnsEmptyFieldValidationType() {
-        val result = testee.invoke("", "password", "")
+        val result = testee.invoke("", "password", "", "")
         assertEquals(RegisterInputValidationType.EmptyField, result)
     }
 
@@ -29,7 +30,8 @@ class ValidateRegisterInputUseCaseTest {
         val result = testee.invoke(
             "not_anEmail!23",
             "123456",
-            "123456"
+            "123456",
+            "Barcelona"
         )
         assertEquals(RegisterInputValidationType.InvalidEmail, result)
     }
@@ -39,7 +41,8 @@ class ValidateRegisterInputUseCaseTest {
         val result = testee.invoke(
             "email@gmail.com",
             "123456",
-            "654321"
+            "654321",
+            "Barcelona"
         )
         assertEquals(RegisterInputValidationType.PasswordsDoNotMatch, result)
     }
@@ -49,8 +52,31 @@ class ValidateRegisterInputUseCaseTest {
         val result = testee.invoke(
             "email@gmail.com",
             "12345",
-            "12345"
+            "12345",
+            "Barcelona"
         )
         assertEquals(RegisterInputValidationType.PasswordTooShort, result)
+    }
+
+    @Test
+    fun whenAddressLengthLessThan6Chars_thenReturnsAddressTooShortValidationType() {
+        val result = testee.invoke(
+            "email@gmail.com",
+            "123456",
+            "123456",
+            "asdf"
+        )
+        assertEquals(RegisterInputValidationType.AddressTooShort, result)
+    }
+
+    @Test
+    fun whenAddressContainsInvalidChars_thenReturnsAddressInvalidValidationType() {
+        val result = testee.invoke(
+            "email@gmail.com",
+            "123456",
+            "123456",
+            "asdf%%"
+        )
+        assertEquals(RegisterInputValidationType.InvalidAddress, result)
     }
 }

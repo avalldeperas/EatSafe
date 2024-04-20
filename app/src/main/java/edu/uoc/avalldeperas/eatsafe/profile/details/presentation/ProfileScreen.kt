@@ -3,7 +3,6 @@ package edu.uoc.avalldeperas.eatsafe.profile.details.presentation
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -29,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -42,6 +42,7 @@ import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.LIGHT_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
+import java.time.ZoneId
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -51,6 +52,9 @@ fun ProfileScreen(
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val email by profileViewModel.email.collectAsStateWithLifecycle()
+    val displayName by profileViewModel.displayName.collectAsStateWithLifecycle()
+    val user by profileViewModel.user.collectAsStateWithLifecycle()
+    val date = user.dateJoined.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 
     Column(Modifier.fillMaxSize()) {
         Column(
@@ -60,8 +64,7 @@ fun ProfileScreen(
                 .padding(vertical = 16.dp),
         ) {
             Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Image(
@@ -69,9 +72,9 @@ fun ProfileScreen(
                     contentDescription = PROFILE_IMAGE,
                     modifier = Modifier.size(70.dp)
                 )
-                Column {
+                Column() {
                     Text(
-                        text = "Hello Albert Valldeperas!",
+                        text = "Hello $displayName!",
                         color = DARK_GREEN,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold
@@ -81,21 +84,23 @@ fun ProfileScreen(
                             imageVector = Icons.Filled.Person, contentDescription = ""
                         )
                         Text(
-                            text = "User since 2024",
+                            text = "User since ${date.year}",
                             color = DARK_GREEN,
-                            fontSize = 16.sp,
+                            fontSize = 12.sp,
                         )
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Icon(
-                            imageVector = Icons.Filled.LocationOn, contentDescription = ""
-                        )
+                        Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "")
                         Text(
-                            text = "Barcelona, catalunya", color = DARK_GREEN, fontSize = 16.sp
+                            text = user.currentCity,
+                            color = DARK_GREEN,
+                            fontSize = 10.sp,
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
-                IconButton(onClick = { toEditProfile() }) {
+                IconButton(onClick = { toEditProfile() }, modifier = Modifier.align(Alignment.Top)) {
                     Icon(
                         imageVector = Icons.Filled.Edit, contentDescription = EDIT_PROFILE_ICON
                     )
