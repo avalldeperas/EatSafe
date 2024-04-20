@@ -1,17 +1,16 @@
 package edu.uoc.avalldeperas.eatsafe.auth.login.presentation
 
-import android.util.Log
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.uoc.avalldeperas.eatsafe.auth.login.data.AuthRepository
-import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.LoginInputValidationType
 import edu.uoc.avalldeperas.eatsafe.auth.login.domain.use_cases.ValidateLoginInputUseCase
+import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil.showToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -24,6 +23,10 @@ class LoginViewModel @Inject constructor(
 
     private val _password = MutableStateFlow("")
     val password = _password.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
+
     fun updateEmail(newEmail: String) {
         _email.value = newEmail
     }
@@ -32,18 +35,25 @@ class LoginViewModel @Inject constructor(
         _password.value = newPassword
     }
 
-    fun onLoginClick(onSubmit: () -> Unit) {
+    fun onLoginClick(onSubmit: () -> Unit, context: Context) {
         val validationResult = validateLoginInputUseCase(_email.value, _password.value)
-        Log.d("avb", "validation result: ${validationResult.isValid} and ${validationResult.message}")
-        if (validationResult == LoginInputValidationType.Valid) {
-            viewModelScope.launch {
-                val authResult = authRepository.signIn(_email.value, _password.value)
-                if (authResult) {
-                    onSubmit()
-                } else {
-                    Log.d("avb", "onLoginClick: failed result")
-                }
-            }
+
+        if (!validationResult.isValid) {
+            showToast(validationResult.message!!, context)
+            return
         }
+
+        viewModelScope.launch {
+            _isLoading.value = true
+            val errorMessage = authRepository.signIn(_email.value, _password.value)
+            _isLoading.value = false
+            if (errorMessage.isNotEmpty()) {
+                showToast(errorMessage, context)
+                return@launch
+            }
+
+            onSubmit()
+        }
+
     }
 }

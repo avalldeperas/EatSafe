@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -43,13 +44,15 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
 fun RegisterScreen(
-    toLogin: () -> Unit, toExplore: () -> Unit, registerViewModel: RegisterViewModel = hiltViewModel()
+    toLogin: () -> Unit,
+    toExplore: () -> Unit,
+    registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
     val email by registerViewModel.email.collectAsStateWithLifecycle()
     val password by registerViewModel.password.collectAsStateWithLifecycle()
     val confirmPassword by registerViewModel.confirmPassword.collectAsStateWithLifecycle()
     val currentCity by registerViewModel.currentCity.collectAsStateWithLifecycle()
-
+    val isLoading by registerViewModel.isLoading.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Column(
@@ -103,16 +106,20 @@ fun RegisterScreen(
             label = R.string.current_city
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
-        Button(
-            onClick = { registerViewModel.onRegisterClick(toExplore, context) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MAIN_GREEN, contentColor = Color.White
-            ),
-        ) {
-            Text(text = stringResource(R.string.signup_button), fontSize = 16.sp)
+        if (isLoading) {
+            CircularProgressIndicator()
+        } else {
+            Button(
+                onClick = { registerViewModel.onRegisterClick(toExplore, context) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MAIN_GREEN, contentColor = Color.White
+                ),
+            ) {
+                Text(text = stringResource(R.string.signup_button), fontSize = 16.sp)
+            }
         }
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         AuthFooterText(

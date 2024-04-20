@@ -16,16 +16,13 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -36,23 +33,20 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_BACK
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_EMAIL_TEXT_FIELD
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
-import kotlinx.coroutines.launch
 
 @Composable
 fun ForgotPasswordScreen(
     navigateBack: () -> Unit, forgotPasswordViewModel: ForgotPasswordViewModel = hiltViewModel()
 ) {
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
     val email by forgotPasswordViewModel.email.collectAsStateWithLifecycle()
-    val message = stringResource(R.string.forgot_password_email_sent)
+    val context = LocalContext.current
 
-    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
+    Scaffold { paddingValues ->
         Column(
             Modifier
                 .fillMaxWidth()
@@ -100,11 +94,7 @@ fun ForgotPasswordScreen(
             )
             Spacer(modifier = Modifier.padding(vertical = 32.dp))
             Button(
-                onClick = {
-                    forgotPasswordViewModel.onForgotClick {
-                        scope.launch { snackbarHostState.showSnackbar(message) }
-                    }
-                },
+                onClick = { forgotPasswordViewModel.onForgotClick(context) },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),

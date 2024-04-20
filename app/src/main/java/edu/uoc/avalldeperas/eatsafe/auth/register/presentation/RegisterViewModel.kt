@@ -2,7 +2,6 @@ package edu.uoc.avalldeperas.eatsafe.auth.register.presentation
 
 import android.content.Context
 import android.location.Address
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.firebase.geofire.GeoFireUtils
@@ -14,6 +13,7 @@ import edu.uoc.avalldeperas.eatsafe.auth.register.data.UsersRepository
 import edu.uoc.avalldeperas.eatsafe.auth.register.domain.model.RegisterInputValidationType
 import edu.uoc.avalldeperas.eatsafe.auth.register.domain.use_cases.ValidateRegisterInputUseCase
 import edu.uoc.avalldeperas.eatsafe.common.util.GeocoderUtil
+import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil.showToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -37,6 +37,9 @@ class RegisterViewModel @Inject constructor(
 
     private val _currentCity = MutableStateFlow("")
     val currentCity = _currentCity.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
     fun updateEmail(newEmail: String) {
         _email.value = newEmail
@@ -64,30 +67,34 @@ class RegisterViewModel @Inject constructor(
             )
 
         if (validationResult != RegisterInputValidationType.Valid) {
-            showToast(context, validationResult.message!!)
+            showToast(validationResult.message!!, context)
             return
         }
 
         val address = GeocoderUtil.getAddressByName(_currentCity.value, context)
         if (!address.hasLatitude() || !address.hasLongitude()) {
-            showToast(context, "Address not found, try again")
+            showToast("Address not found, try again", context)
             return
         }
 
         viewModelScope.launch {
+            _isLoading.value = true
             val uid = authRepository.signUp(_email.value, _password.value)
             if (uid.isEmpty()) {
-                showToast(context, "Error on saving user to auth, try again.")
+                showToast("Error on creating user, please try again", context)
+                _isLoading.value = false
                 return@launch
             }
 
             val user = buildUser(uid, address)
             val result = usersRepository.save(user)
             if (!result) {
-                showToast(context, "Error on saving to storage, see logs.")
+                showToast("Error on storing user, please try again", context)
+                _isLoading.value = false
                 return@launch
             }
             navigateToExplore()
+            _isLoading.value = false
         }
     }
 
@@ -98,9 +105,5 @@ class RegisterViewModel @Inject constructor(
         val geoHash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
 
         return User(uid, _email.value, location, lat, lng, geoHash)
-    }
-
-    private fun showToast(context: Context, text: String) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 }

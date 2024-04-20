@@ -14,12 +14,14 @@ import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -32,13 +34,13 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EATSAFE_LOGO
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_PASSWORD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PASSWORD_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.REGISTER_LINK
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
@@ -50,6 +52,8 @@ fun LoginScreen(
 ) {
     val email by loginViewModel.email.collectAsStateWithLifecycle()
     val password by loginViewModel.password.collectAsStateWithLifecycle()
+    val isLoading by loginViewModel.isLoading.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -82,7 +86,7 @@ fun LoginScreen(
             leadingIcon = Icons.Filled.Lock,
             contentDescription = PASSWORD_TEXT_FIELD,
             label = R.string.password,
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = PasswordVisualTransformation(),
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Text(
@@ -97,17 +101,21 @@ fun LoginScreen(
             fontSize = 16.sp
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
-        Button(
-            onClick = { loginViewModel.onLoginClick(onSubmit) },
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MAIN_GREEN,
-                contentColor = Color.White
-            ),
-        ) {
-            Text(text = stringResource(R.string.login_button), fontSize = 16.sp)
+        if (isLoading) {
+            CircularProgressIndicator()
+        } else {
+            Button(
+                onClick = { loginViewModel.onLoginClick(onSubmit, context) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp),
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MAIN_GREEN,
+                    contentColor = Color.White
+                ),
+            ) {
+                Text(text = stringResource(R.string.login_button), fontSize = 16.sp)
+            }
         }
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         AuthFooterText(
