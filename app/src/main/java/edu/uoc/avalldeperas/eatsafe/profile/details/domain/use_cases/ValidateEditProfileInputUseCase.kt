@@ -32,6 +32,6 @@ class ValidateEditProfileInputUseCase @Inject constructor() {
     companion object {
         const val MIN_DISPLAY_LENGTH = 3
         const val MIN_ADDRESS_LENGTH = 6
-        val specialChars: Pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE)
+        val specialChars: Pattern = Pattern.compile("[^A-zÀ-ú0-9 ,]", Pattern.CASE_INSENSITIVE)
     }
 }

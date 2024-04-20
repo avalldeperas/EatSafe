@@ -3,7 +3,6 @@ package edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation
 import android.content.Context
 import android.location.Address
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +10,7 @@ import edu.uoc.avalldeperas.eatsafe.auth.login.data.AuthRepository
 import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 import edu.uoc.avalldeperas.eatsafe.auth.register.data.UsersRepository
 import edu.uoc.avalldeperas.eatsafe.common.util.GeocoderUtil
+import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil.showToast
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases.EditProfileInputValidationType
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases.ValidateEditProfileInputUseCase
@@ -31,6 +31,9 @@ class EditProfileViewModel @Inject constructor(
 
     private val _displayName = MutableStateFlow("")
     val displayName = _displayName.asStateFlow()
+
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
     private val _user = MutableStateFlow(User())
     val user = _user.asStateFlow()
@@ -61,10 +64,13 @@ class EditProfileViewModel @Inject constructor(
     }
 
     fun onAllergyClick(intolerance: Intolerance) {
-        val indexOf = _user.value.intolerances.indexOf(intolerance)
-        Log.d("avb", "onAllergyClick:indexOf = $indexOf")
-        val userIntolerance = _user.value.intolerances[indexOf]
-        Log.d("avb", "onAllergyClick:intoleranceFound = $userIntolerance")
+        val intolerances = _user.value.intolerances.toMutableList()
+        if (intolerances.contains(intolerance.label)) {
+            intolerances.remove(intolerance.label)
+        } else {
+            intolerances.add(intolerance.label)
+        }
+        _user.value = _user.value.copy(intolerances =  intolerances)
     }
 
     fun onSaveEdit(context: Context) {
@@ -72,32 +78,36 @@ class EditProfileViewModel @Inject constructor(
             validateEditProfileInputUseCase(_displayName.value, _user.value.currentCity)
 
         if (validationResult != EditProfileInputValidationType.Valid) {
-            showToast(context, validationResult.message!!)
+            showToast(validationResult.message!!, context)
             return
         }
 
         val address = GeocoderUtil.getAddressByName(_user.value.currentCity, context)
         if (!address.hasLatitude() || !address.hasLongitude()) {
-            showToast(context, "Address not found, try again")
+            showToast( "Address not found, try again", context)
             return
         }
 
         _user.value = addAddress(_user.value, address)
 
         viewModelScope.launch {
+            _isLoading.value = true
             val authResult = authRepository.updateProfile(_displayName.value)
             if (!authResult) {
-                showToast(context, "Error on update auth user, try again.")
+                showToast("Error on update auth user, try again.", context)
+                _isLoading.value = false
                 return@launch
             }
 
             val userResult = usersRepository.update(_user.value)
             if (!userResult) {
-                showToast(context, "Error on storing user, try again.")
+                showToast( "Error on storing user, try again.", context)
+                _isLoading.value = false
                 return@launch
             }
 
-            showToast(context, "Profile saved successfully.")
+            showToast("Profile saved successfully.", context)
+            _isLoading.value = false
         }
     }
 
@@ -107,9 +117,5 @@ class EditProfileViewModel @Inject constructor(
         val lng = address.longitude
 
         return user.copy(currentCity = location, latitude = lat, longitude =  lng)
-    }
-
-    private fun showToast(context: Context, text: String) {
-        Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
 }

@@ -16,6 +16,7 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -56,6 +57,7 @@ fun EditProfileScreen(
     val email by editProfileViewModel.email.collectAsStateWithLifecycle()
     val displayName by editProfileViewModel.displayName.collectAsStateWithLifecycle()
     val user by editProfileViewModel.user.collectAsStateWithLifecycle()
+    val isLoading by editProfileViewModel.isLoading.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Scaffold(
@@ -109,7 +111,7 @@ fun EditProfileScreen(
                         imageVector = it.icon,
                         text = it.label,
                         onClick = { editProfileViewModel.onAllergyClick(it) },
-                        enabled = user.intolerances.contains(it)
+                        enabled = user.intolerances.contains(it.label)
                     )
                 }
             }
@@ -143,27 +145,28 @@ fun EditProfileScreen(
                 onValueChange = { editProfileViewModel.updateCurrentCity(it) },
                 leadingIcon = Icons.Filled.LocationOn,
                 contentDescription = USER_LOCATION_TEXT_FIELD,
-                label = R.string.user_location
+                label = R.string.current_city
             )
             Spacer(modifier = Modifier.padding(top = 32.dp))
 
-            Button(
-                onClick = {
-                    editProfileViewModel.onSaveEdit(context)
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MAIN_GREEN,
-                    contentColor = Color.White
-                )
-            ) {
-                Text(text = stringResource(R.string.save), fontSize = 16.sp)
-            }
-            Spacer(modifier = Modifier.padding(top = 32.dp))
-            Button(onClick = {}, enabled = false) {
-                Text(text = "Delete account")
+            if (isLoading) {
+                CircularProgressIndicator()
+            } else {
+                Button(
+                    onClick = {
+                        editProfileViewModel.onSaveEdit(context)
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = MAIN_GREEN,
+                        contentColor = Color.White
+                    )
+                ) {
+                    Text(text = stringResource(R.string.save), fontSize = 16.sp)
+                }
+                Spacer(modifier = Modifier.padding(top = 32.dp))
             }
         }
     }
