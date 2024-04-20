@@ -63,6 +63,14 @@ fun NavGraphBuilder.homeGraph(
     }
 
     composable(route = Screen.EditProfile.route) {
-        EditProfileScreen(toProfile = { navController.popBackStack() })
+        EditProfileScreen(
+            backToProfile = {
+                navController.navigate(route = Screen.Profile.route) {
+                    popUpTo(route = Screen.Profile.route) {
+                        inclusive = true
+                    }
+                }
+            }
+        )
     }
 }
