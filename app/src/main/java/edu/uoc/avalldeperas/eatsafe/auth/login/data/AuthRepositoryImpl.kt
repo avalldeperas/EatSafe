@@ -2,6 +2,7 @@ package edu.uoc.avalldeperas.eatsafe.auth.login.data
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
 import kotlinx.coroutines.tasks.await
@@ -18,13 +19,13 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
         }
     }
 
-    override suspend fun signUp(email: String, password: String): Boolean {
+    override suspend fun signUp(email: String, password: String): String {
         return try {
-            Firebase.auth.createUserWithEmailAndPassword(email, password).await()
-            true
+            val response = Firebase.auth.createUserWithEmailAndPassword(email, password).await()
+            response.user!!.uid
         } catch (e: Exception) {
             Log.d("avb", "signUp failure: ${e.message}")
-            false
+            ""
         }
     }
 
@@ -33,7 +34,7 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
             Firebase.auth.sendPasswordResetEmail(email).await()
             true
         } catch (e: Exception) {
-            Log.d("avb", "signUp failure: ${e.message}")
+            Log.d("avb", "password reset failure: ${e.message}")
             false
         }
     }
@@ -46,6 +47,10 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
             Log.d("avb", "logout failure: ${e.message}")
             false
         }
+    }
+
+    override fun getCurrentUser(): FirebaseUser {
+        return Firebase.auth.currentUser!!
     }
 
     override suspend fun updateProfile(displayName: String): Boolean {

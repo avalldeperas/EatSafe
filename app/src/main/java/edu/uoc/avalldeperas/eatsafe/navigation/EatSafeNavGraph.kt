@@ -30,10 +30,10 @@ fun EatSafeNavGraph(
         }
 
         navigation(
-            startDestination = Screen.Test.route,
+            startDestination = Screen.ExploreHome.route,
             route = Feature.Home.route
         ) {
-            composable(route = Screen.Test.route) {
+            composable(route = Screen.ExploreHome.route) {
                 HomeScreen(authNavController = navController)
             }
         }

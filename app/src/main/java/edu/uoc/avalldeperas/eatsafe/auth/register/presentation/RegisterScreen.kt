@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
+import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -29,22 +31,26 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.CONFIRM_PASSWORD_TEXT_FIELD
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.CURRENT_CITY_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LOGIN_LINK
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PASSWORD_TEXT_FIELD
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
 fun RegisterScreen(
-    toLogin: () -> Unit, toHome: () -> Unit, registerViewModel: RegisterViewModel = hiltViewModel()
+    toLogin: () -> Unit, toExplore: () -> Unit, registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
     val email by registerViewModel.email.collectAsStateWithLifecycle()
     val password by registerViewModel.password.collectAsStateWithLifecycle()
     val confirmPassword by registerViewModel.confirmPassword.collectAsStateWithLifecycle()
+    val currentCity by registerViewModel.currentCity.collectAsStateWithLifecycle()
+
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -88,9 +94,17 @@ fun RegisterScreen(
             label = R.string.confirm_password,
             visualTransformation = PasswordVisualTransformation()
         )
+        Spacer(modifier = Modifier.padding(vertical = 4.dp))
+        AppTextField(
+            value = currentCity,
+            onValueChange = { registerViewModel.updateCurrentCity(it) },
+            leadingIcon = Icons.Filled.LocationOn,
+            contentDescription = CURRENT_CITY_TEXT_FIELD,
+            label = R.string.current_city
+        )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
         Button(
-            onClick = { registerViewModel.onRegisterClick(toHome) },
+            onClick = { registerViewModel.onRegisterClick(toExplore, context) },
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),

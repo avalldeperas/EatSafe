@@ -36,13 +36,14 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_BACK_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_EMAIL
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PROFILE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD
-import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.profile.composables.AllergyButton
+import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
@@ -54,7 +55,7 @@ fun EditProfileScreen(
 ) {
     val email by editProfileViewModel.email.collectAsStateWithLifecycle()
     val displayName by editProfileViewModel.displayName.collectAsStateWithLifecycle()
-    val intolerances by editProfileViewModel.intolerances.collectAsStateWithLifecycle()
+    val user by editProfileViewModel.user.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Scaffold(
@@ -103,12 +104,12 @@ fun EditProfileScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
             ) {
-                intolerances.forEach {
+                Intolerance().intolerances().forEach {
                     AllergyButton(
                         imageVector = it.icon,
                         text = it.label,
                         onClick = { editProfileViewModel.onAllergyClick(it) },
-                        enabled = it.enabled
+                        enabled = user.intolerances.contains(it)
                     )
                 }
             }
@@ -138,8 +139,8 @@ fun EditProfileScreen(
             )
             Spacer(modifier = Modifier.padding(top = 8.dp))
             AppTextField(
-                value = "",
-                onValueChange = {},
+                value = user.currentCity,
+                onValueChange = { editProfileViewModel.updateCurrentCity(it) },
                 leadingIcon = Icons.Filled.LocationOn,
                 contentDescription = USER_LOCATION_TEXT_FIELD,
                 label = R.string.user_location

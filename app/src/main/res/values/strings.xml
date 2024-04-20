@@ -14,6 +14,7 @@
     <string name="user_location">Current city</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
+    <string name="current_city">Current city</string>
     <string name="forgot_password_info">Enter your email associated with your account and we will email you a link to reset your password.</string>
     <string name="forgot_password_email_sent">Forgot password email sent.</string>
     <string name="intolerances">Intolerances</string>
@@ -25,5 +26,6 @@
     <string name="rating_label">Rating</string>
     <string name="safety_label">Safety</string>
     <string name="favorites_header">Favorites</string>
-    <string name="search_hint">Search...</string>
+    <string name="search_hint">Search…</string>
+    <string name="generic_error">An error has occurred.</string>
 </resources>

@@ -20,7 +20,7 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
     composable(route = Screen.Register.route) {
         RegisterScreen(
             toLogin = { navController.popBackStack() },
-            toHome = { navController.navigate(route = Feature.Home.route) }
+            toExplore = { navController.navigate(route = Feature.Home.route) }
         )
     }
 
