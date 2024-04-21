@@ -25,6 +25,7 @@ class PlaceRepositoryImpl @Inject constructor() : PlaceRepository {
     }
 
     override fun getPlace(placeId: String): Flow<Place?> {
+        Log.d("avb", "getPlace = get place id = $placeId")
         return try {
             ref.document(placeId).snapshots().map { it.toObject<Place>() }
         } catch (e: Exception) {

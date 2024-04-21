@@ -9,6 +9,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreMapScre
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreViewModel
 import edu.uoc.avalldeperas.eatsafe.favorites.presentation.FavoritesScreen
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants.PLACE_ID_PARAM
+import edu.uoc.avalldeperas.eatsafe.navigation.Constants.PLACE_NAME_PARAM
 import edu.uoc.avalldeperas.eatsafe.profile.details.presentation.ProfileScreen
 import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.EditProfileScreen
 import edu.uoc.avalldeperas.eatsafe.reviews.presentation.AddReviewScreen
@@ -41,11 +42,13 @@ fun NavGraphBuilder.homeGraph(
     composable(route = Screen.ExploreDetail.route + "/{$PLACE_ID_PARAM}") {
         DetailViewScreen(
             navigateBack = { navController.popBackStack() },
-            toAddReview = { navController.navigate(route = Screen.AddReview.route) }
+            toAddReview = { place ->
+                navController.navigate(route = Screen.AddReview.route + "/${place.placeId}/${place.name}")
+            }
         )
     }
 
-    composable(route = Screen.AddReview.route) {
+    composable(route = Screen.AddReview.route + "/{$PLACE_ID_PARAM}/{$PLACE_NAME_PARAM}") {
         AddReviewScreen(backToDetail = { navController.popBackStack() })
     }
 
