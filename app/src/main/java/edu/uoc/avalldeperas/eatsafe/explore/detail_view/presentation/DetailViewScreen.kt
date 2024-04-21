@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
@@ -35,6 +34,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -51,8 +52,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
+import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
+import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
+import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
@@ -62,49 +67,55 @@ fun DetailViewScreen(
     detailViewModel: DetailViewModel = hiltViewModel()
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
+    val place by detailViewModel.place.collectAsStateWithLifecycle()
+    val isLoading by detailViewModel.isLoading.collectAsStateWithLifecycle()
 
     Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .zIndex(1f)
-        ) {
-            IconButton(
-                onClick = { navigateBack() },
-                modifier = Modifier.padding(paddingValues)
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = ContentDescriptionConstants.FORGOT_BACK,
-                    tint = MAIN_GREEN
-                )
-            }
-        }
-        Column(
-            Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(rememberScrollState())
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.restaurant_detail),
-                contentDescription = ContentDescriptionConstants.EATSAFE_LOGO,
+        if (isLoading) {
+            CenteredCircularProgressIndicator()
+        } else {
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .size(200.dp)
-                    .clip(RoundedCornerShape(5.dp))
-                    .shadow(1.dp, RoundedCornerShape(1.dp)),
-                contentScale = ContentScale.Crop,
-            )
-            DetailHeader(
-                navigateBack = navigateBack,
-                paddingValues = paddingValues,
-                placeId = detailViewModel.placeId
-            )
-            AppHorizontalDivider(top = 16.dp)
-            DetailAbout(modifier = Modifier)
-            AppHorizontalDivider(top = 16.dp)
-            DetailReviews(modifier = Modifier, toAddReview = toAddReview)
+                    .zIndex(1f)
+            ) {
+                IconButton(
+                    onClick = { navigateBack() },
+                    modifier = Modifier.padding(paddingValues)
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                        contentDescription = ContentDescriptionConstants.FORGOT_BACK,
+                        tint = MAIN_GREEN
+                    )
+                }
+            }
+            Column(
+                Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
+                    .verticalScroll(rememberScrollState())
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.restaurant_detail),
+                    contentDescription = ContentDescriptionConstants.EATSAFE_LOGO,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(200.dp)
+                        .clip(RoundedCornerShape(5.dp))
+                        .shadow(1.dp, RoundedCornerShape(1.dp)),
+                    contentScale = ContentScale.Crop,
+                )
+                DetailHeader(
+                    navigateBack = navigateBack,
+                    paddingValues = paddingValues,
+                    place = place
+                )
+                AppHorizontalDivider(top = 16.dp)
+                DetailAbout(modifier = Modifier, place = place)
+                AppHorizontalDivider(top = 16.dp)
+                DetailReviews(modifier = Modifier, toAddReview = toAddReview)
+            }
         }
     }
 }
@@ -213,7 +224,7 @@ fun ReviewHeader(toAddReview: () -> Unit) {
 }
 
 @Composable
-fun DetailAbout(modifier: Modifier) {
+fun DetailAbout(modifier: Modifier, place: Place) {
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -225,11 +236,11 @@ fun DetailAbout(modifier: Modifier) {
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
-        InfoElement(imageVector = Icons.Filled.Phone, text = "+34 900 12 24 25")
-        InfoElement(imageVector = Icons.Filled.Info, text = "www.racodelpla.com")
+        InfoElement(imageVector = Icons.Filled.Phone, text = place.telephone)
+        InfoElement(imageVector = Icons.Filled.Info, text = place.website)
         InfoElement(
             imageVector = Icons.Filled.LocationOn,
-            text = "Carrer Llacuna, 26, Barcelona, 08005"
+            text = place.address
         )
     }
 }
@@ -247,7 +258,7 @@ fun InfoElement(imageVector: ImageVector, text: String) {
 }
 
 @Composable
-fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues, placeId: String) {
+fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues, place: Place) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -255,9 +266,9 @@ fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues, placeId
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        Icon(imageVector = Icons.Default.Build, contentDescription = "")
+        Icon(imageVector = place.type.imageVector, contentDescription = "")
         Text(
-            text = "Racó del Plà (id = $placeId)",
+            text = place.name,
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(0.7f),
@@ -275,8 +286,9 @@ fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues, placeId
         }
     }
     Spacer(modifier = Modifier.padding(vertical = 4.dp))
-    SafetySection(
-        modifier = Modifier.padding(start = 24.dp)
+    SafetySectionWithNumber(
+        modifier = Modifier.padding(start = 24.dp),
+        averageSafety = place.averageSafety
     )
     Spacer(modifier = Modifier.padding(vertical = 4.dp))
     AllergensHeader()
@@ -308,7 +320,11 @@ fun SafetySection(modifier: Modifier) {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(2.dp)
     ) {
-        Text(text = "Safety", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(
+            text = stringResource(id = R.string.safety_label),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
+        )
         repeat(5) {
             Icon(
                 imageVector = Icons.Default.CheckCircle,
@@ -319,8 +335,17 @@ fun SafetySection(modifier: Modifier) {
     }
 }
 
+@Preview
 @Composable
-@Preview(showSystemUi = true, showBackground = true)
+fun SafetySectionWithNumberPreview() {
+    SafetySectionWithNumber(
+        modifier = Modifier.padding(start = 24.dp),
+        averageSafety = 4.3
+    )
+}
+
+@Composable
+//@Preview(showSystemUi = true, showBackground = true)
 fun DetailViewScreenPreview() {
     DetailViewScreen({}, {})
 }

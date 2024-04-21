@@ -158,7 +158,7 @@ fun InfoWindow(place: Place) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(imageVector = place.placeType.imageVector, contentDescription = "")
+                    Icon(imageVector = place.type.imageVector, contentDescription = "")
                     Spacer(modifier = Modifier.padding(horizontal = 4.dp))
                     Text(
                         text = place.name,

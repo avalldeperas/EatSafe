@@ -22,7 +22,7 @@ fun NavGraphBuilder.homeGraph(
         ExploreMapScreen(
             toggleView = { navController.navigate(route = Screen.ExploreList.route) },
             toDetailView = { placeId ->
-                navController.navigate(route = Screen.ExploreDetail.route + "/{$placeId}")
+                navController.navigate(route = Screen.ExploreDetail.route + "/$placeId")
             },
             exploreViewModel = exploreViewModel
         )
@@ -32,7 +32,7 @@ fun NavGraphBuilder.homeGraph(
         ExploreListScreen(
             toggleView = { navController.navigate(route = Screen.ExploreMap.route) },
             toDetailView = { placeId ->
-                navController.navigate(route = Screen.ExploreDetail.route + "/{$placeId}")
+                navController.navigate(route = Screen.ExploreDetail.route + "/$placeId")
             },
             exploreViewModel = exploreViewModel
         )
@@ -51,7 +51,7 @@ fun NavGraphBuilder.homeGraph(
 
     composable(route = Screen.Favorites.route) {
         FavoritesScreen(toDetailView = { placeId ->
-            navController.navigate(Screen.ExploreDetail.route + "/{$placeId}")
+            navController.navigate(Screen.ExploreDetail.route + "/$placeId")
         })
     }
 

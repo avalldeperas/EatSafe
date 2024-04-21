@@ -63,7 +63,7 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit, isFavorites: Boolean =
                 modifier = Modifier.padding(4.dp)
             ) {
                 Icon(
-                    imageVector = place.placeType.imageVector,
+                    imageVector = place.type.imageVector,
                     contentDescription = LIST_VIEW_PLACE_TYPE_ICON + place.placeId
                 )
                 Text(
