@@ -46,7 +46,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,8 +54,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ALLERGEN_ICON
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
-import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
+import edu.uoc.avalldeperas.eatsafe.explore.composables.RatingsSection
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
@@ -286,16 +286,13 @@ fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues, place: 
         }
     }
     Spacer(modifier = Modifier.padding(vertical = 4.dp))
-    SafetySectionWithNumber(
-        modifier = Modifier.padding(start = 24.dp),
-        averageSafety = place.averageSafety
-    )
+    RatingsSection(modifier = Modifier.fillMaxWidth(), place = place)
     Spacer(modifier = Modifier.padding(vertical = 4.dp))
-    AllergensHeader()
+    AllergensHeader(place = place)
 }
 
 @Composable
-fun AllergensHeader() {
+fun AllergensHeader(place: Place) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -303,12 +300,16 @@ fun AllergensHeader() {
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Allergens", fontSize = 16.sp, fontWeight = FontWeight.Bold)
-        repeat(2) {
-            Icon(
-                imageVector = Icons.Filled.Lock,
-                contentDescription = ""
-            )
+        Text(text = "Allergens: ", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        if (place.allergens.isEmpty()) {
+            Text(text = "Does not control any allergens yet.")
+        } else {
+            place.allergens.forEach {
+                Icon(
+                    painterResource(id = it.iconResource),
+                    contentDescription = ALLERGEN_ICON + it.displayName
+                )
+            }
         }
     }
 }
@@ -333,19 +334,4 @@ fun SafetySection(modifier: Modifier) {
             )
         }
     }
-}
-
-@Preview
-@Composable
-fun SafetySectionWithNumberPreview() {
-    SafetySectionWithNumber(
-        modifier = Modifier.padding(start = 24.dp),
-        averageSafety = 4.3
-    )
-}
-
-@Composable
-//@Preview(showSystemUi = true, showBackground = true)
-fun DetailViewScreenPreview() {
-    DetailViewScreen({}, {})
 }

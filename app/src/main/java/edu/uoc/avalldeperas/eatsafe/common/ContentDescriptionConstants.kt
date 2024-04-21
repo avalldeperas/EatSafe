@@ -19,6 +19,8 @@ object ContentDescriptionConstants {
     const val LIST_MAP_TOGGLE_ICON = "list-map-toggle-icon"
     const val FILTER_ICON = "filter-icon"
 
+    // Place Detail
+    const val ALLERGEN_ICON: String = "allergen-icon"
 
     // edit profile
     const val EDIT_PROFILE_ICON = "edit-profile-icon"
