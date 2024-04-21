@@ -15,7 +15,7 @@ class FavoritesRepository @Inject constructor() {
                 address = "Carrer de Llacuna 85, Barcelona",
                 averageRating = 4.5,
                 averageSafety = 4.2,
-                placeType = PlaceType.Restaurant,
+                type = PlaceType.Restaurant,
                 distance = 100,
                 image = R.drawable.restaurant_detail
             )
