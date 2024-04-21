@@ -27,4 +27,6 @@
     <string name="favorites_header">Favorites</string>
     <string name="search_hint">Search…</string>
     <string name="generic_error">An error has occurred.</string>
+    <string name="review_saved_successfully">Review saved successfully</string>
+    <string name="error_save_review">Could not save review, please try again</string>
 </resources>

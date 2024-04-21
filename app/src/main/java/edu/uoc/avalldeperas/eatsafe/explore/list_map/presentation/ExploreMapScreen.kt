@@ -184,7 +184,7 @@ fun InfoWindow(place: Place) {
                     )
                     AverageRatingSection(
                         modifier = Modifier,
-                        averageRating = place.averageSafety,
+                        averageRating = place.averageRating,
                         fontSize = 12.sp
                     )
                 }

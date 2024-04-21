@@ -20,4 +20,5 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int) {
 
 object Constants {
     const val PLACE_ID_PARAM = "placeId"
+    const val PLACE_NAME_PARAM = "placeName"
 }

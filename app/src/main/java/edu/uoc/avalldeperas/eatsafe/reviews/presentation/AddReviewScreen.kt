@@ -12,11 +12,11 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
-import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,15 +24,19 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
@@ -41,10 +45,13 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddReviewScreen(
-    backToDetail: () -> Unit
+    backToDetail: () -> Unit,
+    addReviewViewModel: AddReviewViewModel = hiltViewModel()
 ) {
-    val restaurantName = "El Racó del pla"
-    val typeIcon = Icons.Default.Home
+    val review by addReviewViewModel.review.collectAsStateWithLifecycle()
+    val isLoading by addReviewViewModel.isLoading.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -79,10 +86,8 @@ fun AddReviewScreen(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Icon(imageVector = typeIcon, contentDescription = "")
-                Spacer(modifier = Modifier.padding(horizontal = 8.dp))
                 Text(
-                    text = restaurantName,
+                    text = review.placeName,
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 )
@@ -98,11 +103,11 @@ fun AddReviewScreen(
                     fontSize = 16.sp
                 )
                 repeat(5) {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { addReviewViewModel.updateSafety(it+1) }) {
                         Icon(
                             imageVector = Icons.Default.CheckCircle,
                             contentDescription = "",
-                            tint = Color.Gray
+                            tint = if (review.safety == it+1) MAIN_GREEN else Color.Gray
                         )
                     }
                 }
@@ -118,11 +123,11 @@ fun AddReviewScreen(
                     fontSize = 16.sp
                 )
                 repeat(5) {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { addReviewViewModel.updateRating(it+1) }) {
                         Icon(
                             imageVector = Icons.Default.Star,
                             contentDescription = "",
-                            tint = MAIN_GREEN
+                            tint = if (review.rating == it + 1) MAIN_GREEN else Color.Gray
                         )
                     }
                 }
@@ -140,29 +145,32 @@ fun AddReviewScreen(
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
                 TextField(
-                    value = "",
-                    minLines = 10,
-                    maxLines = 10,
-                    onValueChange = {},
+                    value = review.description,
+                    minLines = 8,
+                    maxLines = 8,
+                    onValueChange = { addReviewViewModel.updateDescription(it) },
                     placeholder = { Text(text = stringResource(R.string.add_review_placeholder)) },
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(5.dp))
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                Button(
-                    onClick = { },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MAIN_GREEN,
-                        contentColor = Color.White
-                    ),
-                ) {
-                    Text(text = stringResource(R.string.save), fontSize = 16.sp)
+                if (isLoading) {
+                    CircularProgressIndicator()
+                } else {
+                    Button(
+                        onClick = { addReviewViewModel.onSubmit(context) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MAIN_GREEN,
+                            contentColor = Color.White
+                        ),
+                    ) {
+                        Text(text = stringResource(R.string.save), fontSize = 16.sp)
+                    }
                 }
-
             }
         }
     }
