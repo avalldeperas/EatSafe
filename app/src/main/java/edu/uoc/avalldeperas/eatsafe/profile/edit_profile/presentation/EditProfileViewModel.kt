@@ -30,7 +30,7 @@ class EditProfileViewModel @Inject constructor(
     private val _email = MutableStateFlow("")
     val email = _email.asStateFlow()
 
-    private val _displayName = MutableStateFlow("User")
+    private val _displayName = MutableStateFlow("")
     val displayName = _displayName.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)

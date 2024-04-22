@@ -6,6 +6,8 @@ import java.util.Date
 data class User(
     val uid: String = "",
     val email: String = "",
+    val username: String = "",
+    var displayName: String = "",
     var currentCity: String = "",
     val latitude: Double = 0.0,
     val longitude: Double = 0.0,

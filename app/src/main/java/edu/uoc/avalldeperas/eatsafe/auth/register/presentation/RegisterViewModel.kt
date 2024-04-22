@@ -35,6 +35,8 @@ class RegisterViewModel @Inject constructor(
     private val _confirmPassword = MutableStateFlow("")
     val confirmPassword = _confirmPassword.asStateFlow()
 
+    private val _username = MutableStateFlow("")
+
     private val _currentCity = MutableStateFlow("")
     val currentCity = _currentCity.asStateFlow()
 
@@ -43,6 +45,7 @@ class RegisterViewModel @Inject constructor(
 
     fun updateEmail(newEmail: String) {
         _email.value = newEmail
+        _username.value = newEmail.split("@")[0]
     }
 
     fun updatePassword(newPassword: String) {
@@ -79,6 +82,7 @@ class RegisterViewModel @Inject constructor(
 
         viewModelScope.launch {
             _isLoading.value = true
+
             val uid = authRepository.signUp(_email.value, _password.value)
             if (uid.isEmpty()) {
                 showToast("Error on creating user, please try again", context)
@@ -102,8 +106,16 @@ class RegisterViewModel @Inject constructor(
         val location = address.getAddressLine(0)
         val lat = address.latitude
         val lng = address.longitude
-        val geoHash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
+        val geohash = GeoFireUtils.getGeoHashForLocation(GeoLocation(lat, lng))
 
-        return User(uid, _email.value, location, lat, lng, geoHash)
+        return User(
+            uid = uid,
+            email = _email.value,
+            username = _username.value,
+            currentCity = location,
+            latitude = lat,
+            longitude = lng,
+            geohash = geohash
+        )
     }
 }
