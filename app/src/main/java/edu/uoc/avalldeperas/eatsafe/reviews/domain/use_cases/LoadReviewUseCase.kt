@@ -12,7 +12,7 @@ class LoadReviewUseCase @Inject constructor(
         var review = Review(placeId = placeId, placeName = placeName)
 
         val currentUser: FirebaseUser = authRepository.getCurrentUser()
-        review = review.copy(userId = currentUser.uid)
+        review = review.copy(userId = currentUser.uid, userName = currentUser.displayName!!)
 
         return review
     }
