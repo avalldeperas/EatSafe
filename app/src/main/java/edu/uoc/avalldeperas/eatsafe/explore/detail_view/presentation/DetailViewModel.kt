@@ -7,6 +7,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.data.PlaceRepository
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants
+import edu.uoc.avalldeperas.eatsafe.reviews.data.ReviewsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -17,7 +18,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val placeRepository: PlaceRepository
+    private val placeRepository: PlaceRepository,
+    private val reviewsRepository: ReviewsRepository
 ) : ViewModel() {
 
     val placeId: String = checkNotNull(savedStateHandle[Constants.PLACE_ID_PARAM])
@@ -33,9 +35,12 @@ class DetailViewModel @Inject constructor(
         viewModelScope.launch {
             placeRepository.getPlace(placeId).collectLatest { place ->
                 _place.update { place!! }
-                _isLoading.update { false }
+
+                reviewsRepository.getReviewsByPlace(placeId).collectLatest { reviews ->
+                    _place.value = _place.value.copy(reviews = reviews)
+                    _isLoading.update { false }
+                }
             }
         }
     }
-
 }

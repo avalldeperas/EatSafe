@@ -2,6 +2,7 @@ package edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model
 
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Allergen
+import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 
 data class Place(
     val placeId: String = "",
@@ -18,5 +19,6 @@ data class Place(
     val website: String = "",
     val image: Int = R.drawable.restaurant_detail,
     val totalReviews: Int = 0,
-    val allergens: MutableList<Allergen> = mutableListOf()
+    val allergens: MutableList<Allergen> = mutableListOf(),
+    val reviews: List<Review> = mutableListOf()
 )

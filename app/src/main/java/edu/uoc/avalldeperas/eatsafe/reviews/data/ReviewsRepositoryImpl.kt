@@ -2,6 +2,7 @@ package edu.uoc.avalldeperas.eatsafe.reviews.data
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObjects
@@ -16,10 +17,10 @@ class ReviewsRepositoryImpl @Inject constructor(
 
 ) : ReviewsRepository {
 
-    private val reviewRef = Firebase.firestore.collection("reviews")
+    private val reviewsRef = Firebase.firestore.collection("reviews")
     override fun getReviews(): Flow<List<Review>> {
         return try {
-            reviewRef.snapshots().map { it.toObjects<Review>() }
+            reviewsRef.snapshots().map { it.toObjects<Review>() }
         } catch (e: Exception) {
             Log.d("avb", "getReviews: exception = ${e.message}")
             emptyFlow()
@@ -28,7 +29,7 @@ class ReviewsRepositoryImpl @Inject constructor(
 
     override fun getReviewsByUser(userId: String): Flow<List<Review>> {
         return try {
-            reviewRef.whereEqualTo(USER_ID, userId).snapshots().map { it.toObjects<Review>() }
+            reviewsRef.whereEqualTo(USER_ID, userId).snapshots().map { it.toObjects<Review>() }
         } catch (e: Exception) {
             Log.d("avb", "getReviewsByUser: exception = ${e.message}")
             emptyFlow()
@@ -37,7 +38,8 @@ class ReviewsRepositoryImpl @Inject constructor(
 
     override fun getReviewsByPlace(placeId: String): Flow<List<Review>> {
         return try {
-            reviewRef.whereEqualTo(PLACE_ID, placeId).snapshots().map { it.toObjects<Review>() }
+            reviewsRef.whereEqualTo(PLACE_ID, placeId).orderBy(DATE, Query.Direction.DESCENDING)
+                .snapshots().map { it.toObjects<Review>() }
         } catch (e: Exception) {
             Log.d("avb", "getReviewsByPlace: exception = ${e.message}")
             emptyFlow()
@@ -46,7 +48,7 @@ class ReviewsRepositoryImpl @Inject constructor(
 
     override suspend fun save(review: Review): Boolean {
         return try {
-            reviewRef.add(review).await()
+            reviewsRef.add(review).await()
             true
         } catch (e: Exception) {
             Log.e("avb", "save review exception: ${e.message}")
@@ -57,5 +59,6 @@ class ReviewsRepositoryImpl @Inject constructor(
     companion object {
         const val USER_ID = "userId"
         const val PLACE_ID = "placeId"
+        const val DATE = "date"
     }
 }

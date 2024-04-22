@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -29,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -39,6 +39,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
+import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
@@ -92,46 +93,18 @@ fun AddReviewScreen(
                     fontSize = 24.sp
                 )
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.safety_label),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                repeat(5) {
-                    IconButton(onClick = { addReviewViewModel.updateSafety(it+1) }) {
-                        Icon(
-                            imageVector = Icons.Default.CheckCircle,
-                            contentDescription = "",
-                            tint = if (review.safety == it+1) MAIN_GREEN else Color.Gray
-                        )
-                    }
-                }
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.rating_label),
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
-                )
-                repeat(5) {
-                    IconButton(onClick = { addReviewViewModel.updateRating(it+1) }) {
-                        Icon(
-                            imageVector = Icons.Default.Star,
-                            contentDescription = "",
-                            tint = if (review.rating == it + 1) MAIN_GREEN else Color.Gray
-                        )
-                    }
-                }
-            }
+            RatingButtonsRow(
+                onClick = { addReviewViewModel.updateSafety(it + 1) },
+                stringResource = R.string.safety_label,
+                value = review.safety,
+                imageVector = Icons.Default.CheckCircle
+            )
+            RatingButtonsRow(
+                onClick = { addReviewViewModel.updateRating(it + 1) },
+                stringResource = R.string.rating_label,
+                value = review.rating,
+                imageVector = Icons.Default.Star
+            )
             Column(
                 Modifier
                     .fillMaxWidth()
@@ -156,7 +129,7 @@ fun AddReviewScreen(
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
                 if (isLoading) {
-                    CircularProgressIndicator()
+                    CenteredCircularProgressIndicator()
                 } else {
                     Button(
                         onClick = { addReviewViewModel.onSubmit(context) },
@@ -171,6 +144,35 @@ fun AddReviewScreen(
                         Text(text = stringResource(R.string.save), fontSize = 16.sp)
                     }
                 }
+            }
+        }
+    }
+}
+
+@Composable
+fun RatingButtonsRow(
+    onClick: (Int) -> Unit,
+    value: Int,
+    stringResource: Int,
+    imageVector: ImageVector
+) {
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(stringResource),
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
+        repeat(5) {
+            IconButton(onClick = { onClick(it) }) {
+                Icon(
+                    imageVector = imageVector,
+                    contentDescription = "",
+                    tint = if (it + 1 <= value) MAIN_GREEN else Color.Gray
+                )
             }
         }
     }

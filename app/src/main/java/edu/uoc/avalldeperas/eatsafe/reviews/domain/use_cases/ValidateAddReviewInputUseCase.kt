@@ -27,6 +27,6 @@ class ValidateAddReviewInputUseCase @Inject constructor(
 
     companion object {
         const val MIN_DESCRIPTION_LENGTH = 10
-        const val MAX_DESCRIPTION_LENGTH = 10
+        const val MAX_DESCRIPTION_LENGTH = 200
     }
 }

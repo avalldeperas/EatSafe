@@ -46,18 +46,23 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.firebase.Timestamp
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ALLERGEN_ICON
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
+import edu.uoc.avalldeperas.eatsafe.common.util.DateUtil
 import edu.uoc.avalldeperas.eatsafe.explore.composables.RatingsSection
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
@@ -138,21 +143,21 @@ fun DetailReviews(modifier: Modifier, toAddReview: (Place) -> Unit, place: Place
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ReviewHeader(toAddReview = toAddReview, place)
-        repeat(3) {
-            ReviewItem()
+        place.reviews.forEach {
+            ReviewItem(it)
         }
     }
 }
 
 @Composable
-fun ReviewItem() {
+fun ReviewItem(review: Review) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(end = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Column() {
+        Column {
             Image(
                 painter = painterResource(id = R.drawable.default_account),
                 contentDescription = "",
@@ -165,17 +170,17 @@ fun ReviewItem() {
         ) {
             Row() {
                 Text(
-                    text = "Jane doe",
+                    text = review.userName,
                     Modifier.weight(1f),
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
-                Text(text = "25/02/2024")
+                Text(text = DateUtil.getParsedDate(review.date))
             }
             Row() {
-                SafetySection(modifier = Modifier.weight(1f))
+                SafetySection(modifier = Modifier.weight(1f), safety = review.safety)
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "5")
+                    Text(text = review.rating.toString())
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = "",
@@ -183,7 +188,12 @@ fun ReviewItem() {
                     )
                 }
             }
-            Text(text = "Ho tenen tot molt controlat. No puc demanar haver tingut un millor tracte! Les pizzes...")
+            Text(
+                text = review.description,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 12.sp
+            )
             Row() {
                 repeat(2) {
                     Icon(imageVector = Icons.Default.Lock, contentDescription = "")
@@ -315,7 +325,7 @@ fun AllergensHeader(place: Place) {
 }
 
 @Composable
-fun SafetySection(modifier: Modifier) {
+fun SafetySection(modifier: Modifier, safety: Int) {
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -330,8 +340,28 @@ fun SafetySection(modifier: Modifier) {
             Icon(
                 imageVector = Icons.Default.CheckCircle,
                 contentDescription = "",
-                tint = MAIN_GREEN
+                tint = if (it + 1 <= safety) MAIN_GREEN else Color.Gray
             )
         }
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun ReviewItemPreview() {
+    ReviewItem(
+        Review(
+            userName = "avalldeperas",
+            safety = 4,
+            rating = 5,
+            date = Timestamp.now(),
+            description = "A Description"
+        )
+    )
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun DetailReviewsPreview() {
+    DetailReviews(Modifier, {}, Place(reviews = listOf(Review("test"))))
 }
