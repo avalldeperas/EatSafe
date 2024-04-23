@@ -8,8 +8,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 
@@ -34,7 +36,7 @@ fun AppTextField(
                 imageVector = leadingIcon, contentDescription = contentDescription
             )
         },
-        label = { Text(text = stringResource(id = label)) },
+        label = { Text(text = stringResource(id = label), style = TextStyle(color = Color.Gray)) },
         singleLine = true,
         maxLines = 1,
         visualTransformation = visualTransformation,

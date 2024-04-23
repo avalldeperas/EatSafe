@@ -14,9 +14,21 @@ class EditProfileInputValidationTypeTest {
     }
 
     @Test
+    fun whenCurrentCityIsEmpty_thenReturnsEmptyFieldValidationType() {
+        val result = testee.invoke("John Doe", "")
+        Assert.assertEquals(EditProfileInputValidationType.EmptyField, result)
+    }
+
+    @Test
     fun whenDisplayNameTooShort_thenReturnsDisplayNameTooShortValidationType() {
         val result = testee.invoke("A", "Barcelona")
         Assert.assertEquals(EditProfileInputValidationType.DisplayNameTooShort, result)
+    }
+
+    @Test
+    fun whenDisplayNameTooLong_thenReturnsDisplayNameTooLongValidationType() {
+        val result = testee.invoke("Thisisasuperverylargename", "Barcelona")
+        Assert.assertEquals(EditProfileInputValidationType.DisplayNameTooLong, result)
     }
 
     @Test

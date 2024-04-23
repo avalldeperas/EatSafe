@@ -12,14 +12,14 @@ import javax.inject.Inject
 
 class UsersRepositoryImpl @Inject constructor() : UsersRepository {
 
-    private val db = Firebase.firestore.collection("users")
+    private val usersRef = Firebase.firestore.collection("users")
 
     override val user: User
         get() = TODO("Not yet implemented")
 
     override suspend fun getUser(userId: String): User? {
         return try {
-            db.document(userId).get().await().toObject()
+            usersRef.document(userId).get().await().toObject()
         } catch (e: Exception) {
             Log.d("avb", "getUser exception: ${e.message} ")
             null
@@ -28,7 +28,7 @@ class UsersRepositoryImpl @Inject constructor() : UsersRepository {
 
     override suspend fun save(user: User): Boolean {
         return try {
-            db.document(user.uid).set(user).await()
+            usersRef.document(user.uid).set(user).await()
             true
         } catch (e: Exception) {
             Log.e("avb", "UsersRepository save exception: ${e.message}")
@@ -40,7 +40,7 @@ class UsersRepositoryImpl @Inject constructor() : UsersRepository {
         val geoHash = getGeoHash(user.latitude, user.longitude)
 
         return try {
-            val result = db.document(user.uid).update(
+            val result = usersRef.document(user.uid).update(
                 CURRENT_CITY, user.currentCity,
                 LATITUDE, user.latitude,
                 LONGITUDE, user.longitude,
