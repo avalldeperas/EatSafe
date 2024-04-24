@@ -10,6 +10,8 @@ import edu.uoc.avalldeperas.eatsafe.auth.register.data.UsersRepository
 import edu.uoc.avalldeperas.eatsafe.auth.register.data.UsersRepositoryImpl
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.data.PlaceRepository
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.data.PlaceRepositoryImpl
+import edu.uoc.avalldeperas.eatsafe.favorites.data.FavoritesRepository
+import edu.uoc.avalldeperas.eatsafe.favorites.data.FavoritesRepositoryImpl
 import edu.uoc.avalldeperas.eatsafe.reviews.data.ReviewsRepository
 import edu.uoc.avalldeperas.eatsafe.reviews.data.ReviewsRepositoryImpl
 
@@ -23,6 +25,8 @@ abstract class AppModule {
     @Binds abstract fun providePlacesRepository(impl: PlaceRepositoryImpl): PlaceRepository
 
     @Binds abstract fun provideReviewRepository(impl: ReviewsRepositoryImpl): ReviewsRepository
+
+    @Binds abstract fun provideFavoritesRepository(impl: FavoritesRepositoryImpl): FavoritesRepository
 
 
 //    @Binds abstract fun provideDummyPlacesRepository(impl: PlaceRepositoryDummyImpl): PlaceRepository

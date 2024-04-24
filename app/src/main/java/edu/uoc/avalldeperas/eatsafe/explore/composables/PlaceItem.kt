@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.HorizontalDivider
@@ -21,7 +20,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
@@ -36,7 +34,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
-fun PlaceItem(place: Place, onRowClick: (String) -> Unit, isFavorites: Boolean = false) {
+fun PlaceItem(place: Place, onRowClick: (String) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -72,15 +70,7 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit, isFavorites: Boolean =
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
-                if (isFavorites) {
-                    Icon(
-                        imageVector = Icons.Default.Favorite,
-                        contentDescription = LIST_VIEW_PLACE_TYPE_ICON,
-                        tint = Color.Red
-                    )
-                } else {
-                    Text(text = "${place.distance}m")
-                }
+                Text(text = "${place.distance}m")
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),

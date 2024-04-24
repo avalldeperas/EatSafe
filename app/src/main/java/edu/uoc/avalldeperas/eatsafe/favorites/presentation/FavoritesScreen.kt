@@ -12,12 +12,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
 import edu.uoc.avalldeperas.eatsafe.common.composables.SimpleTopAppBar
-import edu.uoc.avalldeperas.eatsafe.explore.composables.PlaceItem
+import edu.uoc.avalldeperas.eatsafe.favorites.composables.FavoriteItem
 
 @Composable
 fun FavoritesScreen(
@@ -39,18 +39,21 @@ fun FavoritesScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                LazyColumn {
-                    items(items = favorites, key = { favorite -> favorite.placeId }) { favorite ->
-                        PlaceItem(place = favorite, onRowClick = toDetailView, isFavorites = true)
+                if (favorites.isEmpty()) {
+                    EmptyListMessage(R.string.no_favorites_yet)
+                } else {
+                    LazyColumn {
+                        items(
+                            items = favorites,
+                            key = { favorite -> favorite.favoriteId }) { favorite ->
+                            FavoriteItem(
+                                favorite = favorite,
+                                onRowClick = toDetailView
+                            )
+                        }
                     }
                 }
             }
         }
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun FavoritesScreenPreview() {
-    FavoritesScreen({})
 }
