@@ -48,7 +48,9 @@ class ReviewsRepositoryImpl @Inject constructor(
 
     override suspend fun save(review: Review): Boolean {
         return try {
-            reviewsRef.add(review).await()
+            val document = reviewsRef.document()
+            review.reviewId = document.id
+            document.set(review).await()
             true
         } catch (e: Exception) {
             Log.e("avb", "save review exception: ${e.message}")

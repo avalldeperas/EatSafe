@@ -43,6 +43,7 @@ import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -59,6 +60,7 @@ import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ALLERGEN_ICON
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
+import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
 import edu.uoc.avalldeperas.eatsafe.common.util.DateUtil
 import edu.uoc.avalldeperas.eatsafe.explore.composables.RatingsSection
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
@@ -74,6 +76,8 @@ fun DetailViewScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val place by detailViewModel.place.collectAsStateWithLifecycle()
     val isLoading by detailViewModel.isLoading.collectAsStateWithLifecycle()
+    val isUserFav by detailViewModel.userFav.collectAsStateWithLifecycle()
+    val context = LocalContext.current
 
     Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
         if (isLoading) {
@@ -112,9 +116,10 @@ fun DetailViewScreen(
                     contentScale = ContentScale.Crop,
                 )
                 DetailHeader(
-                    navigateBack = navigateBack,
+                    onFavClick = { detailViewModel.addFavourite(context) },
                     paddingValues = paddingValues,
-                    place = place
+                    place = place,
+                    isFav = isUserFav != null
                 )
                 AppHorizontalDivider(top = 16.dp)
                 DetailAbout(modifier = Modifier, place = place)
@@ -143,8 +148,12 @@ fun DetailReviews(modifier: Modifier, toAddReview: (Place) -> Unit, place: Place
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ReviewHeader(toAddReview = toAddReview, place)
-        place.reviews.forEach {
-            ReviewItem(it)
+        if (place.reviews.isEmpty()) {
+            EmptyListMessage(R.string.no_reviews_yet)
+        } else {
+            place.reviews.forEach {
+                ReviewItem(it)
+            }
         }
     }
 }
@@ -268,7 +277,7 @@ fun InfoElement(imageVector: ImageVector, text: String) {
 }
 
 @Composable
-fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues, place: Place) {
+fun DetailHeader(onFavClick: () -> Unit, paddingValues: PaddingValues, place: Place, isFav: Boolean) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -284,14 +293,13 @@ fun DetailHeader(navigateBack: () -> Unit, paddingValues: PaddingValues, place: 
             modifier = Modifier.weight(0.7f),
         )
         IconButton(
-            onClick = { navigateBack() },
-            modifier = Modifier
-                .padding(paddingValues)
+            onClick = { onFavClick() },
+            modifier = Modifier.padding(paddingValues)
         ) {
             Icon(
                 imageVector = Icons.Default.Favorite,
                 contentDescription = ContentDescriptionConstants.FORGOT_BACK,
-                tint = Color.Red
+                tint = if (isFav) Color.Red else Color.Gray
             )
         }
     }

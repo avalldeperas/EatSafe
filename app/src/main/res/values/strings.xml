@@ -29,4 +29,7 @@
     <string name="generic_error">An error has occurred.</string>
     <string name="review_saved_successfully">Review saved successfully</string>
     <string name="error_save_review">Could not save review, please try again</string>
+    <string name="no_elements_yet">There are no elements yet</string>
+    <string name="no_favorites_yet">There are no favorites yet, start exploring!</string>
+    <string name="no_reviews_yet">There are no reviews yet, share your experience!</string>
 </resources>
