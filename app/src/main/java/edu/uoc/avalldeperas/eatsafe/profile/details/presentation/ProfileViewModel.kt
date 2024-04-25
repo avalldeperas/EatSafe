@@ -9,6 +9,7 @@ import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 import edu.uoc.avalldeperas.eatsafe.auth.register.data.UsersRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,19 +24,18 @@ class ProfileViewModel @Inject constructor(
     val user = _user.asStateFlow()
 
     init {
+        val currentUser = authRepository.getCurrentUser()
+
         viewModelScope.launch {
-            val currentUser = authRepository.getCurrentUser()
-
-            _user.update { usersRepository.getUser(currentUser.uid)!! }
-
-            if (currentUser.displayName != null) {
-                _user.value.displayName = currentUser.displayName!!
+            usersRepository.getUser(currentUser.uid).collectLatest { user ->
+                _user.update { user!! }
+                _user.value = _user.value.copy(displayName = currentUser.displayName?:"User")
             }
         }
     }
 
     fun getDisplayName(): String {
-        return _user.value.displayName.ifEmpty { _user.value.username }
+        return _user.value.displayName.ifEmpty { _user.value.username }.ifEmpty { "User" }
     }
 
     fun onLogoutClick(toLogin: () -> Unit) {

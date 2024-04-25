@@ -5,8 +5,12 @@ import com.firebase.geofire.GeoFireUtils
 import com.firebase.geofire.GeoLocation
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObject
 import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -17,12 +21,14 @@ class UsersRepositoryImpl @Inject constructor() : UsersRepository {
     override val user: User
         get() = TODO("Not yet implemented")
 
-    override suspend fun getUser(userId: String): User? {
+    override fun getUser(userId: String): Flow<User?> {
         return try {
-            usersRef.document(userId).get().await().toObject()
+            usersRef.document(userId).snapshots().map {
+                it.toObject<User>()
+            }
         } catch (e: Exception) {
             Log.d("avb", "getUser exception: ${e.message} ")
-            null
+            emptyFlow<User>()
         }
     }
 
