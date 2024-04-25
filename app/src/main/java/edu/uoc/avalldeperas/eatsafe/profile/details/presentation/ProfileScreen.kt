@@ -81,13 +81,6 @@ fun ProfileScreen(
                     }
                 }
             }
-            Text(
-                text = user.email,
-                modifier = Modifier.padding(16.dp),
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold
-            )
-
             Button(
                 onClick = { profileViewModel.onLogoutClick(toLogin) },
                 modifier = Modifier
@@ -122,9 +115,13 @@ fun ProfileHeader(displayName: String, user: User, onEditClick: () -> Unit) {
             Image(
                 painter = painterResource(id = R.drawable.default_account),
                 contentDescription = PROFILE_IMAGE,
-                modifier = Modifier.size(70.dp).padding()
+                modifier = Modifier
+                    .size(70.dp)
+                    .padding()
             )
-            Column(modifier = Modifier.weight(1f).padding(8.dp)) {
+            Column(modifier = Modifier
+                .weight(1f)
+                .padding(8.dp)) {
                 Text(
                     text = "Hello $displayName!",
                     color = DARK_GREEN,

@@ -2,7 +2,6 @@ package edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation
 
 import android.content.Context
 import android.location.Address
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -16,6 +15,7 @@ import edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases.EditProfile
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases.ValidateEditProfileInputUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -47,9 +47,8 @@ class EditProfileViewModel @Inject constructor(
             _displayName.value = currentUser.displayName!!
 
         viewModelScope.launch {
-            if (_user.value.currentCity.isEmpty()) {
-                Log.d("avb", "We don't have have user... ${user.value}")
-                _user.update { usersRepository.getUser(currentUser.uid)!! }
+            usersRepository.getUser(currentUser.uid).collectLatest { user ->
+                _user.update { user!! }
             }
         }
     }
@@ -69,7 +68,7 @@ class EditProfileViewModel @Inject constructor(
         } else {
             intolerances.add(intolerance.label)
         }
-        _user.value = _user.value.copy(intolerances =  intolerances)
+        _user.value = _user.value.copy(intolerances = intolerances)
     }
 
     fun onSaveEdit(context: Context) {
@@ -83,7 +82,7 @@ class EditProfileViewModel @Inject constructor(
 
         val address = GeocoderUtil.getAddressByName(_user.value.currentCity, context)
         if (!address.hasLatitude() || !address.hasLongitude()) {
-            showToast( "Address not found, try again", context)
+            showToast("Address not found, try again", context)
             return
         }
 
@@ -100,7 +99,7 @@ class EditProfileViewModel @Inject constructor(
 
             val userResult = usersRepository.update(_user.value)
             if (!userResult) {
-                showToast( "Error on storing user, try again.", context)
+                showToast("Error on storing user, try again.", context)
                 _isLoading.value = false
                 return@launch
             }
@@ -115,6 +114,6 @@ class EditProfileViewModel @Inject constructor(
         val lat = address.latitude
         val lng = address.longitude
 
-        return user.copy(currentCity = location, latitude = lat, longitude =  lng)
+        return user.copy(currentCity = location, latitude = lat, longitude = lng)
     }
 }

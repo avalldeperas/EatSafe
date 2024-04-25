@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,6 +31,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -37,17 +39,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
+import com.google.maps.android.compose.CameraPositionState
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.explore.composables.AverageRatingSection
 import edu.uoc.avalldeperas.eatsafe.explore.composables.ExploreTopBar
 import edu.uoc.avalldeperas.eatsafe.explore.composables.FilterBottomSheet
 import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
-
 
 @Composable
 fun ExploreMapScreen(
@@ -56,38 +59,63 @@ fun ExploreMapScreen(
     exploreViewModel: ExploreViewModel
 ) {
     val places by exploreViewModel.places.collectAsStateWithLifecycle()
+    val user by exploreViewModel.user.collectAsStateWithLifecycle()
+    val currentLocation by exploreViewModel.currentLocation.collectAsStateWithLifecycle()
+    val isLoading by exploreViewModel.isLoading.collectAsStateWithLifecycle()
     var showSheet by remember { mutableStateOf(false) }
+
+    val uiSettings = remember {
+        MapUiSettings(
+            zoomControlsEnabled = false,
+            myLocationButtonEnabled = true
+        )
+    }
+    val cameraPositionState = rememberCameraPositionState {
+        position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
+    }
+
+    LaunchedEffect(currentLocation) {
+        cameraPositionState.position = CameraPosition.fromLatLngZoom(currentLocation, 15f)
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                ExploreTopBar(
-                    toggleView = toggleView,
-                    toggleIcon = Icons.AutoMirrored.Filled.List,
-                    onFilterClick = { showSheet = true }
-                )
-            },
-        ) { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
-            ) {
-                GoogleMapView(
-                    viewModel = exploreViewModel,
-                    places = places,
-                    onInfoWindowClick = toDetailView
-                )
+        if (isLoading) {
+            CenteredCircularProgressIndicator()
+        } else {
+            Scaffold(
+                modifier = Modifier.fillMaxSize(),
+                topBar = {
+                    ExploreTopBar(
+                        toggleView = toggleView,
+                        toggleIcon = Icons.AutoMirrored.Filled.List,
+                        onFilterClick = { showSheet = true },
+                        address = user.currentCity
+                    )
+                },
+            ) { paddingValues ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(paddingValues),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
 
-                if (showSheet) {
-                    FilterBottomSheet { showSheet = false }
+                    GoogleMapView(
+                        viewModel = exploreViewModel,
+                        places = places,
+                        onInfoWindowClick = toDetailView,
+                        cameraPositionState = cameraPositionState,
+                        uiSettings = uiSettings
+                    )
+
+                    if (showSheet) {
+                        FilterBottomSheet { showSheet = false }
+                    }
                 }
             }
         }
@@ -99,18 +127,10 @@ fun ExploreMapScreen(
 fun GoogleMapView(
     viewModel: ExploreViewModel,
     places: List<Place>,
-    onInfoWindowClick: (String) -> Unit
+    onInfoWindowClick: (String) -> Unit,
+    cameraPositionState: CameraPositionState,
+    uiSettings: MapUiSettings
 ) {
-    val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(viewModel.currentLocation, 15f)
-    }
-    val uiSettings = remember {
-        MapUiSettings(
-            zoomControlsEnabled = false,
-            myLocationButtonEnabled = true
-        )
-    }
-
     GoogleMap(
         modifier = Modifier.fillMaxSize(),
         cameraPositionState = cameraPositionState,
@@ -164,7 +184,9 @@ fun InfoWindow(place: Place) {
                         text = place.name,
                         textAlign = TextAlign.Center,
                         fontWeight = FontWeight.Bold,
-                        fontSize = 16.sp
+                        fontSize = 14.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 Row(verticalAlignment = Alignment.CenterVertically) {
@@ -173,7 +195,9 @@ fun InfoWindow(place: Place) {
                     Text(
                         text = place.address,
                         textAlign = TextAlign.Justify,
-                        fontSize = 10.sp
+                        fontSize = 10.sp,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
                 Row {

@@ -2,10 +2,13 @@ package edu.uoc.avalldeperas.eatsafe.explore.composables
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.Icon
@@ -18,7 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FILTER_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_MAP_TOGGLE_ICON
@@ -27,35 +33,47 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_MAP_
 fun ExploreTopBar(
     toggleView: () -> Unit,
     toggleIcon: ImageVector,
-    onFilterClick: () -> Unit
+    onFilterClick: () -> Unit,
+    address: String
 ) {
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier
-            .fillMaxWidth()
-            .border(1.dp, Color.LightGray)
-            .padding(12.dp)
-    ) {
-        TextField(
-            value = "",
-            onValueChange = {},
-            modifier = Modifier.weight(0.7f),
-            placeholder = { Text(text = stringResource(R.string.search_hint)) },
-            leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") }
-        )
-        IconButton(onClick = { toggleView() }, Modifier.weight(0.15f)) {
-            Icon(
-                imageVector = toggleIcon,
-                contentDescription = LIST_MAP_TOGGLE_ICON
+    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, Color.LightGray)
+                .padding(12.dp)
+        ) {
+            TextField(
+                value = "",
+                onValueChange = {},
+                modifier = Modifier.weight(0.7f),
+                placeholder = { Text(text = stringResource(R.string.search_hint), fontSize = 12.sp) },
+                leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") }
             )
-
+            IconButton(onClick = { toggleView() }, Modifier.weight(0.15f)) {
+                Icon(
+                    imageVector = toggleIcon,
+                    contentDescription = LIST_MAP_TOGGLE_ICON
+                )
+            }
+            IconButton(onClick = { onFilterClick() }, modifier = Modifier.weight(0.15f)) {
+                Icon(
+                    imageVector = Icons.Filled.Settings,
+                    contentDescription = FILTER_ICON
+                )
+            }
         }
-        IconButton(onClick = { onFilterClick() }, modifier = Modifier.weight(0.15f)) {
-            Icon(
-                imageVector = Icons.Filled.Settings,
-                contentDescription = FILTER_ICON
-            )
+        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+            Icon(imageVector = Icons.Default.Place, contentDescription = "")
+            Text(text = address, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun ExploreTopBarPreview() {
+    ExploreTopBar({}, Icons.Default.Person, {}, "")
 }

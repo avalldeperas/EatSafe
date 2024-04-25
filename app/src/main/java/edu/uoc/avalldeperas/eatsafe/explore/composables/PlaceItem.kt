@@ -24,6 +24,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_FAVORITES_BUTTON
@@ -34,7 +35,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
-fun PlaceItem(place: Place, onRowClick: (String) -> Unit) {
+fun PlaceItem(place: Place, onRowClick: (String) -> Unit, distance: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,9 +69,11 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit) {
                     text = place.name,
                     Modifier.weight(1f),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 16.sp
+                    fontSize = 16.sp,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
-                Text(text = "${place.distance}m")
+                Text(text = distance)
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -85,7 +88,9 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit) {
                     text = place.address,
                     modifier = Modifier.align(Alignment.CenterVertically),
                     fontSize = 12.sp,
-                    fontStyle = FontStyle.Italic
+                    fontStyle = FontStyle.Italic,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis
                 )
             }
             Row(modifier = Modifier.padding(start = 4.dp)) {

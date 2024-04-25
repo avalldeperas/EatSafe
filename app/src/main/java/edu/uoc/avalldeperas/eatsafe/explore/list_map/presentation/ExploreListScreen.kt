@@ -31,6 +31,7 @@ fun ExploreListScreen(
     exploreViewModel: ExploreViewModel
 ) {
     val places by exploreViewModel.places.collectAsStateWithLifecycle()
+    val user by exploreViewModel.user.collectAsStateWithLifecycle()
     var showSheet by remember { mutableStateOf(false) }
 
     Column(
@@ -44,7 +45,9 @@ fun ExploreListScreen(
                 ExploreTopBar(
                     toggleView = toggleView,
                     toggleIcon = Icons.Filled.Place,
-                    onFilterClick = { showSheet = true })
+                    onFilterClick = { showSheet = true },
+                    address = user.currentCity
+                )
             }
         ) { paddingValues ->
             Box(
@@ -54,7 +57,11 @@ fun ExploreListScreen(
             ) {
                 LazyColumn {
                     items(items = places, key = { place -> place.placeId }) { place ->
-                        PlaceItem(place = place, onRowClick = toDetailView)
+                        PlaceItem(
+                            place = place,
+                            onRowClick = toDetailView,
+                            distance = exploreViewModel.getDistance(place)
+                        )
                     }
                 }
             }

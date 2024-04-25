@@ -61,7 +61,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ALLERGEN_ICON
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
-import edu.uoc.avalldeperas.eatsafe.common.util.DateUtil
+import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
 import edu.uoc.avalldeperas.eatsafe.explore.composables.RatingsSection
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
@@ -184,7 +184,7 @@ fun ReviewItem(review: Review) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
-                Text(text = DateUtil.getParsedDate(review.date))
+                Text(text = StringUtils.getParsedDate(review.date))
             }
             Row() {
                 SafetySection(modifier = Modifier.weight(1f), safety = review.safety)

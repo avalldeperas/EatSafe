@@ -30,7 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
-import edu.uoc.avalldeperas.eatsafe.common.util.DateUtil
+import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.PlaceType
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
 
@@ -92,7 +92,7 @@ fun FavoriteItem(favorite: FavoritePlace, onRowClick: (String) -> Unit) {
                     fontStyle = FontStyle.Italic
                 )
                 Text(
-                    text = DateUtil.getParsedDate(favorite.date),
+                    text = StringUtils.getParsedDate(favorite.date),
                     modifier = Modifier.align(Alignment.CenterVertically),
                     fontSize = 10.sp,
                     fontStyle = FontStyle.Italic
