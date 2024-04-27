@@ -62,6 +62,9 @@ fun ExploreMapScreen(
     val user by exploreViewModel.user.collectAsStateWithLifecycle()
     val currentLocation by exploreViewModel.currentLocation.collectAsStateWithLifecycle()
     val isLoading by exploreViewModel.isLoading.collectAsStateWithLifecycle()
+    val filters by exploreViewModel.filters.collectAsStateWithLifecycle()
+    val isSearching by exploreViewModel.isSearching.collectAsStateWithLifecycle()
+    val searchText by exploreViewModel.searchText.collectAsStateWithLifecycle()
     var showSheet by remember { mutableStateOf(false) }
 
     val uiSettings = remember {
@@ -83,7 +86,7 @@ fun ExploreMapScreen(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        if (isLoading) {
+        if (isLoading || isSearching) {
             CenteredCircularProgressIndicator()
         } else {
             Scaffold(
@@ -93,7 +96,9 @@ fun ExploreMapScreen(
                         toggleView = toggleView,
                         toggleIcon = Icons.AutoMirrored.Filled.List,
                         onFilterClick = { showSheet = true },
-                        address = user.currentCity
+                        address = user.currentCity,
+                        searchText = searchText,
+                        onSearchTextChange = { exploreViewModel.onSearchTextChange(it) }
                     )
                 },
             ) { paddingValues ->
@@ -114,7 +119,12 @@ fun ExploreMapScreen(
                     )
 
                     if (showSheet) {
-                        FilterBottomSheet { showSheet = false }
+                        FilterBottomSheet(
+                            filters = filters,
+                            onDismiss = { showSheet = false },
+                            onIntoleranceClick = { exploreViewModel.updateIntolerance(it) },
+                            onSubmit = { exploreViewModel.submitFilters() }
+                        )
                     }
                 }
             }

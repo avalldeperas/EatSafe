@@ -32,6 +32,8 @@ fun ExploreListScreen(
 ) {
     val places by exploreViewModel.places.collectAsStateWithLifecycle()
     val user by exploreViewModel.user.collectAsStateWithLifecycle()
+    val filters by exploreViewModel.filters.collectAsStateWithLifecycle()
+    val searchText by exploreViewModel.searchText.collectAsStateWithLifecycle()
     var showSheet by remember { mutableStateOf(false) }
 
     Column(
@@ -46,7 +48,9 @@ fun ExploreListScreen(
                     toggleView = toggleView,
                     toggleIcon = Icons.Filled.Place,
                     onFilterClick = { showSheet = true },
-                    address = user.currentCity
+                    address = user.currentCity,
+                    searchText = searchText,
+                    onSearchTextChange = { exploreViewModel.onSearchTextChange(it) }
                 )
             }
         ) { paddingValues ->
@@ -66,7 +70,12 @@ fun ExploreListScreen(
                 }
             }
             if (showSheet) {
-                FilterBottomSheet { showSheet = false }
+                FilterBottomSheet(
+                    filters = filters,
+                    onDismiss = { showSheet = false },
+                    onIntoleranceClick = { exploreViewModel.updateIntolerance(it) },
+                    onSubmit = { exploreViewModel.submitFilters() }
+                )
             }
         }
     }
