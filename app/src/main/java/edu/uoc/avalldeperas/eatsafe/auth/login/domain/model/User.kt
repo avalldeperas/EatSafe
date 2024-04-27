@@ -1,6 +1,7 @@
 package edu.uoc.avalldeperas.eatsafe.auth.login.domain.model
 
 import com.google.firebase.Timestamp
+import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import java.util.Date
 
 data class User(
@@ -13,5 +14,6 @@ data class User(
     val longitude: Double = 0.0,
     val geohash: String = "",
     val dateJoined: Timestamp = Timestamp(Date()),
-    var intolerances: MutableList<String> = mutableListOf()
+    var intolerances: MutableList<String> = mutableListOf(),
+    val reviews: List<Review> = listOf()
 )

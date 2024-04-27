@@ -10,18 +10,19 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -52,7 +53,8 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 @Composable
 fun EditProfileScreen(
     backToProfile: () -> Unit,
-    editProfileViewModel: EditProfileViewModel = hiltViewModel()
+    editProfileViewModel: EditProfileViewModel = hiltViewModel(),
+    onLogout: () -> Unit
 ) {
     val email by editProfileViewModel.email.collectAsStateWithLifecycle()
     val displayName by editProfileViewModel.displayName.collectAsStateWithLifecycle()
@@ -62,7 +64,7 @@ fun EditProfileScreen(
 
     Scaffold(
         topBar = {
-            CenterAlignedTopAppBar(
+            TopAppBar(
                 title = {
                     Text(
                         text = stringResource(R.string.edit_profile_header),
@@ -76,6 +78,15 @@ fun EditProfileScreen(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = EDIT_PROFILE_BACK_ICON,
                             tint = DARK_GREEN
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = { editProfileViewModel.onLogoutClick(onLogout) }) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ExitToApp,
+                            contentDescription = EDIT_PROFILE_BACK_ICON,
+                            tint = MAIN_GREEN
                         )
                     }
                 }
@@ -108,7 +119,7 @@ fun EditProfileScreen(
             ) {
                 Intolerance().intolerances().forEach {
                     AllergyButton(
-                        imageVector = it.icon,
+                        icon = it.icon,
                         text = it.label,
                         onClick = { editProfileViewModel.onAllergyClick(it) },
                         enabled = user.intolerances.contains(it.label)
@@ -185,5 +196,5 @@ fun SectionHeader(modifier: Modifier, text: String) {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun EditProfileScreenPreview() {
-    EditProfileScreen({})
+    EditProfileScreen({}, hiltViewModel(), {})
 }

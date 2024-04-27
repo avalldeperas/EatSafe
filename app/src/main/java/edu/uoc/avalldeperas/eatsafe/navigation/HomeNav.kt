@@ -60,10 +60,11 @@ fun NavGraphBuilder.homeGraph(
 
     composable(route = Screen.Profile.route) {
         ProfileScreen(
-            toEditProfile = { navController.navigate(route = Screen.EditProfile.route) },
-            toLogin = { authNavController.navigate(route = Screen.Login.route) }
+            toEditProfile = { navController.navigate(route = Screen.EditProfile.route) }
         )
     }
+
+
 
     composable(route = Screen.EditProfile.route) {
         EditProfileScreen(
@@ -73,7 +74,8 @@ fun NavGraphBuilder.homeGraph(
                         inclusive = true
                     }
                 }
-            }
+            },
+            onLogout = { authNavController.navigate(route = Screen.Login.route) }
         )
     }
 }

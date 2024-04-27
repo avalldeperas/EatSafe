@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.maps.ktx)
     implementation(libs.accompanist.permissions)
     implementation(libs.geofire.android.common)
+    implementation(libs.androidx.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

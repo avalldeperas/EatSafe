@@ -2,6 +2,7 @@ package edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation
 
 import android.content.Context
 import android.location.Address
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -115,5 +116,14 @@ class EditProfileViewModel @Inject constructor(
         val lng = address.longitude
 
         return user.copy(currentCity = location, latitude = lat, longitude = lng)
+    }
+
+    fun onLogoutClick(toLogin: () -> Unit) {
+        if (!authRepository.signOut()) {
+            Log.d("avb", "onLogoutClick: problem found on logout!")
+            return
+        }
+
+        toLogin()
     }
 }

@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.explore.detail_view.presentation
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,11 +20,9 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -62,7 +61,9 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ALLERGEN_
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
 import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
+import edu.uoc.avalldeperas.eatsafe.explore.composables.AverageRatingSection
 import edu.uoc.avalldeperas.eatsafe.explore.composables.RatingsSection
+import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
@@ -131,11 +132,11 @@ fun DetailViewScreen(
 }
 
 @Composable
-fun AppHorizontalDivider(top: Dp, color: Color = Color.Gray) {
+fun AppHorizontalDivider(top: Dp, bottom: Dp = 0.dp, color: Color = Color.Gray) {
     HorizontalDivider(
         color = color,
         thickness = 1.dp,
-        modifier = Modifier.padding(top = top)
+        modifier = Modifier.padding(top = top, bottom = bottom)
     )
 }
 
@@ -187,13 +188,16 @@ fun ReviewItem(review: Review) {
                 Text(text = StringUtils.getParsedDate(review.date))
             }
             Row() {
-                SafetySection(modifier = Modifier.weight(1f), safety = review.safety)
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = review.rating.toString())
-                    Icon(
-                        imageVector = Icons.Default.Star,
-                        contentDescription = "",
-                        tint = MAIN_GREEN
+                Row {
+                    SafetySectionWithNumber(
+                        modifier = Modifier.weight(0.7f),
+                        averageSafety = review.safety.toDouble(),
+                        fontSize = 12.sp
+                    )
+                    AverageRatingSection(
+                        modifier = Modifier,
+                        averageRating = review.rating.toDouble(),
+                        fontSize = 12.sp
                     )
                 }
             }
@@ -203,11 +207,6 @@ fun ReviewItem(review: Review) {
                 overflow = TextOverflow.Ellipsis,
                 fontSize = 12.sp
             )
-            Row() {
-                repeat(2) {
-                    Icon(imageVector = Icons.Default.Lock, contentDescription = "")
-                }
-            }
         }
     }
     AppHorizontalDivider(top = 0.dp, color = Color.LightGray)
@@ -221,7 +220,7 @@ fun ReviewHeader(toAddReview: (Place) -> Unit, place: Place) {
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Reviews",
+            text = stringResource(R.string.reviews_header),
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
@@ -230,13 +229,15 @@ fun ReviewHeader(toAddReview: (Place) -> Unit, place: Place) {
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White,
                 contentColor = MAIN_GREEN
-            )
+            ),
+            border = BorderStroke(0.5.dp, MAIN_GREEN)
         ) {
             Icon(imageVector = Icons.Filled.Edit, contentDescription = "", tint = MAIN_GREEN)
+            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
             Text(
-                text = "Add a Review",
+                text = stringResource(R.string.add_a_review),
                 fontWeight = FontWeight.Bold,
-                fontSize = 16.sp
+                fontSize = 12.sp
             )
         }
     }
@@ -256,7 +257,7 @@ fun DetailAbout(modifier: Modifier, place: Place) {
             fontSize = 20.sp
         )
         InfoElement(imageVector = Icons.Filled.Phone, text = place.telephone)
-        InfoElement(imageVector = Icons.Filled.Info, text = place.website)
+        InfoElement(imageVector = Icons.Filled.Link, text = place.website)
         InfoElement(
             imageVector = Icons.Filled.LocationOn,
             text = place.address
@@ -272,7 +273,7 @@ fun InfoElement(imageVector: ImageVector, text: String) {
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Icon(imageVector = imageVector, contentDescription = "", tint = MAIN_GREEN)
-        Text(text = text, fontSize = 16.sp)
+        Text(text = text, fontSize = 12.sp)
     }
 }
 
@@ -314,13 +315,13 @@ fun AllergensHeader(place: Place) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 24.dp),
+            .padding(start = 28.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(text = "Allergens: ", fontSize = 16.sp, fontWeight = FontWeight.Bold)
         if (place.allergens.isEmpty()) {
-            Text(text = "Does not control any allergens yet.")
+            Text(text = stringResource(R.string.no_allergens_yet))
         } else {
             place.allergens.forEach {
                 Icon(

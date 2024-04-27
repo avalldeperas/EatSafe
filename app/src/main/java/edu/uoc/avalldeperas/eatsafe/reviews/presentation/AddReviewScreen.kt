@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.reviews.presentation
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -95,14 +96,14 @@ fun AddReviewScreen(
             }
             RatingButtonsRow(
                 onClick = { addReviewViewModel.updateSafety(it + 1) },
-                stringResource = R.string.safety_label,
                 value = review.safety,
+                stringResource = R.string.safety_label,
                 imageVector = Icons.Default.CheckCircle
             )
             RatingButtonsRow(
                 onClick = { addReviewViewModel.updateRating(it + 1) },
-                stringResource = R.string.rating_label,
                 value = review.rating,
+                stringResource = R.string.rating_label,
                 imageVector = Icons.Default.Star
             )
             Column(
@@ -153,7 +154,7 @@ fun AddReviewScreen(
 fun RatingButtonsRow(
     onClick: (Int) -> Unit,
     value: Int,
-    stringResource: Int,
+    @StringRes stringResource: Int,
     imageVector: ImageVector
 ) {
     Row(

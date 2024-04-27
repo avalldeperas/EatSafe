@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.common.composables
 
+import androidx.annotation.StringRes
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
@@ -12,7 +13,7 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimpleTopAppBar(
-    header: Int,
+    @StringRes header: Int,
     color: Color = DARK_GREEN,
     fontWeight: FontWeight = FontWeight.Bold
 ) {

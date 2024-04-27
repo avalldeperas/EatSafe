@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Place
+import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -46,7 +46,7 @@ fun ExploreListScreen(
             topBar = {
                 ExploreTopBar(
                     toggleView = toggleView,
-                    toggleIcon = Icons.Filled.Place,
+                    toggleIcon = Icons.Outlined.Map,
                     onFilterClick = { showSheet = true },
                     address = user.currentCity,
                     searchText = searchText,

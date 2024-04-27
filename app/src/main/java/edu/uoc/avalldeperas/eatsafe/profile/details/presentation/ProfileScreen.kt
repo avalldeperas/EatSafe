@@ -1,22 +1,23 @@
 package edu.uoc.avalldeperas.eatsafe.profile.details.presentation
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -38,23 +39,30 @@ import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PROFILE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
+import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
+import edu.uoc.avalldeperas.eatsafe.explore.composables.AverageRatingSection
+import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
+import edu.uoc.avalldeperas.eatsafe.explore.detail_view.presentation.AppHorizontalDivider
 import edu.uoc.avalldeperas.eatsafe.profile.composables.AllergyButton
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
+import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.LIGHT_GREEN
-import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 import java.time.ZoneId
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ProfileScreen(
     toEditProfile: () -> Unit,
-    toLogin: () -> Unit,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
     val user by profileViewModel.user.collectAsStateWithLifecycle()
+    val reviews by profileViewModel.reviews.collectAsStateWithLifecycle()
 
-    Column(Modifier.fillMaxSize()) {
+    Column(
+        Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -66,33 +74,103 @@ fun ProfileScreen(
             modifier = Modifier.fillMaxSize(),
         ) {
             Column(Modifier.padding(16.dp)) {
+                IntolerancesSection(user = user)
+                Spacer(modifier = Modifier.padding(vertical = 12.dp))
+                ReviewsSection(reviews = reviews)
+            }
+        }
+    }
+}
+
+@Composable
+fun ReviewsSection(reviews: List<Review>) {
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = stringResource(R.string.my_reviews_header),
+            fontWeight = FontWeight.Bold,
+            fontSize = 20.sp
+        )
+        Spacer(modifier = Modifier.padding(8.dp))
+        if (reviews.isEmpty()) {
+            EmptyListMessage(R.string.no_reviews_yet)
+        } else {
+            reviews.forEach {
+                MyReviewItem(it)
+            }
+        }
+    }
+}
+
+@Composable
+fun MyReviewItem(review: Review) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(end = 8.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+    ) {
+        Column {
+            Image(
+                painter = painterResource(id = R.drawable.restaurant_detail),
+                contentDescription = "",
+                Modifier.size(70.dp)
+            )
+        }
+        Column(
+            modifier = Modifier.padding(4.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            Row() {
                 Text(
-                    text = stringResource(R.string.intolerances),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold
+                    text = review.placeName,
+                    Modifier.weight(1f),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 16.sp
                 )
-                FlowRow(Modifier.fillMaxWidth()) {
-                    Intolerance().intolerances().forEach {
-                        AllergyButton(
-                            imageVector = it.icon,
-                            text = it.label,
-                            enabled = user.intolerances.contains(it.label)
-                        )
-                    }
+                Text(text = StringUtils.getParsedDate(review.date), fontSize = 12.sp)
+            }
+            Row() {
+                Row {
+                    SafetySectionWithNumber(
+                        modifier = Modifier.weight(0.7f),
+                        averageSafety = review.safety.toDouble(),
+                        fontSize = 12.sp
+                    )
+                    AverageRatingSection(
+                        modifier = Modifier,
+                        averageRating = review.rating.toDouble(),
+                        fontSize = 12.sp
+                    )
                 }
             }
-            Button(
-                onClick = { profileViewModel.onLogoutClick(toLogin) },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.White, contentColor = MAIN_GREEN
-                ),
-                border = BorderStroke(1.dp, MAIN_GREEN)
-            ) {
-                Text(text = stringResource(R.string.logout_button), fontSize = 16.sp)
-            }
+            Text(
+                text = review.description,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+                fontSize = 12.sp
+            )
+        }
+    }
+    AppHorizontalDivider(top = 4.dp, bottom = 4.dp, color = Color.LightGray)
+}
+
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+fun IntolerancesSection(user: User) {
+    Text(
+        text = stringResource(R.string.intolerances),
+        fontSize = 20.sp,
+        fontWeight = FontWeight.Bold
+    )
+    Spacer(modifier = Modifier.padding(4.dp))
+    FlowRow(Modifier.fillMaxWidth()) {
+        Intolerance().intolerances().forEach {
+            AllergyButton(
+                icon = it.icon,
+                text = it.label,
+                enabled = user.intolerances.contains(it.label)
+            )
         }
     }
 }
@@ -119,9 +197,11 @@ fun ProfileHeader(displayName: String, user: User, onEditClick: () -> Unit) {
                     .size(70.dp)
                     .padding()
             )
-            Column(modifier = Modifier
-                .weight(1f)
-                .padding(8.dp)) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(8.dp)
+            ) {
                 Text(
                     text = "Hello $displayName!",
                     color = DARK_GREEN,
