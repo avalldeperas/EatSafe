@@ -1,26 +1,23 @@
 package edu.uoc.avalldeperas.eatsafe.profile.details.domain.model
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
-import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.annotation.DrawableRes
+import edu.uoc.avalldeperas.eatsafe.R
 
 data class Intolerance(
     val label: String = "",
-    val icon: ImageVector = Icons.Filled.Info,
+    @DrawableRes val icon:  Int = R.drawable.gluten,
     var enabled: Boolean = false,
 ) {
     fun intolerances(): List<Intolerance> {
         return listOf(
             Intolerance(
                 label = "Gluten",
-                icon = Icons.Filled.Search,
+                icon = R.drawable.gluten,
                 enabled = false
             ),
             Intolerance(
                 label = "Lactose",
-                icon = Icons.Filled.Favorite,
+                icon = R.drawable.lactose,
                 enabled = false
             )
         )

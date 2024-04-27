@@ -12,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.automirrored.outlined.ViewList
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
@@ -94,7 +94,7 @@ fun ExploreMapScreen(
                 topBar = {
                     ExploreTopBar(
                         toggleView = toggleView,
-                        toggleIcon = Icons.AutoMirrored.Filled.List,
+                        toggleIcon = Icons.AutoMirrored.Outlined.ViewList,
                         onFilterClick = { showSheet = true },
                         address = user.currentCity,
                         searchText = searchText,

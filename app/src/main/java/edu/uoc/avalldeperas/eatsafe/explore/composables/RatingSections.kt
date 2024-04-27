@@ -28,6 +28,7 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
 fun SafetySectionWithNumber(modifier: Modifier, averageSafety: Double, fontSize: TextUnit = 16.sp) {
+    val isInt = averageSafety.rem(1) == (0.0)
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -38,7 +39,10 @@ fun SafetySectionWithNumber(modifier: Modifier, averageSafety: Double, fontSize:
             fontSize = fontSize,
             fontWeight = FontWeight.Bold
         )
-        Text(text = averageSafety.toString(), fontSize = fontSize)
+        Text(
+            text = if (isInt) averageSafety.toInt().toString() else averageSafety.toString(),
+            fontSize = fontSize
+        )
         Icon(
             imageVector = Icons.Default.CheckCircle,
             contentDescription = SAFETY_SECTION_CHECK_ICON,
@@ -103,11 +107,15 @@ fun AverageRatingSection(
     averageRating: Double,
     fontSize: TextUnit = 16.sp
 ) {
+    val isInt = averageRating.rem(1) == (0.0)
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(text = averageRating.toString(), fontSize = fontSize)
+        Text(
+            text = if (isInt) averageRating.toInt().toString() else averageRating.toString(),
+            fontSize = fontSize
+        )
         Icon(
             imageVector = Icons.Default.Star,
             contentDescription = AVERAGE_RATING_SECTION_STAR_ICON,

@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.explore.composables
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -8,10 +9,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Map
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.outlined.FilterAlt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_MAP_TOGGLE_ICON
+import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
 fun ExploreTopBar(
@@ -38,7 +40,12 @@ fun ExploreTopBar(
     searchText: String,
     onSearchTextChange: (String) -> Unit
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(Color.White)
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -59,10 +66,15 @@ fun ExploreTopBar(
                         fontSize = 12.sp
                     )
                 },
-                leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") },
+                leadingIcon = {
+                    Icon(imageVector = Icons.Default.Search, contentDescription = "")
+                },
                 trailingIcon = {
                     IconButton(onClick = { onFilterClick() }) {
-                        Icon(imageVector = Icons.Default.Settings, contentDescription = "")
+                        Icon(
+                            imageVector = Icons.Outlined.FilterAlt,
+                            contentDescription = ""
+                        )
                     }
                 },
                 maxLines = 1
@@ -70,7 +82,8 @@ fun ExploreTopBar(
             IconButton(onClick = { toggleView() }) {
                 Icon(
                     imageVector = toggleIcon,
-                    contentDescription = LIST_MAP_TOGGLE_ICON
+                    contentDescription = LIST_MAP_TOGGLE_ICON,
+                    tint = MAIN_GREEN
                 )
             }
         }
@@ -79,7 +92,7 @@ fun ExploreTopBar(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
-            Icon(imageVector = Icons.Default.Place, contentDescription = "")
+            Icon(imageVector = Icons.Default.Place, contentDescription = "", tint = MAIN_GREEN)
             Text(text = address, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
     }
@@ -88,5 +101,5 @@ fun ExploreTopBar(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ExploreTopBarPreview() {
-    ExploreTopBar({}, Icons.Default.Person, {}, "", "", {})
+    ExploreTopBar({}, Icons.Default.Map, {}, "", "", {})
 }

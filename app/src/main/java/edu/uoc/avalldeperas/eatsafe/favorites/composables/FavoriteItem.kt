@@ -33,6 +33,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.PlaceType
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
+import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable
 fun FavoriteItem(favorite: FavoritePlace, onRowClick: (String) -> Unit) {
@@ -105,7 +106,8 @@ fun FavoriteItem(favorite: FavoritePlace, onRowClick: (String) -> Unit) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Place,
-                    contentDescription = ContentDescriptionConstants.FAV_FAVORITES_BUTTON + favorite.placeId
+                    contentDescription = ContentDescriptionConstants.FAV_FAVORITES_BUTTON + favorite.placeId,
+                    tint = MAIN_GREEN
                 )
                 Text(
                     text = favorite.address,

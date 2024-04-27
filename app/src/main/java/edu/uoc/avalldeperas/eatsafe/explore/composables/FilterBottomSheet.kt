@@ -58,7 +58,7 @@ fun FilterBottomSheet(
                 FlowRow(modifier = Modifier.fillMaxWidth()) {
                     Intolerance().intolerances().forEach {
                         AllergyButton(
-                            imageVector = it.icon,
+                            icon = it.icon,
                             text = it.label,
                             enabled = filters.intolerances.contains(it.label),
                             onClick = { onIntoleranceClick(it.label) }
