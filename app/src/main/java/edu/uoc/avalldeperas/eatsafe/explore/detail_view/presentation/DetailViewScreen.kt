@@ -78,6 +78,7 @@ fun DetailViewScreen(
     val place by detailViewModel.place.collectAsStateWithLifecycle()
     val isLoading by detailViewModel.isLoading.collectAsStateWithLifecycle()
     val isUserFav by detailViewModel.userFav.collectAsStateWithLifecycle()
+    val isUserReviewed by detailViewModel.isUserReviewed.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
@@ -125,7 +126,12 @@ fun DetailViewScreen(
                 AppHorizontalDivider(top = 16.dp)
                 DetailAbout(modifier = Modifier, place = place)
                 AppHorizontalDivider(top = 16.dp)
-                DetailReviews(modifier = Modifier, toAddReview = toAddReview, place = place)
+                DetailReviews(
+                    modifier = Modifier,
+                    toAddReview = toAddReview,
+                    place = place,
+                    showAddReviewBtn = !isUserReviewed
+                )
             }
         }
     }
@@ -141,14 +147,19 @@ fun AppHorizontalDivider(top: Dp, bottom: Dp = 0.dp, color: Color = Color.Gray) 
 }
 
 @Composable
-fun DetailReviews(modifier: Modifier, toAddReview: (Place) -> Unit, place: Place) {
+fun DetailReviews(
+    modifier: Modifier,
+    toAddReview: (Place) -> Unit,
+    place: Place,
+    showAddReviewBtn: Boolean
+) {
     Column(
         modifier = modifier
             .fillMaxWidth()
             .padding(start = 24.dp, end = 8.dp, top = 16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        ReviewHeader(toAddReview = toAddReview, place)
+        ReviewHeader(toAddReview = toAddReview, place = place, showButton = showAddReviewBtn)
         if (place.reviews.isEmpty()) {
             EmptyListMessage(R.string.no_reviews_yet)
         } else {
@@ -185,7 +196,7 @@ fun ReviewItem(review: Review) {
                     fontWeight = FontWeight.Bold,
                     fontSize = 16.sp
                 )
-                Text(text = StringUtils.getParsedDate(review.date))
+                Text(text = StringUtils.getParsedDate(review.date), fontSize = 12.sp)
             }
             Row() {
                 Row {
@@ -213,7 +224,7 @@ fun ReviewItem(review: Review) {
 }
 
 @Composable
-fun ReviewHeader(toAddReview: (Place) -> Unit, place: Place) {
+fun ReviewHeader(toAddReview: (Place) -> Unit, place: Place, showButton: Boolean = true) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
@@ -224,21 +235,23 @@ fun ReviewHeader(toAddReview: (Place) -> Unit, place: Place) {
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
-        Button(
-            onClick = { toAddReview(place) },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White,
-                contentColor = MAIN_GREEN
-            ),
-            border = BorderStroke(0.5.dp, MAIN_GREEN)
-        ) {
-            Icon(imageVector = Icons.Filled.Edit, contentDescription = "", tint = MAIN_GREEN)
-            Spacer(modifier = Modifier.padding(horizontal = 4.dp))
-            Text(
-                text = stringResource(R.string.add_a_review),
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp
-            )
+        if (showButton) {
+            Button(
+                onClick = { toAddReview(place) },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = Color.White,
+                    contentColor = MAIN_GREEN
+                ),
+                border = BorderStroke(0.5.dp, MAIN_GREEN)
+            ) {
+                Icon(imageVector = Icons.Filled.Edit, contentDescription = "", tint = MAIN_GREEN)
+                Spacer(modifier = Modifier.padding(horizontal = 4.dp))
+                Text(
+                    text = stringResource(R.string.add_review_header),
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 12.sp
+                )
+            }
         }
     }
 }
@@ -278,7 +291,12 @@ fun InfoElement(imageVector: ImageVector, text: String) {
 }
 
 @Composable
-fun DetailHeader(onFavClick: () -> Unit, paddingValues: PaddingValues, place: Place, isFav: Boolean) {
+fun DetailHeader(
+    onFavClick: () -> Unit,
+    paddingValues: PaddingValues,
+    place: Place,
+    isFav: Boolean
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -372,5 +390,5 @@ fun ReviewItemPreview() {
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun DetailReviewsPreview() {
-    DetailReviews(Modifier, {}, Place(reviews = listOf(Review("test"))))
+    DetailReviews(Modifier, {}, Place(reviews = listOf(Review("test"))), showAddReviewBtn = false)
 }

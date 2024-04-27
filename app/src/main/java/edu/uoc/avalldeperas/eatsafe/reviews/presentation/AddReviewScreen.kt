@@ -133,7 +133,7 @@ fun AddReviewScreen(
                     CenteredCircularProgressIndicator()
                 } else {
                     Button(
-                        onClick = { addReviewViewModel.onSubmit(context) },
+                        onClick = { addReviewViewModel.onSubmit(context, backToDetail) },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
