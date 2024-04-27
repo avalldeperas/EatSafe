@@ -26,4 +26,15 @@ data class Place(
     val reviews: List<Review> = mutableListOf(),
     @get:Exclude
     val favorited: List<FavoritePlace> = mutableListOf()
-)
+)  {
+    fun doesMatchSearchQuery(query: String): Boolean {
+        val matchingCombinations = listOf(
+            "$name$address$cuisine${type.displayName}",
+            "$name $address $cuisine ${type.displayName}"
+        )
+
+        return matchingCombinations.any {
+            it.contains(query, ignoreCase = true)
+        }
+    }
+}

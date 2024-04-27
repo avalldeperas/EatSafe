@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Place
@@ -26,7 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.R
-import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FILTER_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_MAP_TOGGLE_ICON
 
 @Composable
@@ -34,7 +34,9 @@ fun ExploreTopBar(
     toggleView: () -> Unit,
     toggleIcon: ImageVector,
     onFilterClick: () -> Unit,
-    address: String
+    address: String,
+    searchText: String,
+    onSearchTextChange: (String) -> Unit
 ) {
     Column(horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxWidth()) {
         Row(
@@ -45,27 +47,38 @@ fun ExploreTopBar(
                 .border(1.dp, Color.LightGray)
                 .padding(12.dp)
         ) {
+
             TextField(
-                value = "",
-                onValueChange = {},
-                modifier = Modifier.weight(0.7f),
-                placeholder = { Text(text = stringResource(R.string.search_hint), fontSize = 12.sp) },
-                leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") }
+                value = searchText,
+                onValueChange = { onSearchTextChange(it) },
+                modifier = Modifier.weight(0.8f),
+                shape = RoundedCornerShape(80.dp),
+                placeholder = {
+                    Text(
+                        text = stringResource(R.string.search_hint),
+                        fontSize = 12.sp
+                    )
+                },
+                leadingIcon = { Icon(imageVector = Icons.Default.Search, contentDescription = "") },
+                trailingIcon = {
+                    IconButton(onClick = { onFilterClick() }) {
+                        Icon(imageVector = Icons.Default.Settings, contentDescription = "")
+                    }
+                },
+                maxLines = 1
             )
-            IconButton(onClick = { toggleView() }, Modifier.weight(0.15f)) {
+            IconButton(onClick = { toggleView() }) {
                 Icon(
                     imageVector = toggleIcon,
                     contentDescription = LIST_MAP_TOGGLE_ICON
                 )
             }
-            IconButton(onClick = { onFilterClick() }, modifier = Modifier.weight(0.15f)) {
-                Icon(
-                    imageVector = Icons.Filled.Settings,
-                    contentDescription = FILTER_ICON
-                )
-            }
         }
-        Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Row(
+            Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
             Icon(imageVector = Icons.Default.Place, contentDescription = "")
             Text(text = address, fontSize = 12.sp, maxLines = 1, overflow = TextOverflow.Ellipsis)
         }
@@ -75,5 +88,5 @@ fun ExploreTopBar(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ExploreTopBarPreview() {
-    ExploreTopBar({}, Icons.Default.Person, {}, "")
+    ExploreTopBar({}, Icons.Default.Person, {}, "", "", {})
 }

@@ -22,6 +22,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Filters
 import edu.uoc.avalldeperas.eatsafe.profile.composables.AllergyButton
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
 import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.SectionHeader
@@ -29,7 +30,12 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun FilterBottomSheet(onDismiss: () -> Unit) {
+fun FilterBottomSheet(
+    filters: Filters,
+    onDismiss: () -> Unit,
+    onIntoleranceClick: (String) -> Unit,
+    onSubmit: () -> Unit
+) {
     val modalBottomSheetState = rememberModalBottomSheetState()
 
     ModalBottomSheet(
@@ -51,14 +57,19 @@ fun FilterBottomSheet(onDismiss: () -> Unit) {
                 )
                 FlowRow(modifier = Modifier.fillMaxWidth()) {
                     Intolerance().intolerances().forEach {
-                        AllergyButton(imageVector = it.icon, text = it.label)
+                        AllergyButton(
+                            imageVector = it.icon,
+                            text = it.label,
+                            enabled = filters.intolerances.contains(it.label),
+                            onClick = { onIntoleranceClick(it.label) }
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.padding(vertical = 8.dp))
             }
             item {
                 Button(
-                    onClick = {},
+                    onClick = { onSubmit() },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp),
