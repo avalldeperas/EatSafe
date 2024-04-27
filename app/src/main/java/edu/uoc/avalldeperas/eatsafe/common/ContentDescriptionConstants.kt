@@ -14,6 +14,7 @@ object ContentDescriptionConstants {
     const val FORGOT_BACK = "forgot-back"
     const val PROFILE_IMAGE = "profile-image"
     const val USER_LOCATION_TEXT_FIELD = "user-location-text-field"
+    const val SHOW_PASSWORD_ICON_FIELD = "show-password-icon-field"
 
     // Explore
     const val LIST_MAP_TOGGLE_ICON = "list-map-toggle-icon"

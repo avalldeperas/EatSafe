@@ -12,10 +12,12 @@ import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 import edu.uoc.avalldeperas.eatsafe.auth.register.data.UsersRepository
 import edu.uoc.avalldeperas.eatsafe.auth.register.domain.model.RegisterInputValidationType
 import edu.uoc.avalldeperas.eatsafe.auth.register.domain.use_cases.ValidateRegisterInputUseCase
+import edu.uoc.avalldeperas.eatsafe.auth.register.presentation.state.RegisterState
 import edu.uoc.avalldeperas.eatsafe.common.util.GeocoderUtil
 import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil.showToast
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -26,47 +28,53 @@ class RegisterViewModel @Inject constructor(
     private val validateRegisterInputUseCase: ValidateRegisterInputUseCase
 ) : ViewModel() {
 
-    private val _email = MutableStateFlow("")
-    val email = _email.asStateFlow()
-
-    private val _password = MutableStateFlow("")
-    val password = _password.asStateFlow()
-
-    private val _confirmPassword = MutableStateFlow("")
-    val confirmPassword = _confirmPassword.asStateFlow()
-
-    private val _username = MutableStateFlow("")
-
-    private val _currentCity = MutableStateFlow("")
-    val currentCity = _currentCity.asStateFlow()
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _registerState = MutableStateFlow(RegisterState())
+    val registerState = _registerState.asStateFlow()
 
     fun updateEmail(newEmail: String) {
-        _email.value = newEmail
-        _username.value = newEmail.split("@")[0]
+        val username = newEmail.split("@")[0]
+        _registerState.update { currentState ->
+            currentState.copy(
+                email = newEmail,
+                username = username
+            )
+        }
     }
 
     fun updatePassword(newPassword: String) {
-        _password.value = newPassword
+        _registerState.update { currentState -> currentState.copy(password = newPassword) }
     }
 
-    fun updateConfirmPassword(newPassword: String) {
-        _confirmPassword.value = newPassword
+    fun updateConfirmPassword(newConfirmPassword: String) {
+        _registerState.update {
+            currentState -> currentState.copy(confirmPassword = newConfirmPassword)
+        }
+
     }
 
     fun updateCurrentCity(currentCity: String) {
-        _currentCity.value = currentCity
+        _registerState.update { currentState -> currentState.copy(currentCity = currentCity) }
+    }
+
+    fun onToggleVisualTransformationPassword() {
+        _registerState.update {
+            currentState -> currentState.copy(isPasswordShown = !currentState.isPasswordShown)
+        }
+    }
+
+    fun onToggleVisualTransformationConfirmPasswd() {
+        _registerState.update {
+            currentState -> currentState.copy(isConfirmPasswordShown = !currentState.isConfirmPasswordShown)
+        }
     }
 
     fun onRegisterClick(navigateToExplore: () -> Unit, context: Context) {
         val validationResult =
             validateRegisterInputUseCase(
-                _email.value,
-                _password.value,
-                _confirmPassword.value,
-                _currentCity.value
+                _registerState.value.email,
+                _registerState.value.password,
+                _registerState.value.confirmPassword,
+                _registerState.value.currentCity
             )
 
         if (validationResult != RegisterInputValidationType.Valid) {
@@ -74,19 +82,20 @@ class RegisterViewModel @Inject constructor(
             return
         }
 
-        val address = GeocoderUtil.getAddressByName(_currentCity.value, context)
+        val address = GeocoderUtil.getAddressByName(_registerState.value.currentCity, context)
         if (!address.hasLatitude() || !address.hasLongitude()) {
             showToast("Address not found, try again", context)
             return
         }
 
         viewModelScope.launch {
-            _isLoading.value = true
+            _registerState.update { currentState -> currentState.copy(isLoading = true) }
 
-            val uid = authRepository.signUp(_email.value, _password.value)
+            val uid =
+                authRepository.signUp(_registerState.value.email, _registerState.value.password)
             if (uid.isEmpty()) {
                 showToast("Error on creating user, please try again", context)
-                _isLoading.value = false
+                _registerState.update { currentState -> currentState.copy(isLoading = false) }
                 return@launch
             }
 
@@ -94,11 +103,11 @@ class RegisterViewModel @Inject constructor(
             val result = usersRepository.save(user)
             if (!result) {
                 showToast("Error on storing user, please try again", context)
-                _isLoading.value = false
+                _registerState.update { currentState -> currentState.copy(isLoading = false) }
                 return@launch
             }
             navigateToExplore()
-            _isLoading.value = false
+            _registerState.update { currentState -> currentState.copy(isLoading = false) }
         }
     }
 
@@ -110,8 +119,8 @@ class RegisterViewModel @Inject constructor(
 
         return User(
             uid = uid,
-            email = _email.value,
-            username = _username.value,
+            email = _registerState.value.email,
+            username = _registerState.value.username,
             currentCity = location,
             latitude = lat,
             longitude = lng,

@@ -12,6 +12,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -48,11 +50,8 @@ fun RegisterScreen(
     toExplore: () -> Unit,
     registerViewModel: RegisterViewModel = hiltViewModel()
 ) {
-    val email by registerViewModel.email.collectAsStateWithLifecycle()
-    val password by registerViewModel.password.collectAsStateWithLifecycle()
-    val confirmPassword by registerViewModel.confirmPassword.collectAsStateWithLifecycle()
-    val currentCity by registerViewModel.currentCity.collectAsStateWithLifecycle()
-    val isLoading by registerViewModel.isLoading.collectAsStateWithLifecycle()
+
+    val registerState by registerViewModel.registerState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Column(
@@ -73,7 +72,7 @@ fun RegisterScreen(
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
         AppTextField(
-            value = email,
+            value = registerState.email,
             onValueChange = { registerViewModel.updateEmail(it) },
             leadingIcon = Icons.Filled.Email,
             contentDescription = EMAIL_TEXT_FIELD,
@@ -81,32 +80,38 @@ fun RegisterScreen(
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         AppTextField(
-            value = password,
+            value = registerState.password,
             onValueChange = { registerViewModel.updatePassword(it) },
             leadingIcon = Icons.Filled.Lock,
             contentDescription = PASSWORD_TEXT_FIELD,
             label = R.string.password,
-            visualTransformation = PasswordVisualTransformation()
+            trailingIcon = Icons.Default.RemoveRedEye,
+            onTrailingIconClick = { registerViewModel.onToggleVisualTransformationPassword() },
+            visualTransformation = if (registerState.isPasswordShown) VisualTransformation.None
+            else PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         AppTextField(
-            value = confirmPassword,
+            value = registerState.confirmPassword,
             onValueChange = { registerViewModel.updateConfirmPassword(it) },
             leadingIcon = Icons.Filled.Lock,
             contentDescription = CONFIRM_PASSWORD_TEXT_FIELD,
             label = R.string.confirm_password,
-            visualTransformation = PasswordVisualTransformation()
+            trailingIcon = Icons.Default.RemoveRedEye,
+            onTrailingIconClick = { registerViewModel.onToggleVisualTransformationConfirmPasswd() },
+            visualTransformation = if (registerState.isConfirmPasswordShown) VisualTransformation.None
+            else PasswordVisualTransformation()
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         AppTextField(
-            value = currentCity,
+            value = registerState.currentCity,
             onValueChange = { registerViewModel.updateCurrentCity(it) },
             leadingIcon = Icons.Filled.LocationOn,
             contentDescription = CURRENT_CITY_TEXT_FIELD,
             label = R.string.current_city
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
-        if (isLoading) {
+        if (registerState.isLoading) {
             CircularProgressIndicator()
         } else {
             Button(
@@ -123,7 +128,8 @@ fun RegisterScreen(
         }
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         AuthFooterText(
-            textRes = R.string.already_account,
+            firstText = R.string.already_account,
+            secondText = R.string.log_in,
             onClick = { toLogin() },
             contentDescription = LOGIN_LINK
         )

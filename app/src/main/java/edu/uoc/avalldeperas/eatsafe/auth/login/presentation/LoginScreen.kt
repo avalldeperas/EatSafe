@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.RemoveRedEye
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -28,6 +29,7 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,9 +52,7 @@ fun LoginScreen(
     toRegister: () -> Unit,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    val email by loginViewModel.email.collectAsStateWithLifecycle()
-    val password by loginViewModel.password.collectAsStateWithLifecycle()
-    val isLoading by loginViewModel.isLoading.collectAsStateWithLifecycle()
+    val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Column(
@@ -73,20 +73,23 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
         AppTextField(
-            value = email,
-            onValueChange = { loginViewModel.updateEmail(it) },
+            value = loginState.email,
+            onValueChange = loginViewModel::updateEmail,
             leadingIcon = Icons.Filled.Email,
             contentDescription = EMAIL_TEXT_FIELD,
             label = R.string.email
         )
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         AppTextField(
-            value = password,
-            onValueChange = { loginViewModel.updatePassword(it) },
+            value = loginState.password,
+            onValueChange = loginViewModel::updatePassword,
             leadingIcon = Icons.Filled.Lock,
             contentDescription = PASSWORD_TEXT_FIELD,
             label = R.string.password,
-            visualTransformation = PasswordVisualTransformation(),
+            visualTransformation = if (loginState.isPasswordShown) VisualTransformation.None
+            else PasswordVisualTransformation(),
+            trailingIcon = Icons.Default.RemoveRedEye,
+            onTrailingIconClick = loginViewModel::onToggleVisualTransformationPassword
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Text(
@@ -101,7 +104,7 @@ fun LoginScreen(
             fontSize = 16.sp
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
-        if (isLoading) {
+        if (loginState.isLoading) {
             CircularProgressIndicator()
         } else {
             Button(
@@ -114,12 +117,13 @@ fun LoginScreen(
                     contentColor = Color.White
                 ),
             ) {
-                Text(text = stringResource(R.string.login_button), fontSize = 16.sp)
+                Text(text = stringResource(R.string.log_in), fontSize = 16.sp)
             }
         }
         Spacer(modifier = Modifier.padding(vertical = 16.dp))
         AuthFooterText(
-            textRes = R.string.no_account_yet,
+            firstText = R.string.no_account_yet,
+            secondText = R.string.sign_up,
             onClick = { toRegister() },
             contentDescription = REGISTER_LINK
         )
