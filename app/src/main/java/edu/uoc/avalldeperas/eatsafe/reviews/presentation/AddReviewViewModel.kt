@@ -55,7 +55,7 @@ class AddReviewViewModel @Inject constructor(
         _review.update { it.copy(description = description) }
     }
 
-    fun onSubmit(context: Context) {
+    fun onSubmit(context: Context, backToDetail: () -> Unit) {
         _isLoading.update { true }
         val result = validateAddReviewInputUseCase(review = _review.value)
 
@@ -72,6 +72,7 @@ class AddReviewViewModel @Inject constructor(
                 showToast(resource = R.string.error_save_review, context = context)
                 return@launch
             }
+            backToDetail()
             showToast(resource = R.string.review_saved_successfully, context = context)
         }
     }

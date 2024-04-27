@@ -35,10 +35,13 @@ class DetailViewModel @Inject constructor(
     private val _place = MutableStateFlow(Place())
     val place = _place.asStateFlow()
 
-    private lateinit var userId: String
+    lateinit var userId: String
 
     private val _userFav: MutableStateFlow<FavoritePlace?> = MutableStateFlow(null)
     val userFav = _userFav.asStateFlow()
+
+    private val _isUserReviewed = MutableStateFlow(false)
+    val isUserReviewed = _isUserReviewed.asStateFlow()
 
     private val _isLoading = MutableStateFlow(false)
     val isLoading = _isLoading.asStateFlow()
@@ -57,6 +60,7 @@ class DetailViewModel @Inject constructor(
             launch {
                 reviewsRepository.getReviewsByPlace(placeId).collectLatest { reviews ->
                     _place.value = _place.value.copy(reviews = reviews)
+                    _isUserReviewed.update { reviews.map { it.userId }.contains(userId) }
                 }
             }
 
