@@ -43,7 +43,7 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 fun ForgotPasswordScreen(
     navigateBack: () -> Unit, forgotPasswordViewModel: ForgotPasswordViewModel = hiltViewModel()
 ) {
-    val email by forgotPasswordViewModel.email.collectAsStateWithLifecycle()
+    val forgotState by forgotPasswordViewModel.forgotState.collectAsStateWithLifecycle()
     val context = LocalContext.current
 
     Scaffold { paddingValues ->
@@ -86,7 +86,7 @@ fun ForgotPasswordScreen(
             )
             Spacer(modifier = Modifier.padding(vertical = 24.dp))
             AppTextField(
-                value = email,
+                value = forgotState.email,
                 onValueChange = { forgotPasswordViewModel.updateEmail(it) },
                 leadingIcon = Icons.Filled.Email,
                 contentDescription = FORGOT_EMAIL_TEXT_FIELD,
@@ -102,7 +102,7 @@ fun ForgotPasswordScreen(
                     containerColor = MAIN_GREEN, contentColor = Color.White
                 )
             ) {
-                Text(text = stringResource(R.string.send_email_button), fontSize = 16.sp)
+                Text(text = stringResource(R.string.send_email), fontSize = 16.sp)
             }
         }
     }
