@@ -1,4 +1,4 @@
-name: Android UI Testing
+name: Build and Test
 
 on: [ push ]
 
@@ -7,7 +7,6 @@ jobs:
   local_test_job:
     name: Running Local Tests
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -48,7 +47,6 @@ jobs:
     name: Building the APK
     needs: local_test_job
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -87,7 +85,6 @@ jobs:
     needs: build_job
     runs-on: ubuntu-latest
     timeout-minutes: 30
-    continue-on-error: true
     steps:
       - name: Checkout
         uses: actions/checkout@v4
