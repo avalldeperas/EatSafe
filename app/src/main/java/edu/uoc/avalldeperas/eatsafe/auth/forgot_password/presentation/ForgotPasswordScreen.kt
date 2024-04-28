@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.auth.forgot_password.presentation
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,18 +35,36 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
+import edu.uoc.avalldeperas.eatsafe.auth.forgot_password.presentation.state.ForgotPasswordState
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_BACK
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_EMAIL_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
+
 @Composable
 fun ForgotPasswordScreen(
-    navigateBack: () -> Unit, forgotPasswordViewModel: ForgotPasswordViewModel = hiltViewModel()
+    navigateBack: () -> Unit,
+    forgotPasswordViewModel: ForgotPasswordViewModel = hiltViewModel(),
+    context: Context = LocalContext.current
 ) {
     val forgotState by forgotPasswordViewModel.forgotState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
 
+    ForgotPasswordContent(
+        forgotState = forgotState,
+        navigateBack = navigateBack,
+        onUpdateEmail = { forgotPasswordViewModel.updateEmail(it) },
+        onForgotClick = { forgotPasswordViewModel.onForgotClick(context) }
+    )
+}
+
+@Composable
+fun ForgotPasswordContent(
+    forgotState: ForgotPasswordState,
+    navigateBack: () -> Unit,
+    onUpdateEmail: (String) -> Unit,
+    onForgotClick: () -> Unit
+) {
     Scaffold { paddingValues ->
         Column(
             Modifier
@@ -87,14 +106,14 @@ fun ForgotPasswordScreen(
             Spacer(modifier = Modifier.padding(vertical = 24.dp))
             AppTextField(
                 value = forgotState.email,
-                onValueChange = { forgotPasswordViewModel.updateEmail(it) },
+                onValueChange = onUpdateEmail,
                 leadingIcon = Icons.Filled.Email,
                 contentDescription = FORGOT_EMAIL_TEXT_FIELD,
                 label = R.string.email
             )
             Spacer(modifier = Modifier.padding(vertical = 32.dp))
             Button(
-                onClick = { forgotPasswordViewModel.onForgotClick(context) },
+                onClick = onForgotClick,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
@@ -111,5 +130,5 @@ fun ForgotPasswordScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun ForgotPasswordScreenPreview() {
-    ForgotPasswordScreen({})
+    ForgotPasswordContent(ForgotPasswordState(), {}, {}, {})
 }
