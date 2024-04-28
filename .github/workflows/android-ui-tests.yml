@@ -3,7 +3,7 @@ name: Android CI Testing
 on: [ push ]
 
 jobs:
-  test:
+  ui_test:
 
     runs-on: ubuntu-20.04
 
@@ -34,8 +34,13 @@ jobs:
           api-token: ${{ secrets.EW_API_TOKEN }}
           app: app/build/outputs/apk/debug/app-debug.apk
           test: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
+          devices: |
+            model=Pixel2,version=27
+            model=Pixel7,version=34
           with-coverage: true
+          outputs-dir: build/test-results
           use-orchestrator: true
+          num-shards: 3
           clear-package-data: true
 
       - name: Publish test report
