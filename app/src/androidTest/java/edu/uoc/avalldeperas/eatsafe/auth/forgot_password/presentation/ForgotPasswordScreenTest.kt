@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.auth.forgot_password.presentation
 
+import androidx.activity.compose.setContent
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
@@ -30,7 +31,7 @@ class ForgotPasswordScreenTest {
     private lateinit var sendEmailString: String
 
     private fun buildScreen(forgotState: ForgotPasswordState) {
-        rule.setContent {
+        rule.activity.setContent {
             ForgotPasswordContent(
                 forgotState = forgotState,
                 navigateBack = {},

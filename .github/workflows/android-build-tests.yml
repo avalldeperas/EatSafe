@@ -1,6 +1,10 @@
-name: Build and Test
+name: Android Build and Test
 
-on: [ push ]
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
 
 jobs:
 
@@ -33,7 +37,6 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-
       - name: Run Debug Tests
         run: ./gradlew testDebugUnitTest --continue
       - name: Upload Test Reports
@@ -45,7 +48,6 @@ jobs:
 
   build_job:
     name: Building the APK
-    needs: local_test_job
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -73,7 +75,6 @@ jobs:
         run: chmod +x ./gradlew
       - name: Assemble Debug
         run: ./gradlew assembleDebug
-
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
