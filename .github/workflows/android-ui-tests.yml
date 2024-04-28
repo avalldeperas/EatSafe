@@ -26,14 +26,14 @@ jobs:
         run: chmod +x gradlew
 
       - name: Generate apks
-        run: ./gradlew assembleDebug assembleDebugAndroidTest
+        run: ./gradlew :app:assembleDebug :app:assembleDebugAndroidTest
 
       - name: Run tests
         uses: emulator-wtf/run-tests@v0
         with:
           api-token: ${{ secrets.EW_API_TOKEN }}
           app: app/build/outputs/apk/debug/app-debug.apk
-          test: app/build/outputs/apk/androidTest/app-debug-androidTest.apk
+          test: app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk
           with-coverage: true
           use-orchestrator: true
           clear-package-data: true
