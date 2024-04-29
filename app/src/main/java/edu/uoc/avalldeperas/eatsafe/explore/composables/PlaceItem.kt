@@ -21,12 +21,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.PLACE_ITEM
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_FAVORITES_BUTTON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_VIEW_PLACE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_VIEW_PLACE_TYPE_ICON
@@ -39,6 +41,7 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit, distance: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            .testTag(PLACE_ITEM + place.placeId)
             .padding(8.dp)
             .clickable { onRowClick(place.placeId) },
         verticalAlignment = Alignment.CenterVertically

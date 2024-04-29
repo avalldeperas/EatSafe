@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.auth.login.presentation
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -18,11 +19,11 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
@@ -38,6 +39,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.auth.composables.AuthFooterText
+import edu.uoc.avalldeperas.eatsafe.auth.login.presentation.state.LoginState
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.CIRCULAR_PROGRESS_TAG
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EATSAFE_LOGO
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_PASSWORD
@@ -45,15 +48,37 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PASSWORD_
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.REGISTER_LINK
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
+
 @Composable
 fun LoginScreen(
+    toRegister: () -> Unit,
     toForgotPassword: () -> Unit,
     onSubmit: () -> Unit,
-    toRegister: () -> Unit,
+    context: Context = LocalContext.current,
     loginViewModel: LoginViewModel = hiltViewModel()
 ) {
-    val loginState by loginViewModel.loginState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val state = loginViewModel.loginState.collectAsStateWithLifecycle()
+    LoginContent(
+        loginState = state.value,
+        toForgotPassword = toForgotPassword,
+        toRegister = toRegister,
+        onSubmit = { loginViewModel.onLoginClick(onSubmit, context) },
+        onEmailChange = { email -> loginViewModel.updateEmail(email) },
+        onUpdatePassword = { passwd -> loginViewModel.updatePassword(passwd) },
+        onToggleVisualTransformation = { loginViewModel.onToggleVisualTransformationPassword() }
+    )
+}
+
+@Composable
+fun LoginContent(
+    loginState: LoginState,
+    toForgotPassword: () -> Unit,
+    toRegister: () -> Unit,
+    onSubmit: () -> Unit,
+    onUpdatePassword: (String) -> Unit,
+    onEmailChange: (String) -> Unit,
+    onToggleVisualTransformation: () -> Unit
+) {
 
     Column(
         modifier = Modifier.fillMaxSize(),
@@ -74,7 +99,7 @@ fun LoginScreen(
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
         AppTextField(
             value = loginState.email,
-            onValueChange = loginViewModel::updateEmail,
+            onValueChange = { onEmailChange(it) },
             leadingIcon = Icons.Filled.Email,
             contentDescription = EMAIL_TEXT_FIELD,
             label = R.string.email
@@ -82,14 +107,14 @@ fun LoginScreen(
         Spacer(modifier = Modifier.padding(vertical = 4.dp))
         AppTextField(
             value = loginState.password,
-            onValueChange = loginViewModel::updatePassword,
+            onValueChange = { onUpdatePassword(it) },
             leadingIcon = Icons.Filled.Lock,
             contentDescription = PASSWORD_TEXT_FIELD,
             label = R.string.password,
             visualTransformation = if (loginState.isPasswordShown) VisualTransformation.None
             else PasswordVisualTransformation(),
             trailingIcon = Icons.Default.RemoveRedEye,
-            onTrailingIconClick = loginViewModel::onToggleVisualTransformationPassword
+            onTrailingIconClick = { onToggleVisualTransformation() }
         )
         Spacer(modifier = Modifier.padding(vertical = 8.dp))
         Text(
@@ -105,10 +130,10 @@ fun LoginScreen(
         )
         Spacer(modifier = Modifier.padding(vertical = 24.dp))
         if (loginState.isLoading) {
-            CircularProgressIndicator()
+            CircularProgressIndicator(modifier = Modifier.testTag(CIRCULAR_PROGRESS_TAG))
         } else {
             Button(
-                onClick = { loginViewModel.onLoginClick(onSubmit, context) },
+                onClick = { onSubmit() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp),
@@ -133,5 +158,5 @@ fun LoginScreen(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun LoginScreenPreview() {
-    LoginScreen({}, {}, {})
+    LoginContent(LoginState(), {}, {}, {}, {}, {}, {})
 }

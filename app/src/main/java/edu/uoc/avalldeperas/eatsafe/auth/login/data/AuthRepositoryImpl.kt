@@ -3,9 +3,9 @@ package edu.uoc.avalldeperas.eatsafe.auth.login.data
 import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.auth
+import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -55,8 +55,9 @@ class AuthRepositoryImpl @Inject constructor() : AuthRepository {
         }
     }
 
-    override fun getCurrentUser(): FirebaseUser {
-        return Firebase.auth.currentUser!!
+    override fun getCurrentUser(): User {
+        val currentUser = Firebase.auth.currentUser!!
+        return User(uid = currentUser.uid, displayName = currentUser.displayName)
     }
 
     override suspend fun updateProfile(displayName: String): Boolean {

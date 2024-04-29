@@ -1,6 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.auth.login.data
 
-import com.google.firebase.auth.FirebaseUser
+import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 
 interface AuthRepository {
     suspend fun signIn(email: String, password: String): String
@@ -9,5 +9,5 @@ interface AuthRepository {
     suspend fun updateProfile(displayName: String): Boolean
     fun signOut(): Boolean
 
-    fun getCurrentUser(): FirebaseUser
+    fun getCurrentUser(): User
 }

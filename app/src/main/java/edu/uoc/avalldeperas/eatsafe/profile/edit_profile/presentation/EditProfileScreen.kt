@@ -42,7 +42,8 @@ import edu.uoc.avalldeperas.eatsafe.auth.composables.AppTextField
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_BACK_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_EMAIL
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
-import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PROFILE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LOGOUT_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.profile.composables.AllergyButton
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
@@ -85,7 +86,7 @@ fun EditProfileScreen(
                     IconButton(onClick = { editProfileViewModel.onLogoutClick(onLogout) }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ExitToApp,
-                            contentDescription = EDIT_PROFILE_BACK_ICON,
+                            contentDescription = LOGOUT_ICON,
                             tint = MAIN_GREEN
                         )
                     }
@@ -101,7 +102,7 @@ fun EditProfileScreen(
         ) {
             Image(
                 painter = painterResource(id = R.drawable.default_account),
-                contentDescription = PROFILE_IMAGE,
+                contentDescription = EDIT_PROFILE_IMAGE,
                 modifier = Modifier.size(80.dp)
             )
             Spacer(modifier = Modifier.padding(top = 24.dp))

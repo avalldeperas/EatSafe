@@ -22,12 +22,19 @@ object ContentDescriptionConstants {
 
     // Place Detail
     const val ALLERGEN_ICON: String = "allergen-icon"
+    const val PLACE_IMAGE: String = "place-image"
 
     // edit profile
     const val EDIT_PROFILE_ICON = "edit-profile-icon"
+    const val EDIT_PROFILE_IMAGE = "edit-profile-image"
     const val EDIT_PROFILE_EMAIL = "edit-profile-email"
     const val EDIT_PROFILE_FULL_NAME = "edit-profile-full-name"
     const val EDIT_PROFILE_BACK_ICON = "edit-profile-back-icon"
+    const val LOGOUT_ICON = "logout-icon"
+
+    // add review
+    const val ADD_REVIEW_BACK_ICON = "add-review-back-icon"
+    const val ADD_REVIEW_RATE_BTN = "add-review-rate-btn-"
 
     // explore
     const val LIST_VIEW_PLACE_IMAGE = "list-view-place-image"
@@ -35,7 +42,12 @@ object ContentDescriptionConstants {
     const val LIST_VIEW_STAR_ICON = "list-view-star-icon"
     const val FAV_FAVORITES_BUTTON = "fav-view-favourites-btn"
 
+    // favs
+    const val ADD_FAVORITE_BUTTON = "add-favorite-btn"
+    const val FAVORITE_PLACE_IMAGE = "favorite-place-image"
+
     // components
     const val SAFETY_SECTION_CHECK_ICON = "safety-section-check-icon"
     const val AVERAGE_RATING_SECTION_STAR_ICON = "average-rating-section-star-icon"
+    const val BOTTOM_NAV_ITEM = "bottom-nav-item-"
 }

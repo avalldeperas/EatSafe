@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,6 +46,7 @@ import com.google.maps.android.compose.MapUiSettings
 import com.google.maps.android.compose.MarkerInfoWindow
 import com.google.maps.android.compose.MarkerState
 import com.google.maps.android.compose.rememberCameraPositionState
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.GOOGLE_MAP_VIEW
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.explore.composables.AverageRatingSection
 import edu.uoc.avalldeperas.eatsafe.explore.composables.ExploreTopBar
@@ -142,7 +144,7 @@ fun GoogleMapView(
     uiSettings: MapUiSettings
 ) {
     GoogleMap(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().testTag(GOOGLE_MAP_VIEW),
         cameraPositionState = cameraPositionState,
         properties = viewModel.state.properties,
         uiSettings = uiSettings
