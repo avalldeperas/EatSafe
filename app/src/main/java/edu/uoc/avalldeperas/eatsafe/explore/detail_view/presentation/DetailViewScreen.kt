@@ -57,7 +57,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Timestamp
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_FAVORITE_BUTTON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ALLERGEN_ICON
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PLACE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
 import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
@@ -109,7 +111,7 @@ fun DetailViewScreen(
             ) {
                 Image(
                     painter = painterResource(id = R.drawable.restaurant_detail),
-                    contentDescription = ContentDescriptionConstants.EATSAFE_LOGO,
+                    contentDescription = PLACE_IMAGE,
                     modifier = Modifier
                         .fillMaxWidth()
                         .size(200.dp)
@@ -317,7 +319,7 @@ fun DetailHeader(
         ) {
             Icon(
                 imageVector = Icons.Default.Favorite,
-                contentDescription = ContentDescriptionConstants.FORGOT_BACK,
+                contentDescription = ADD_FAVORITE_BUTTON,
                 tint = if (isFav) Color.Red else Color.Gray
             )
         }

@@ -1,4 +1,4 @@
-package edu.uoc.avalldeperas.eatsafe.auth.register.presentation
+package edu.uoc.avalldeperas.eatsafe.ui.auth.register.presentation
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertHasClickAction
@@ -11,6 +11,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import edu.uoc.avalldeperas.eatsafe.auth.register.presentation.RegisterContent
 import edu.uoc.avalldeperas.eatsafe.auth.register.presentation.state.RegisterState
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.CIRCULAR_PROGRESS_TAG
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.CONFIRM_PASSWORD_TEXT_FIELD

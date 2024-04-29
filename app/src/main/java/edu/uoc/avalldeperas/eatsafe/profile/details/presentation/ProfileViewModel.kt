@@ -45,6 +45,6 @@ class ProfileViewModel @Inject constructor(
     }
 
     fun getDisplayName(): String {
-        return _user.value.displayName.ifEmpty { _user.value.username }.ifEmpty { "User" }
+        return _user.value.displayName?.ifEmpty { _user.value.username }?.ifEmpty { "User" }!!
     }
 }

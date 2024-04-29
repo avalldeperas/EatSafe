@@ -1,8 +1,8 @@
-package edu.uoc.avalldeperas.eatsafe
+package edu.uoc.avalldeperas.eatsafe.ui
 
-import edu.uoc.avalldeperas.eatsafe.auth.forgot_password.presentation.ForgotPasswordScreenTest
-import edu.uoc.avalldeperas.eatsafe.auth.login.presentation.LoginScreenTest
-import edu.uoc.avalldeperas.eatsafe.auth.register.presentation.RegisterScreenTest
+import edu.uoc.avalldeperas.eatsafe.ui.auth.forgot_password.presentation.ForgotPasswordScreenTest
+import edu.uoc.avalldeperas.eatsafe.ui.auth.login.presentation.LoginScreenTest
+import edu.uoc.avalldeperas.eatsafe.ui.auth.register.presentation.RegisterScreenTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 

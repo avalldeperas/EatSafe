@@ -19,6 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.BOTTOM_NAV_ITEM
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 
@@ -35,7 +36,7 @@ fun BottomNavBar(homeNavController: NavHostController) {
                 icon = {
                     Icon(
                         navigationItem.icon,
-                        contentDescription = navigationItem.label
+                        contentDescription = BOTTOM_NAV_ITEM + navigationItem.label
                     )
                 },
                 onClick = {

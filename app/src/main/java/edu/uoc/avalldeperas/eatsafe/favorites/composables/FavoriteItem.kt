@@ -30,6 +30,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAVORITE_PLACE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.PlaceType
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
@@ -46,7 +47,7 @@ fun FavoriteItem(favorite: FavoritePlace, onRowClick: (String) -> Unit) {
     ) {
         Image(
             painter = painterResource(id = favorite.image),
-            contentDescription = ContentDescriptionConstants.LIST_VIEW_PLACE_IMAGE + favorite.placeId,
+            contentDescription = FAVORITE_PLACE_IMAGE + favorite.placeId,
             modifier = Modifier
                 .size(100.dp)
                 .clip(RoundedCornerShape(5.dp))

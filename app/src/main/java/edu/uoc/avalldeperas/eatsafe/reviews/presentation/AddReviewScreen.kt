@@ -31,6 +31,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,7 +40,9 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
-import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.ADD_REVIEW_DESCRIPTION_FIELD
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_REVIEW_BACK_ICON
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_REVIEW_RATE_BTN
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
@@ -68,7 +71,7 @@ fun AddReviewScreen(
                     IconButton(onClick = { backToDetail() }) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = ContentDescriptionConstants.EDIT_PROFILE_BACK_ICON,
+                            contentDescription = ADD_REVIEW_BACK_ICON,
                             tint = DARK_GREEN
                         )
                     }
@@ -94,13 +97,13 @@ fun AddReviewScreen(
                     fontSize = 24.sp
                 )
             }
-            RatingButtonsRow(
+            RateButtonsRow(
                 onClick = { addReviewViewModel.updateSafety(it + 1) },
                 value = review.safety,
                 stringResource = R.string.safety_label,
                 imageVector = Icons.Default.CheckCircle
             )
-            RatingButtonsRow(
+            RateButtonsRow(
                 onClick = { addReviewViewModel.updateRating(it + 1) },
                 value = review.rating,
                 stringResource = R.string.rating_label,
@@ -127,6 +130,7 @@ fun AddReviewScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clip(RoundedCornerShape(5.dp))
+                        .testTag(ADD_REVIEW_DESCRIPTION_FIELD)
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
                 if (isLoading) {
@@ -151,19 +155,20 @@ fun AddReviewScreen(
 }
 
 @Composable
-fun RatingButtonsRow(
+fun RateButtonsRow(
     onClick: (Int) -> Unit,
     value: Int,
     @StringRes stringResource: Int,
     imageVector: ImageVector
 ) {
+    val label = stringResource(stringResource)
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(stringResource),
+            text = label,
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp
         )
@@ -171,7 +176,7 @@ fun RatingButtonsRow(
             IconButton(onClick = { onClick(it) }) {
                 Icon(
                     imageVector = imageVector,
-                    contentDescription = "",
+                    contentDescription = ADD_REVIEW_RATE_BTN + label + it,
                     tint = if (it + 1 <= value) MAIN_GREEN else Color.Gray
                 )
             }

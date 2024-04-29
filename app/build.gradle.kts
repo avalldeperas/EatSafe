@@ -17,7 +17,9 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Hilt test runner extending JUnit Runner
+        testInstrumentationRunner = "edu.uoc.avalldeperas.eatsafe.MainTestRunner"
+
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -75,9 +77,11 @@ dependencies {
     implementation(libs.accompanist.permissions)
     implementation(libs.geofire.android.common)
     implementation(libs.androidx.material.icons.extended)
+    androidTestImplementation(libs.androidx.runner)
     testImplementation(libs.junit)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.android.compiler)
     androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)

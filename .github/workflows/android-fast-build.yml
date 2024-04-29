@@ -2,7 +2,7 @@ name: Android Fast Build
 
 on:
   push:
-    branches: [ "feature/**" ]
+    branches: [ "feature/**", "main" ]
 
 jobs:
   build:
