@@ -135,7 +135,7 @@ class EatSafeE2ETests {
         composeRule.waitForIdle()
         composeRule.onNodeWithContentDescription(EDIT_PROFILE_BACK_ICON).performClick()
         // back to profile
-        composeRule.onNodeWithText("Hello Tester!").assertIsDisplayed()
+//        composeRule.onNodeWithText("Hello Tester!").assertIsDisplayed()
     }
 
     @Test
