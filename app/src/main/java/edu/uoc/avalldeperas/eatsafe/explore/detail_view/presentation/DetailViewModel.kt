@@ -8,8 +8,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.uoc.avalldeperas.eatsafe.auth.login.data.AuthRepository
 import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil
+import edu.uoc.avalldeperas.eatsafe.explore.detail_view.state.DetailViewState
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.data.PlaceRepository
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.favorites.data.FavoritesRepository
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants
@@ -32,42 +32,40 @@ class DetailViewModel @Inject constructor(
 
     val placeId: String = checkNotNull(savedStateHandle[Constants.PLACE_ID_PARAM])
 
-    private val _place = MutableStateFlow(Place())
-    val place = _place.asStateFlow()
-
-    lateinit var userId: String
-
-    private val _userFav: MutableStateFlow<FavoritePlace?> = MutableStateFlow(null)
-    val userFav = _userFav.asStateFlow()
-
-    private val _isUserReviewed = MutableStateFlow(false)
-    val isUserReviewed = _isUserReviewed.asStateFlow()
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _detailState = MutableStateFlow(DetailViewState())
+    val detailState = _detailState.asStateFlow()
 
     init {
-        _isLoading.update { true }
+        _detailState.update { state -> state.copy(isLoading = true) }
         viewModelScope.launch {
-            userId = authRepository.getCurrentUser().uid
+            _detailState.update { state -> state.copy(userId = authRepository.getCurrentUser().uid) }
 
             launch {
                 placeRepository.getPlace(placeId).collectLatest { place ->
-                    _place.update { place!! }
+                    _detailState.update { currentState -> currentState.copy(place = place!!) }
                 }
             }
 
             launch {
                 reviewsRepository.getReviewsByPlace(placeId).collectLatest { reviews ->
-                    _place.value = _place.value.copy(reviews = reviews)
-                    _isUserReviewed.update { reviews.map { it.userId }.contains(userId) }
+                    _detailState.update { currentState ->
+                        currentState.copy(
+                            place = currentState.place.copy(reviews = reviews),
+                            isUserReview = reviews.map { it.userId }
+                                .contains(_detailState.value.userId)
+                        )
+                    }
                 }
             }
 
-            favoritesRepository.getFavoritesByPlaceAndUser(placeId, userId)
+            favoritesRepository.getFavoritesByPlaceAndUser(placeId, _detailState.value.userId)
                 .collectLatest { favorites ->
-                    _userFav.value = if (favorites.isNotEmpty()) favorites[0] else null
-                    _isLoading.update { false }
+                    _detailState.update { currentState ->
+                        currentState.copy(
+                            userFav = if (favorites.isNotEmpty()) favorites[0] else null,
+                            isLoading = false
+                        )
+                    }
                 }
         }
     }
@@ -75,35 +73,39 @@ class DetailViewModel @Inject constructor(
     fun addFavourite(context: Context) {
         var fav: FavoritePlace
         viewModelScope.launch {
-            if (_userFav.value != null) {
-                fav = buildFavorite(userId, _userFav.value!!.favoriteId)
+            if (_detailState.value.userFav != null) {
+                fav = buildFavorite(
+                    _detailState.value.userId,
+                    _detailState.value.userFav!!.favoriteId
+                )
                 val result = favoritesRepository.delete(fav)
                 if (result) {
                     ToastUtil.showToast("Place removed from favorites", context)
                 } else {
-                    Log.d("avb", "addFavourite: an exception occurred pls check logs")
+                    Log.d("avb", "addFavourite: an exception occurred, check logs")
                 }
             } else {
-                fav = buildFavorite(userId, "")
+                fav = buildFavorite(_detailState.value.userId, "")
                 val result = favoritesRepository.save(fav)
                 if (result) {
                     ToastUtil.showToast("Place added to favorites!", context)
                 } else {
-                    Log.d("avb", "addFavourite: an exception occurred check logs")
+                    Log.d("avb", "addFavourite: an exception occurred, check logs")
                 }
             }
         }
     }
 
     private fun buildFavorite(uid: String, favoriteId: String): FavoritePlace {
+        val place = _detailState.value.place
         return FavoritePlace(
             favoriteId = favoriteId,
-            placeId = _place.value.placeId,
+            placeId = place.placeId,
             userId = uid,
-            name = _place.value.name,
-            image = _place.value.image,
-            type = _place.value.type,
-            address = _place.value.address
+            name = place.name,
+            image = place.image,
+            type = place.type,
+            address = place.address
         )
     }
 }

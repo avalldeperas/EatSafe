@@ -14,6 +14,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,6 +22,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.RATING_ITEM_AVG_RATING
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.RATING_ITEM_AVG_SAFETY
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.RATING_ITEM_TOTAL_REVIEWS
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.AVERAGE_RATING_SECTION_STAR_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.SAFETY_SECTION_CHECK_ICON
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
@@ -59,9 +63,9 @@ fun RatingItem(
     fontSize: TextUnit = 16.sp
 ) {
     Row(
-        modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        horizontalArrangement = Arrangement.spacedBy(4.dp),
+        modifier = modifier
     ) {
         Text(text = value.toString(), fontSize = fontSize)
         Icon(
@@ -82,19 +86,19 @@ fun RatingsSection(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text("Ratings: ", fontWeight = FontWeight.Bold)
+        Text(stringResource(R.string.ratings_header), fontWeight = FontWeight.Bold)
         RatingItem(
-            modifier = Modifier,
+            modifier = Modifier.testTag(RATING_ITEM_AVG_SAFETY),
             value = place.averageSafety,
             imageVector = Icons.Default.CheckCircle
         )
         RatingItem(
-            modifier = Modifier,
+            modifier = Modifier.testTag(RATING_ITEM_AVG_RATING),
             value = place.averageRating,
             imageVector = Icons.Default.Star
         )
         RatingItem(
-            modifier = Modifier,
+            modifier = Modifier.testTag(RATING_ITEM_TOTAL_REVIEWS),
             value = place.totalReviews,
             imageVector = Icons.Default.Person
         )
