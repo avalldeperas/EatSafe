@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.explore.detail_view.presentation
 
+import android.content.Context
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +18,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Link
@@ -43,6 +43,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,16 +57,19 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.firebase.Timestamp
 import edu.uoc.avalldeperas.eatsafe.R
-import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.PLACE_INFO_ELEMENT
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_FAVORITE_BUTTON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ALLERGEN_ICON
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.DETAIL_BACK
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PLACE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_IMAGE_REVIEW
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
 import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
 import edu.uoc.avalldeperas.eatsafe.explore.composables.AverageRatingSection
 import edu.uoc.avalldeperas.eatsafe.explore.composables.RatingsSection
 import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
+import edu.uoc.avalldeperas.eatsafe.explore.detail_view.state.DetailViewState
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
@@ -74,17 +78,31 @@ import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 fun DetailViewScreen(
     navigateBack: () -> Unit,
     toAddReview: (Place) -> Unit,
-    detailViewModel: DetailViewModel = hiltViewModel()
+    detailViewModel: DetailViewModel = hiltViewModel(),
+    context: Context = LocalContext.current
 ) {
-    val snackbarHostState = remember { SnackbarHostState() }
-    val place by detailViewModel.place.collectAsStateWithLifecycle()
-    val isLoading by detailViewModel.isLoading.collectAsStateWithLifecycle()
-    val isUserFav by detailViewModel.userFav.collectAsStateWithLifecycle()
-    val isUserReviewed by detailViewModel.isUserReviewed.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val detailState by detailViewModel.detailState.collectAsStateWithLifecycle()
+    val snackbarState = remember { SnackbarHostState() }
 
-    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) }) { paddingValues ->
-        if (isLoading) {
+    DetailViewContent(
+        detailState = detailState,
+        navigateBack = navigateBack,
+        toAddReview = toAddReview,
+        snackbarState = snackbarState,
+        onAddFav = { detailViewModel.addFavourite(context) }
+    )
+}
+
+@Composable
+fun DetailViewContent(
+    detailState: DetailViewState,
+    navigateBack: () -> Unit,
+    toAddReview: (Place) -> Unit,
+    snackbarState: SnackbarHostState,
+    onAddFav: () -> Unit
+) {
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarState) }) { paddingValues ->
+        if (detailState.isLoading) {
             CenteredCircularProgressIndicator()
         } else {
             Box(
@@ -98,7 +116,7 @@ fun DetailViewScreen(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = ContentDescriptionConstants.FORGOT_BACK,
+                        contentDescription = DETAIL_BACK,
                         tint = MAIN_GREEN
                     )
                 }
@@ -120,19 +138,19 @@ fun DetailViewScreen(
                     contentScale = ContentScale.Crop,
                 )
                 DetailHeader(
-                    onFavClick = { detailViewModel.addFavourite(context) },
+                    onFavClick = { onAddFav() },
                     paddingValues = paddingValues,
-                    place = place,
-                    isFav = isUserFav != null
+                    place = detailState.place,
+                    isFav = detailState.userFav != null
                 )
                 AppHorizontalDivider(top = 16.dp)
-                DetailAbout(modifier = Modifier, place = place)
+                DetailAbout(modifier = Modifier, place = detailState.place)
                 AppHorizontalDivider(top = 16.dp)
                 DetailReviews(
                     modifier = Modifier,
                     toAddReview = toAddReview,
-                    place = place,
-                    showAddReviewBtn = !isUserReviewed
+                    place = detailState.place,
+                    showAddReviewBtn = !detailState.isUserReview
                 )
             }
         }
@@ -183,8 +201,8 @@ fun ReviewItem(review: Review) {
         Column {
             Image(
                 painter = painterResource(id = R.drawable.default_account),
-                contentDescription = "",
-                Modifier.size(70.dp)
+                contentDescription = USER_IMAGE_REVIEW,
+                modifier = Modifier.size(70.dp)
             )
         }
         Column(
@@ -271,8 +289,14 @@ fun DetailAbout(modifier: Modifier, place: Place) {
             fontWeight = FontWeight.Bold,
             fontSize = 20.sp
         )
-        InfoElement(imageVector = Icons.Filled.Phone, text = place.telephone)
-        InfoElement(imageVector = Icons.Filled.Link, text = place.website)
+        InfoElement(
+            imageVector = Icons.Filled.Phone,
+            text = place.telephone
+        )
+        InfoElement(
+            imageVector = Icons.Filled.Link,
+            text = place.website
+        )
         InfoElement(
             imageVector = Icons.Filled.LocationOn,
             text = place.address
@@ -281,14 +305,14 @@ fun DetailAbout(modifier: Modifier, place: Place) {
 }
 
 @Composable
-fun InfoElement(imageVector: ImageVector, text: String) {
+fun InfoElement(imageVector: ImageVector, text: String, modifier: Modifier = Modifier) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Icon(imageVector = imageVector, contentDescription = "", tint = MAIN_GREEN)
-        Text(text = text, fontSize = 12.sp)
+        Text(text = text, fontSize = 12.sp, modifier = Modifier.testTag(PLACE_INFO_ELEMENT + text))
     }
 }
 
@@ -353,28 +377,6 @@ fun AllergensHeader(place: Place) {
     }
 }
 
-@Composable
-fun SafetySection(modifier: Modifier, safety: Int) {
-    Row(
-        modifier = modifier,
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(2.dp)
-    ) {
-        Text(
-            text = stringResource(id = R.string.safety_label),
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        )
-        repeat(5) {
-            Icon(
-                imageVector = Icons.Default.CheckCircle,
-                contentDescription = "",
-                tint = if (it + 1 <= safety) MAIN_GREEN else Color.Gray
-            )
-        }
-    }
-}
-
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ReviewItemPreview() {
@@ -391,6 +393,18 @@ fun ReviewItemPreview() {
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun DetailReviewsPreview() {
-    DetailReviews(Modifier, {}, Place(reviews = listOf(Review("test"))), showAddReviewBtn = false)
+fun DetailViewContentPreview() {
+    val place = Place(
+        name = "Place name",
+        telephone = "900 00 00 00",
+        website = "www.webisite.com",
+        address = "Street name, 01, City"
+    )
+    DetailViewContent(
+        detailState = DetailViewState(place = place),
+        navigateBack = {},
+        toAddReview = {},
+        snackbarState = SnackbarHostState(),
+        onAddFav = {}
+    )
 }

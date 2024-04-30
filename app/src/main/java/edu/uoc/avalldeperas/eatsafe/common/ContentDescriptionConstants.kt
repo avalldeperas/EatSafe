@@ -41,6 +41,8 @@ object ContentDescriptionConstants {
     const val LIST_VIEW_PLACE_TYPE_ICON = "list-view-place-type-icon"
     const val LIST_VIEW_STAR_ICON = "list-view-star-icon"
     const val FAV_FAVORITES_BUTTON = "fav-view-favourites-btn"
+    const val DETAIL_BACK = "detail-back"
+    const val USER_IMAGE_REVIEW = "user-image-review"
 
     // favs
     const val ADD_FAVORITE_BUTTON = "add-favorite-btn"
