@@ -14,6 +14,7 @@ import edu.uoc.avalldeperas.eatsafe.favorites.data.FavoritesRepository
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants
 import edu.uoc.avalldeperas.eatsafe.reviews.data.ReviewsRepository
+import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -50,7 +51,12 @@ class DetailViewModel @Inject constructor(
                 reviewsRepository.getReviewsByPlace(placeId).collectLatest { reviews ->
                     _detailState.update { currentState ->
                         currentState.copy(
-                            place = currentState.place.copy(reviews = reviews),
+                            place = currentState.place.copy(
+                                averageRating = calculateAvgRating(reviews),
+                                averageSafety = calculateAvgSafety(reviews),
+                                totalReviews = reviews.size,
+                                reviews = reviews
+                            ),
                             isUserReview = reviews.map { it.userId }
                                 .contains(_detailState.value.userId)
                         )
@@ -68,6 +74,16 @@ class DetailViewModel @Inject constructor(
                     }
                 }
         }
+    }
+
+    private fun calculateAvgSafety(reviews: List<Review>): Double {
+        val totalSafety = reviews.sumOf { it.safety }
+        return totalSafety.toDouble() / reviews.size.toDouble()
+    }
+
+    private fun calculateAvgRating(reviews: List<Review>): Double {
+        val totalSafety = reviews.sumOf { it.rating }
+        return totalSafety.toDouble() / reviews.size.toDouble()
     }
 
     fun addFavourite(context: Context) {
