@@ -24,7 +24,6 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.text.SimpleDateFormat
 
-
 @RunWith(AndroidJUnit4::class)
 class ProfileScreenTest {
 
@@ -91,12 +90,12 @@ class ProfileScreenTest {
             rule.onAllNodesWithText("place name 0").fetchSemanticsNodes().isNotEmpty()
         }
 
-        repeat(reviews.size) {
-            rule.onNodeWithText("place name $it").assertIsDisplayed()
-            rule.onNodeWithText("${it+1}$date").assertIsDisplayed()
-            rule.onNodeWithContentDescription(PROFILE_REVIEW_PLACE_IMAGE + "placeId$it")
+        reviews.forEachIndexed { index, _ ->
+            rule.onNodeWithText("place name $index").assertIsDisplayed()
+            rule.onNodeWithText("${index + 1}$date").assertIsDisplayed()
+            rule.onNodeWithContentDescription(PROFILE_REVIEW_PLACE_IMAGE + "placeId$index")
                 .assertIsDisplayed()
-            rule.onNodeWithText("A review description $it").assertIsDisplayed()
+            rule.onNodeWithText("A review description $index").assertIsDisplayed()
         }
     }
 

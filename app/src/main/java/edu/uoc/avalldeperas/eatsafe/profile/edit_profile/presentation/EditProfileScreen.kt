@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -46,6 +45,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROF
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LOGOUT_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD
+import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
 import edu.uoc.avalldeperas.eatsafe.profile.composables.AllergyButton
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
 import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.state.EditProfileState
@@ -184,7 +184,7 @@ fun EditProfileContent(
             Spacer(modifier = Modifier.padding(top = 32.dp))
 
             if (uiState.isLoading) {
-                CircularProgressIndicator()
+                CenteredCircularProgressIndicator()
             } else {
                 Button(
                     onClick = { onSave() },
@@ -221,7 +221,8 @@ fun EditProfileContentPreview() {
         intolerances = mutableListOf("Gluten", "Lactose"),
         email = "anemail@gmail.com",
         currentCity = "A city name",
-        displayName = "A display name"
+        displayName = "A display name",
+        isLoading = true
     )
     EditProfileContent(state, {}, {}, {}, {}, {}, {})
 }
