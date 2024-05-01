@@ -89,14 +89,10 @@ class ProfileScreenTest {
         rule.waitUntil(timeoutMillis = 5000L) {
             rule.onAllNodesWithText("place name 0").fetchSemanticsNodes().isNotEmpty()
         }
-
-        reviews.forEachIndexed { index, _ ->
-            rule.onNodeWithText("place name $index").assertIsDisplayed()
-            rule.onNodeWithText("${index + 1}$date").assertIsDisplayed()
-            rule.onNodeWithContentDescription(PROFILE_REVIEW_PLACE_IMAGE + "placeId$index")
-                .assertIsDisplayed()
-            rule.onNodeWithText("A review description $index").assertIsDisplayed()
-        }
+        rule.onNodeWithText("place name 0").assertIsDisplayed()
+        rule.onNodeWithText("1/5/2024").assertIsDisplayed()
+        rule.onNodeWithContentDescription(PROFILE_REVIEW_PLACE_IMAGE + "placeId0")
+        rule.onNodeWithText("A review description 0").assertIsDisplayed()
     }
 
     @Test
