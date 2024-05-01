@@ -9,6 +9,7 @@ import edu.uoc.avalldeperas.eatsafe.ui.auth.forgot_password.presentation.ForgotP
 import edu.uoc.avalldeperas.eatsafe.ui.auth.login.presentation.LoginScreenTest
 import edu.uoc.avalldeperas.eatsafe.ui.auth.register.presentation.RegisterScreenTest
 import edu.uoc.avalldeperas.eatsafe.ui.explore.DetailViewScreenTest
+import edu.uoc.avalldeperas.eatsafe.ui.reviews.AddReviewScreenTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
 
@@ -19,6 +20,7 @@ import org.junit.runners.Suite
     LoginScreenTest::class,
     RegisterScreenTest::class,
     DetailViewScreenTest::class,
+    AddReviewScreenTest::class,
     // E2E tests
     EatSafeE2ETests::class
 )

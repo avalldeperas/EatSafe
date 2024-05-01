@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.reviews.presentation
 
+import android.content.Context
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -44,19 +45,38 @@ import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.ADD_REVIEW_DES
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_REVIEW_BACK_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_REVIEW_RATE_BTN
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
+import edu.uoc.avalldeperas.eatsafe.reviews.presentation.state.AddReviewState
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddReviewScreen(
     backToDetail: () -> Unit,
+    context: Context = LocalContext.current,
     addReviewViewModel: AddReviewViewModel = hiltViewModel()
 ) {
-    val review by addReviewViewModel.review.collectAsStateWithLifecycle()
-    val isLoading by addReviewViewModel.isLoading.collectAsStateWithLifecycle()
-    val context = LocalContext.current
+    val addReviewState by addReviewViewModel.addReviewState.collectAsStateWithLifecycle()
 
+    AddReviewContent(
+        backToDetail = backToDetail,
+        addReviewState = addReviewState,
+        updateSafety = addReviewViewModel::updateSafety,
+        updateRating = addReviewViewModel::updateRating,
+        updateDescription = addReviewViewModel::updateDescription,
+        onSubmitReview = { addReviewViewModel.onSubmit(context, backToDetail) }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun AddReviewContent(
+    addReviewState: AddReviewState,
+    backToDetail: () -> Unit,
+    updateSafety: (Int) -> Unit,
+    updateRating: (Int) -> Unit,
+    updateDescription: (String) -> Unit,
+    onSubmitReview: () -> Unit,
+) {
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -92,20 +112,20 @@ fun AddReviewScreen(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = review.placeName,
+                    text = addReviewState.review.placeName,
                     fontWeight = FontWeight.Bold,
                     fontSize = 24.sp
                 )
             }
             RateButtonsRow(
-                onClick = { addReviewViewModel.updateSafety(it + 1) },
-                value = review.safety,
+                onClick = { updateSafety(it + 1) },
+                value = addReviewState.safety,
                 stringResource = R.string.safety_label,
                 imageVector = Icons.Default.CheckCircle
             )
             RateButtonsRow(
-                onClick = { addReviewViewModel.updateRating(it + 1) },
-                value = review.rating,
+                onClick = { updateRating(it + 1) },
+                value = addReviewState.rating,
                 stringResource = R.string.rating_label,
                 imageVector = Icons.Default.Star
             )
@@ -122,10 +142,10 @@ fun AddReviewScreen(
                 )
                 Spacer(modifier = Modifier.padding(8.dp))
                 TextField(
-                    value = review.description,
+                    value = addReviewState.description,
                     minLines = 8,
                     maxLines = 8,
-                    onValueChange = { addReviewViewModel.updateDescription(it) },
+                    onValueChange = { updateDescription(it) },
                     placeholder = { Text(text = stringResource(R.string.add_review_placeholder)) },
                     modifier = Modifier
                         .fillMaxWidth()
@@ -133,11 +153,11 @@ fun AddReviewScreen(
                         .testTag(ADD_REVIEW_DESCRIPTION_FIELD)
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-                if (isLoading) {
+                if (addReviewState.isLoading) {
                     CenteredCircularProgressIndicator()
                 } else {
                     Button(
-                        onClick = { addReviewViewModel.onSubmit(context, backToDetail) },
+                        onClick = { onSubmitReview() },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(horizontal = 8.dp),
@@ -186,6 +206,6 @@ fun RateButtonsRow(
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun AddReviewScreenPreview() {
-    AddReviewScreen({})
+fun AddReviewContentPreview() {
+    AddReviewContent(AddReviewState(), {}, {}, {}, {}, {})
 }
