@@ -1,7 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.explore.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,7 +38,7 @@ fun ExploreTopBar(
     onFilterClick: () -> Unit,
     address: String,
     searchText: String,
-    onSearchTextChange: (String) -> Unit
+    onSearchTextChange: (String) -> Unit,
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -52,7 +51,7 @@ fun ExploreTopBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, Color.LightGray)
+//                .border(1.dp, Color.LightGray)
                 .padding(12.dp)
         ) {
 
@@ -69,7 +68,7 @@ fun ExploreTopBar(
                 placeholder = {
                     Text(
                         text = stringResource(R.string.search_hint),
-                        fontSize = 12.sp
+                        fontSize = 14.sp
                     )
                 },
                 leadingIcon = {
@@ -94,7 +93,9 @@ fun ExploreTopBar(
             }
         }
         Row(
-            Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
