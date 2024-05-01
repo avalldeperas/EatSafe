@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -71,7 +72,9 @@ class EatSafeE2ETests {
     @Test
     fun fullE2ETest_existingUser() {
         // Auth
-        composeRule.onNodeWithText("Welcome to EatSafe").assertIsDisplayed()
+        composeRule.waitUntil(timeoutMillis = 5000L) {
+            composeRule.onAllNodesWithText("Welcome to EatSafe").fetchSemanticsNodes().isNotEmpty()
+        }
         val emailField = composeRule.onNodeWithContentDescription(EMAIL_TEXT_FIELD)
         emailField.performTextInput(TESTER_EMAIL)
         val passwdField = composeRule.onNodeWithContentDescription(PASSWORD_TEXT_FIELD)

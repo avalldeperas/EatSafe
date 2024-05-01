@@ -14,6 +14,7 @@ import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil.showToast
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases.EditProfileInputValidationType
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases.ValidateEditProfileInputUseCase
+import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.state.EditProfileState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -28,94 +29,87 @@ class EditProfileViewModel @Inject constructor(
     private val validateEditProfileInputUseCase: ValidateEditProfileInputUseCase
 ) : ViewModel() {
 
-    private val _email = MutableStateFlow("")
-    val email = _email.asStateFlow()
-
-    private val _displayName = MutableStateFlow("")
-    val displayName = _displayName.asStateFlow()
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
-
-    private val _user = MutableStateFlow(User())
-    val user = _user.asStateFlow()
+    private val _uiState = MutableStateFlow(EditProfileState())
+    val uiState = _uiState.asStateFlow()
 
     init {
         val currentUser = authRepository.getCurrentUser()
+        _uiState.update { state -> state.copy(email = currentUser.email) }
 
-        _email.value = currentUser.email!!
-        if (currentUser.displayName != null)
-            _displayName.value = currentUser.displayName!!
+        if (currentUser.displayName != null) {
+            _uiState.update { state -> state.copy(displayName = currentUser.displayName!!) }
+        }
 
         viewModelScope.launch {
             usersRepository.getUser(currentUser.uid).collectLatest { user ->
-                _user.update { user!! }
+                _uiState.update { state ->
+                    state.copy(
+                        user = user!!,
+                        currentCity = user.currentCity,
+                        email = user.email,
+                        intolerances = user.intolerances
+                    )
+                }
             }
         }
     }
 
     fun updateDisplayName(newName: String) {
-        _displayName.value = newName
+        _uiState.update { state -> state.copy(displayName = newName) }
     }
 
     fun updateCurrentCity(currentCity: String) {
-        _user.value = _user.value.copy(currentCity = currentCity)
+        _uiState.update { state -> state.copy(currentCity = currentCity) }
     }
 
     fun onAllergyClick(intolerance: Intolerance) {
-        val intolerances = _user.value.intolerances.toMutableList()
+        val intolerances = _uiState.value.intolerances.toMutableList()
         if (intolerances.contains(intolerance.label)) {
             intolerances.remove(intolerance.label)
         } else {
             intolerances.add(intolerance.label)
         }
-        _user.value = _user.value.copy(intolerances = intolerances)
+        _uiState.update { state -> state.copy(intolerances = intolerances) }
     }
 
     fun onSaveEdit(context: Context) {
         val validationResult =
-            validateEditProfileInputUseCase(_displayName.value, _user.value.currentCity)
+            validateEditProfileInputUseCase(_uiState.value.displayName, _uiState.value.currentCity)
 
         if (validationResult != EditProfileInputValidationType.Valid) {
             showToast(validationResult.message!!, context)
             return
         }
 
-        val address = GeocoderUtil.getAddressByName(_user.value.currentCity, context)
-        if (!address.hasLatitude() || !address.hasLongitude()) {
-            showToast("Address not found, try again", context)
-            return
-        }
-
-        _user.value = addAddress(_user.value, address)
-
         viewModelScope.launch {
-            _isLoading.value = true
-            val authResult = authRepository.updateProfile(_displayName.value)
-            if (!authResult) {
-                showToast("Error on update auth user, try again.", context)
-                _isLoading.value = false
+            _uiState.update { state -> state.copy(isLoading = true) }
+            val address = GeocoderUtil.getAddressByName(_uiState.value.currentCity, context)
+            if (!address.hasLatitude() || !address.hasLongitude()) {
+                showToast("Address not found, try again", context)
                 return@launch
             }
 
-            val userResult = usersRepository.update(_user.value)
-            if (!userResult) {
-                showToast("Error on storing user, try again.", context)
-                _isLoading.value = false
-                return@launch
+            if (hasDisplayNameChanged()) {
+                val authResult = authRepository.updateProfile(_uiState.value.displayName)
+                if (!authResult) {
+                    showToast("Error on update auth user, try again.", context)
+                    _uiState.update { state -> state.copy(isLoading = true) }
+                    return@launch
+                }
+            }
+
+            if (hasCurrentCityChanged() || hasIntolerancesChanged()) {
+                val userResult = usersRepository.update(buildUser(address))
+                if (!userResult) {
+                    showToast("Error on storing user, try again.", context)
+                    _uiState.update { state -> state.copy(isLoading = false) }
+                    return@launch
+                }
             }
 
             showToast("Profile saved successfully.", context)
-            _isLoading.value = false
+            _uiState.update { state -> state.copy(isLoading = false) }
         }
-    }
-
-    private fun addAddress(user: User, address: Address): User {
-        val location = address.getAddressLine(0)
-        val lat = address.latitude
-        val lng = address.longitude
-
-        return user.copy(currentCity = location, latitude = lat, longitude = lng)
     }
 
     fun onLogoutClick(toLogin: () -> Unit) {
@@ -125,5 +119,31 @@ class EditProfileViewModel @Inject constructor(
         }
 
         toLogin()
+    }
+
+    private fun hasCurrentCityChanged(): Boolean {
+        return _uiState.value.currentCity != _uiState.value.user.currentCity
+    }
+
+    private fun hasDisplayNameChanged(): Boolean {
+        return _uiState.value.displayName != _uiState.value.user.displayName
+    }
+
+    private fun hasIntolerancesChanged(): Boolean {
+        return _uiState.value.intolerances != _uiState.value.user.intolerances
+    }
+
+    private fun buildUser(address: Address): User {
+        val state = _uiState.value
+        val location = address.getAddressLine(0)
+        val lat = address.latitude
+        val lng = address.longitude
+
+        return state.user.copy(
+            currentCity = location,
+            latitude = lat,
+            longitude = lng,
+            intolerances = state.intolerances
+        )
     }
 }
