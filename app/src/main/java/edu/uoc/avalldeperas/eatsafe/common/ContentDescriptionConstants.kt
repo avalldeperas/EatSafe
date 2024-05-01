@@ -46,6 +46,9 @@ object ContentDescriptionConstants {
 
     // favs
     const val ADD_FAVORITE_BUTTON = "add-favorite-btn"
+    const val FAV_PLACE_TYPE_ICON = "fav-place-type-icon"
+    const val FAV_VIEW_HEART_ICON = "fav-view-heart-icon"
+    const val FAV_LOCATION_ICON = "fav-location-icon"
     const val FAVORITE_PLACE_IMAGE = "favorite-place-image"
 
     // components
