@@ -12,6 +12,7 @@ import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.LoadReviewUseCase
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.SaveReviewUseCase
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.ValidateAddReviewInputUseCase
+import edu.uoc.avalldeperas.eatsafe.reviews.presentation.state.AddReviewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -29,45 +30,49 @@ class AddReviewViewModel @Inject constructor(
     private val placeId: String = checkNotNull(savedStateHandle[Constants.PLACE_ID_PARAM])
     private val placeName: String = checkNotNull(savedStateHandle[Constants.PLACE_NAME_PARAM])
 
-    private val _review = MutableStateFlow(Review())
-    val review = _review.asStateFlow()
-
-    private val _isLoading = MutableStateFlow(false)
-    val isLoading = _isLoading.asStateFlow()
+    private val _addReviewState = MutableStateFlow(AddReviewState())
+    val addReviewState = _addReviewState.asStateFlow()
 
     init {
-        _isLoading.update { true }
+        _addReviewState.update { state -> state.copy(isLoading = true) }
         viewModelScope.launch {
-            _review.update { loadReviewUseCase(placeId, placeName) }
-            _isLoading.update { false }
+
+            _addReviewState.update { state ->
+                state.copy(review = loadReviewUseCase(placeId, placeName))
+            }
+
+            _addReviewState.update { state -> state.copy(isLoading = false) }
+
         }
     }
 
     fun updateSafety(safety: Int) {
-        _review.update { it.copy(safety = safety) }
+        _addReviewState.update { state -> state.copy(safety = safety) }
     }
 
     fun updateRating(rating: Int) {
-        _review.update { it.copy(rating = rating) }
+        _addReviewState.update { state -> state.copy(rating = rating) }
     }
 
     fun updateDescription(description: String) {
-        _review.update { it.copy(description = description) }
+        _addReviewState.update { state -> state.copy(description = description) }
     }
 
     fun onSubmit(context: Context, backToDetail: () -> Unit) {
-        _isLoading.update { true }
-        val result = validateAddReviewInputUseCase(review = _review.value)
+        _addReviewState.update { state -> state.copy(isLoading = true) }
+
+        val newReview = buildReview()
+        val result = validateAddReviewInputUseCase(review = buildReview())
 
         if (!result.isValid) {
             showToast(text = result.message!!, context = context)
-            _isLoading.update { false }
+            _addReviewState.update { state -> state.copy(isLoading = false) }
             return
         }
 
         viewModelScope.launch {
-            val isSuccess = saveReviewUseCase(_review.value)
-            _isLoading.update { false }
+            val isSuccess = saveReviewUseCase(newReview)
+            _addReviewState.update { state -> state.copy(isLoading = false) }
             if (!isSuccess) {
                 showToast(resource = R.string.error_save_review, context = context)
                 return@launch
@@ -75,5 +80,13 @@ class AddReviewViewModel @Inject constructor(
             backToDetail()
             showToast(resource = R.string.review_saved_successfully, context = context)
         }
+    }
+
+    private fun buildReview(): Review {
+        return _addReviewState.value.review.copy(
+            rating = _addReviewState.value.rating,
+            safety = _addReviewState.value.safety,
+            description = _addReviewState.value.description
+        )
     }
 }
