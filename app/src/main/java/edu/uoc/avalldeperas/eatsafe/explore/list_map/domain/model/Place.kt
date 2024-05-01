@@ -26,7 +26,7 @@ data class Place(
     val reviews: List<Review> = mutableListOf(),
     @get:Exclude
     val favorited: List<FavoritePlace> = mutableListOf()
-)  {
+) {
     fun doesMatchSearchQuery(query: String): Boolean {
         val matchingCombinations = listOf(
             "$name$address$cuisine${type.displayName}",
@@ -36,5 +36,9 @@ data class Place(
         return matchingCombinations.any {
             it.contains(query, ignoreCase = true)
         }
+    }
+
+    fun doesMatchFilter(filters: Filters): Boolean {
+        return allergens.map { it.displayName }.containsAll(filters.intolerances)
     }
 }

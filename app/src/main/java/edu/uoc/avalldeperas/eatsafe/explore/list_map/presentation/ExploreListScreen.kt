@@ -73,8 +73,7 @@ fun ExploreListScreen(
                 FilterBottomSheet(
                     filters = filters,
                     onDismiss = { showSheet = false },
-                    onIntoleranceClick = { exploreViewModel.updateIntolerance(it) },
-                    onSubmit = { exploreViewModel.submitFilters() }
+                    onIntoleranceClick = { exploreViewModel.updateIntolerance(it) }
                 )
             }
         }
