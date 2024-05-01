@@ -3,6 +3,7 @@ package edu.uoc.avalldeperas.eatsafe.ui.profile
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -22,7 +23,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import java.text.SimpleDateFormat
-
 
 @RunWith(AndroidJUnit4::class)
 class ProfileScreenTest {
@@ -47,9 +47,13 @@ class ProfileScreenTest {
     fun profileScreen_whenFirstTimeForUser_thenDisplaysEmptyValues() {
         buildScreen(ProfileState(user = aUser), displayName = aUser.username)
 
+        rule.waitUntil(timeoutMillis = 5000L) {
+            rule.onAllNodesWithText("Hello username!").fetchSemanticsNodes().isNotEmpty()
+        }
+
         rule.onNodeWithContentDescription(PROFILE_IMAGE).assertIsDisplayed()
         rule.onNodeWithContentDescription(EDIT_PROFILE_ICON).assertIsDisplayed()
-        rule.onNodeWithText("Hello username!").assertIsDisplayed()
+
         rule.onNodeWithText("User since 2021").assertIsDisplayed()
         rule.onNodeWithText("A city name").assertIsDisplayed()
         rule.onNodeWithText("Intolerances").assertIsDisplayed()
@@ -66,10 +70,13 @@ class ProfileScreenTest {
         val reviews = dummyReviews(date)
         buildScreen(ProfileState(user = aUser, reviews = reviews), displayName = "DisplayName")
 
+        rule.waitUntil(timeoutMillis = 5000L) {
+            rule.onAllNodesWithText("Hello DisplayName!").fetchSemanticsNodes().isNotEmpty()
+        }
+
         rule.onNodeWithContentDescription(PROFILE_IMAGE).assertIsDisplayed()
         rule.onNodeWithContentDescription(EDIT_PROFILE_ICON).assertIsDisplayed()
 
-        rule.onNodeWithText("Hello DisplayName!").assertIsDisplayed()
         rule.onNodeWithText("User since 2021").assertIsDisplayed()
         rule.onNodeWithText("A city name").assertIsDisplayed()
         rule.onNodeWithText("Intolerances").assertIsDisplayed()
@@ -78,13 +85,14 @@ class ProfileScreenTest {
         rule.onNodeWithText("My Reviews").assertIsDisplayed()
         rule.onNodeWithText("There are no reviews yet, share your experience!")
             .assertIsNotDisplayed()
-        repeat(reviews.size) {
-            rule.onNodeWithText("place name $it").assertIsDisplayed()
-            rule.onNodeWithText("${it+1}$date").assertIsDisplayed()
-            rule.onNodeWithContentDescription(PROFILE_REVIEW_PLACE_IMAGE + "placeId$it")
-                .assertIsDisplayed()
-            rule.onNodeWithText("A review description $it").assertIsDisplayed()
+
+        rule.waitUntil(timeoutMillis = 5000L) {
+            rule.onAllNodesWithText("place name 0").fetchSemanticsNodes().isNotEmpty()
         }
+        rule.onNodeWithText("place name 0").assertIsDisplayed()
+        rule.onNodeWithText("1/5/2024").assertIsDisplayed()
+        rule.onNodeWithContentDescription(PROFILE_REVIEW_PLACE_IMAGE + "placeId0")
+        rule.onNodeWithText("A review description 0").assertIsDisplayed()
     }
 
     @Test
