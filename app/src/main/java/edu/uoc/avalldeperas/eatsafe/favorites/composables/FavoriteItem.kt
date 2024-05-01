@@ -29,8 +29,10 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAVORITE_PLACE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_LOCATION_ICON
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_PLACE_TYPE_ICON
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_VIEW_HEART_ICON
 import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.PlaceType
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
@@ -73,7 +75,7 @@ fun FavoriteItem(favorite: FavoritePlace, onRowClick: (String) -> Unit) {
                 )
                 Icon(
                     imageVector = Icons.Default.Favorite,
-                    contentDescription = ContentDescriptionConstants.LIST_VIEW_PLACE_TYPE_ICON,
+                    contentDescription = FAV_VIEW_HEART_ICON + favorite.placeId,
                     tint = Color.Red
                 )
             }
@@ -85,11 +87,13 @@ fun FavoriteItem(favorite: FavoritePlace, onRowClick: (String) -> Unit) {
             ) {
                 Icon(
                     imageVector = favorite.type.imageVector,
-                    contentDescription = ContentDescriptionConstants.LIST_VIEW_PLACE_TYPE_ICON + favorite.placeId
+                    contentDescription = FAV_PLACE_TYPE_ICON + favorite.placeId
                 )
                 Text(
                     text = favorite.type.name,
-                    modifier = Modifier.align(Alignment.CenterVertically).weight(1f),
+                    modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .weight(1f),
                     fontSize = 12.sp,
                     fontStyle = FontStyle.Italic
                 )
@@ -107,7 +111,7 @@ fun FavoriteItem(favorite: FavoritePlace, onRowClick: (String) -> Unit) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Place,
-                    contentDescription = ContentDescriptionConstants.FAV_FAVORITES_BUTTON + favorite.placeId,
+                    contentDescription = FAV_LOCATION_ICON + favorite.placeId,
                     tint = MAIN_GREEN
                 )
                 Text(

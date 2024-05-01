@@ -18,6 +18,7 @@ import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
 import edu.uoc.avalldeperas.eatsafe.common.composables.SimpleTopAppBar
 import edu.uoc.avalldeperas.eatsafe.favorites.composables.FavoriteItem
+import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
 
 @Composable
 fun FavoritesScreen(
@@ -25,7 +26,14 @@ fun FavoritesScreen(
     favoritesViewModel: FavoritesViewModel = hiltViewModel()
 ) {
     val favorites by favoritesViewModel.favorites.collectAsStateWithLifecycle()
+    FavoritesContent(favorites = favorites, toDetailView = toDetailView, )
+}
 
+@Composable
+fun FavoritesContent(
+    favorites: List<FavoritePlace>,
+    toDetailView: (String) -> Unit,
+) {
     Column(
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,

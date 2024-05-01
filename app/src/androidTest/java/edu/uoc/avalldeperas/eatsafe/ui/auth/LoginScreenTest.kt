@@ -1,4 +1,4 @@
-package edu.uoc.avalldeperas.eatsafe.ui.auth.login.presentation
+package edu.uoc.avalldeperas.eatsafe.ui.auth
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertHasClickAction
