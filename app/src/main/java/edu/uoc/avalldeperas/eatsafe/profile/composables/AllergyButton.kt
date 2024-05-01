@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ALLERGY_ICON
 import edu.uoc.avalldeperas.eatsafe.ui.theme.BLUE_STRONG
 
 @Composable
@@ -34,7 +35,7 @@ fun AllergyButton(
     ) {
         Icon(
             painter = painterResource(id = icon),
-            contentDescription = "allergy-icon-$text",
+            contentDescription = ALLERGY_ICON + text,
             modifier = Modifier.size(ButtonDefaults.IconSize)
         )
         Spacer(modifier = Modifier.size(ButtonDefaults.IconSpacing))

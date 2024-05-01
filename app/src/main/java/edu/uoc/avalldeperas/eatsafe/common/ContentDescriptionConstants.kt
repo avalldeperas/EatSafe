@@ -24,6 +24,10 @@ object ContentDescriptionConstants {
     const val ALLERGEN_ICON: String = "allergen-icon"
     const val PLACE_IMAGE: String = "place-image"
 
+    // Profile
+    const val ALLERGY_ICON = "allergy-icon-"
+    const val PROFILE_REVIEW_PLACE_IMAGE = "profile-review-place-image-"
+
     // edit profile
     const val EDIT_PROFILE_ICON = "edit-profile-icon"
     const val EDIT_PROFILE_IMAGE = "edit-profile-image"

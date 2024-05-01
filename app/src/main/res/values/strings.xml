@@ -36,4 +36,5 @@
     <string name="no_allergens_yet">Does not control any allergens yet</string>
     <string name="reviews_header">Reviews</string>
     <string name="ratings_header">"Ratings: "</string>
+    <string name="loading_label">Loading…</string>
 </resources>
