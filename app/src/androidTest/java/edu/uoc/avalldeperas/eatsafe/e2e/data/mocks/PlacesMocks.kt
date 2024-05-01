@@ -1,6 +1,7 @@
 package edu.uoc.avalldeperas.eatsafe.e2e.data.mocks
 
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Allergen
 
 object PlacesMocks {
     internal fun dummyPlaces(): List<Place> {
@@ -10,7 +11,8 @@ object PlacesMocks {
                 "Place $it",
                 address = "A Place Address $it",
                 telephone = "901234567$it",
-                website = "www.website$it.com"
+                website = "www.website$it.com",
+                allergens = mutableListOf(Allergen.Lactose, Allergen.Gluten)
             )
         }
     }
