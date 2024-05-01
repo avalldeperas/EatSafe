@@ -20,6 +20,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -78,12 +79,20 @@ class DetailViewModel @Inject constructor(
 
     private fun calculateAvgSafety(reviews: List<Review>): Double {
         val totalSafety = reviews.sumOf { it.safety }
-        return totalSafety.toDouble() / reviews.size.toDouble()
+        val avgSafety = totalSafety.toDouble() / reviews.size
+
+        return roundTo(avgSafety)
     }
 
     private fun calculateAvgRating(reviews: List<Review>): Double {
-        val totalSafety = reviews.sumOf { it.rating }
-        return totalSafety.toDouble() / reviews.size.toDouble()
+        val totalRating = reviews.sumOf { it.rating }
+        val avgRating = totalRating.toDouble() / reviews.size.toDouble()
+
+        return roundTo(avgRating)
+    }
+
+    private fun roundTo(value: Double): Double {
+        return value.toBigDecimal().setScale(1, RoundingMode.HALF_EVEN).toDouble()
     }
 
     fun addFavourite(context: Context) {

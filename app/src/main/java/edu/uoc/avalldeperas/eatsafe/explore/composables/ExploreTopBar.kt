@@ -38,7 +38,7 @@ fun ExploreTopBar(
     onFilterClick: () -> Unit,
     address: String,
     searchText: String,
-    onSearchTextChange: (String) -> Unit,
+    onSearchTextChange: (String) -> Unit
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -51,7 +51,6 @@ fun ExploreTopBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-//                .border(1.dp, Color.LightGray)
                 .padding(12.dp)
         ) {
 

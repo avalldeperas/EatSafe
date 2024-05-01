@@ -55,7 +55,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.google.firebase.Timestamp
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.PLACE_INFO_ELEMENT
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_FAVORITE_BUTTON
@@ -375,20 +374,6 @@ fun AllergensHeader(place: Place) {
             }
         }
     }
-}
-
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun ReviewItemPreview() {
-    ReviewItem(
-        Review(
-            userName = "avalldeperas",
-            safety = 4,
-            rating = 5,
-            date = Timestamp.now(),
-            description = "A Description"
-        )
-    )
 }
 
 @Preview(showSystemUi = true, showBackground = true)
