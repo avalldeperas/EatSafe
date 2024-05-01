@@ -17,6 +17,7 @@ class FavoritesRepositoryImpl @Inject constructor() : FavoritesRepository {
     private val favoritesRef = Firebase.firestore.collection("favorites")
 
     override fun getFavoritesByUser(userId: String): Flow<List<FavoritePlace>> {
+        Log.d("avb", "getFavoritesByUser: userid = $userId")
         return try {
             favoritesRef.whereEqualTo(USER_ID, userId).snapshots()
                 .map { it.toObjects<FavoritePlace>() }
@@ -30,10 +31,7 @@ class FavoritesRepositoryImpl @Inject constructor() : FavoritesRepository {
         Log.d("avb", "getFavoritesByPlaceAndUser: placeId = $placeId, userid = $userId")
         return try {
             favoritesRef.whereEqualTo(PLACE_ID, placeId).whereEqualTo(USER_ID, userId).snapshots()
-                .map {
-                    Log.d("avb", "getFavoritesByPlaceAndUser: favourites found!: = ${it.toObjects<FavoritePlace>()}")
-                    it.toObjects<FavoritePlace>()
-                }
+                .map { it.toObjects<FavoritePlace>() }
         } catch (e: Exception) {
             Log.d("avb", "getFavoritesByPlaceAndUser: exception = ${e.message}")
             emptyFlow()

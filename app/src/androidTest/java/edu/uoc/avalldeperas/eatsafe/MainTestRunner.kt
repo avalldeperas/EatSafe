@@ -10,6 +10,7 @@ import edu.uoc.avalldeperas.eatsafe.ui.auth.LoginScreenTest
 import edu.uoc.avalldeperas.eatsafe.ui.auth.RegisterScreenTest
 import edu.uoc.avalldeperas.eatsafe.ui.explore.DetailViewScreenTest
 import edu.uoc.avalldeperas.eatsafe.ui.favorites.FavoritesScreenTest
+import edu.uoc.avalldeperas.eatsafe.ui.profile.ProfileScreenTest
 import edu.uoc.avalldeperas.eatsafe.ui.reviews.AddReviewScreenTest
 import org.junit.runner.RunWith
 import org.junit.runners.Suite
@@ -23,6 +24,7 @@ import org.junit.runners.Suite
     DetailViewScreenTest::class,
     AddReviewScreenTest::class,
     FavoritesScreenTest::class,
+    ProfileScreenTest::class,
     // E2E tests
     EatSafeE2ETests::class
 )

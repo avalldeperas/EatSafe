@@ -39,13 +39,16 @@ import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PROFILE_IMAGE
-import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PROFILE_REVIEW_PLACE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicatorWithText
+import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessageIcon
 import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
 import edu.uoc.avalldeperas.eatsafe.explore.composables.AverageRatingSection
 import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
 import edu.uoc.avalldeperas.eatsafe.explore.detail_view.presentation.AppHorizontalDivider
 import edu.uoc.avalldeperas.eatsafe.profile.composables.AllergyButton
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
+import edu.uoc.avalldeperas.eatsafe.profile.details.presentation.state.ProfileState
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.LIGHT_GREEN
@@ -56,27 +59,44 @@ fun ProfileScreen(
     toEditProfile: () -> Unit,
     profileViewModel: ProfileViewModel = hiltViewModel()
 ) {
-    val user by profileViewModel.user.collectAsStateWithLifecycle()
-    val reviews by profileViewModel.reviews.collectAsStateWithLifecycle()
+    val profileState by profileViewModel.profileState.collectAsStateWithLifecycle()
 
-    Column(
-        Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())) {
+    ProfileContent(
+        profileState = profileState,
+        toEditProfile = toEditProfile,
+        getProfileName = { profileViewModel.getDisplayName() }
+    )
+}
+
+@Composable
+fun ProfileContent(
+    profileState: ProfileState,
+    toEditProfile: () -> Unit,
+    getProfileName: () -> String
+) {
+    if (profileState.isLoading) {
+        CenteredCircularProgressIndicatorWithText()
+    } else {
         Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(LIGHT_GREEN)
+            Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
         ) {
-            ProfileHeader(profileViewModel.getDisplayName(), user, toEditProfile)
-        }
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            Column(Modifier.padding(16.dp)) {
-                IntolerancesSection(user = user)
-                Spacer(modifier = Modifier.padding(vertical = 12.dp))
-                ReviewsSection(reviews = reviews)
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(LIGHT_GREEN)
+            ) {
+                ProfileHeader(profileState, toEditProfile, getProfileName)
+            }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                Column(Modifier.padding(16.dp)) {
+                    IntolerancesSection(user = profileState.user)
+                    Spacer(modifier = Modifier.padding(vertical = 12.dp))
+                    ReviewsSection(reviews = profileState.reviews)
+                }
             }
         }
     }
@@ -92,7 +112,7 @@ fun ReviewsSection(reviews: List<Review>) {
         )
         Spacer(modifier = Modifier.padding(8.dp))
         if (reviews.isEmpty()) {
-            EmptyListMessage(R.string.no_reviews_yet)
+            EmptyListMessageIcon(R.string.no_reviews_yet)
         } else {
             reviews.forEach {
                 MyReviewItem(it)
@@ -112,7 +132,7 @@ fun MyReviewItem(review: Review) {
         Column {
             Image(
                 painter = painterResource(id = R.drawable.restaurant_detail),
-                contentDescription = "",
+                contentDescription = PROFILE_REVIEW_PLACE_IMAGE + review.placeId,
                 Modifier.size(70.dp)
             )
         }
@@ -120,7 +140,7 @@ fun MyReviewItem(review: Review) {
             modifier = Modifier.padding(4.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Row() {
+            Row {
                 Text(
                     text = review.placeName,
                     Modifier.weight(1f),
@@ -129,7 +149,7 @@ fun MyReviewItem(review: Review) {
                 )
                 Text(text = StringUtils.getParsedDate(review.date), fontSize = 12.sp)
             }
-            Row() {
+            Row {
                 Row {
                     SafetySectionWithNumber(
                         modifier = Modifier.weight(0.7f),
@@ -176,9 +196,13 @@ fun IntolerancesSection(user: User) {
 }
 
 @Composable
-fun ProfileHeader(displayName: String, user: User, onEditClick: () -> Unit) {
-    val date =
-        user.dateJoined.toDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+fun ProfileHeader(
+    profileState: ProfileState,
+    onEditClick: () -> Unit,
+    getDisplayName: () -> String
+) {
+    val date = profileState.user.dateJoined.toDate().toInstant().atZone(ZoneId.systemDefault())
+        .toLocalDate()
 
     Column(
         modifier = Modifier
@@ -203,7 +227,7 @@ fun ProfileHeader(displayName: String, user: User, onEditClick: () -> Unit) {
                     .padding(8.dp)
             ) {
                 Text(
-                    text = "Hello $displayName!",
+                    text = "Hello ${getDisplayName()}!",
                     color = DARK_GREEN,
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
@@ -221,7 +245,7 @@ fun ProfileHeader(displayName: String, user: User, onEditClick: () -> Unit) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "")
                     Text(
-                        text = user.currentCity,
+                        text = profileState.user.currentCity,
                         color = DARK_GREEN,
                         fontSize = 10.sp,
                         maxLines = 1,
@@ -243,6 +267,7 @@ fun ProfileHeader(displayName: String, user: User, onEditClick: () -> Unit) {
 
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
-fun ProfileHeaderPreview() {
-    ProfileHeader("avalldeperas", User(currentCity = "Olesa de montserrat"), {})
+fun ProfileContentPreview() {
+    val reviews = listOf(Review(placeName = "name", description = "A description"))
+    ProfileContent(ProfileState(reviews = reviews), {}, { "User" })
 }

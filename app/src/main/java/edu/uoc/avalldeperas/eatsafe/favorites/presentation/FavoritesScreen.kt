@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
-import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessage
+import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessageIcon
 import edu.uoc.avalldeperas.eatsafe.common.composables.SimpleTopAppBar
 import edu.uoc.avalldeperas.eatsafe.favorites.composables.FavoriteItem
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
@@ -48,7 +48,7 @@ fun FavoritesContent(
                     .padding(paddingValues)
             ) {
                 if (favorites.isEmpty()) {
-                    EmptyListMessage(R.string.no_favorites_yet)
+                    EmptyListMessageIcon(R.string.no_favorites_yet)
                 } else {
                     LazyColumn {
                         items(
