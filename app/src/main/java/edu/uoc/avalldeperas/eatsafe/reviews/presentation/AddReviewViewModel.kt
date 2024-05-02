@@ -9,12 +9,13 @@ import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil.showToast
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
-import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.LoadReviewUseCase
+import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.GetUserInfoUseCase
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.SaveReviewUseCase
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.ValidateAddReviewInputUseCase
 import edu.uoc.avalldeperas.eatsafe.reviews.presentation.state.AddReviewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -22,7 +23,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AddReviewViewModel @Inject constructor(
     private val validateAddReviewInputUseCase: ValidateAddReviewInputUseCase,
-    private val loadReviewUseCase: LoadReviewUseCase,
+    private val getUserInfoUse: GetUserInfoUseCase,
     private val saveReviewUseCase: SaveReviewUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -35,14 +36,17 @@ class AddReviewViewModel @Inject constructor(
 
     init {
         _addReviewState.update { state -> state.copy(isLoading = true) }
+
+        val review = Review(placeId = placeId, placeName = placeName)
+
         viewModelScope.launch {
 
-            _addReviewState.update { state ->
-                state.copy(review = loadReviewUseCase(placeId, placeName))
+            getUserInfoUse().collectLatest { user ->
+                _addReviewState.update { state ->
+                    state.copy(review = review.copy(userName = user!!.username, userId = user.uid))
+                }
+                _addReviewState.update { state -> state.copy(isLoading = false) }
             }
-
-            _addReviewState.update { state -> state.copy(isLoading = false) }
-
         }
     }
 

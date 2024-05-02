@@ -7,4 +7,9 @@ data class Filters(
     val rating: Double = 0.0,
     val name: String = "",
     val placeType: String = ""
-)
+) {
+    fun hasAnyValue(): Boolean {
+        return intolerances.isNotEmpty() || cuisine.isNotEmpty() || safety > 0.0
+                || rating > 0.0 || placeType.isNotEmpty()
+    }
+}

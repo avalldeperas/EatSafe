@@ -1,7 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.explore.composables
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -51,11 +51,15 @@ fun ExploreTopBar(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier
                 .fillMaxWidth()
-                .border(1.dp, Color.LightGray)
                 .padding(12.dp)
         ) {
 
             TextField(
+                colors = TextFieldDefaults.colors(
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent
+                ),
                 value = searchText,
                 onValueChange = { onSearchTextChange(it) },
                 modifier = Modifier.weight(0.8f),
@@ -63,7 +67,7 @@ fun ExploreTopBar(
                 placeholder = {
                     Text(
                         text = stringResource(R.string.search_hint),
-                        fontSize = 12.sp
+                        fontSize = 14.sp
                     )
                 },
                 leadingIcon = {
@@ -88,7 +92,9 @@ fun ExploreTopBar(
             }
         }
         Row(
-            Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {

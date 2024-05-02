@@ -1,7 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation
 
 import android.location.Location
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -39,15 +38,20 @@ class ExploreViewModel @Inject constructor(
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
 
+    private val _filters = MutableStateFlow(Filters())
+    val filters = _filters.asStateFlow()
+
     private val _places = MutableStateFlow<List<Place>>(mutableListOf())
-    val places = searchText.onEach { _isSearching.update { true } }
-        .combine(_places) { text, places ->
-            if (text.isBlank()) {
-                places
-            } else {
-                places.filter { it.doesMatchSearchQuery(text) }
-            }
-        }.onEach { _isSearching.update { false } }
+    val places = combine(searchText, filters, _places) { text, filters, places ->
+        var placesToReturn = places
+        if (filters.hasAnyValue()) {
+            placesToReturn = placesToReturn.filter { it.doesMatchFilter(filters) }
+        }
+        if (text.isNotEmpty()) {
+            placesToReturn = placesToReturn.filter { it.doesMatchSearchQuery(text) }
+        }
+        placesToReturn
+    }.onEach { _isSearching.update { false } }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), _places.value)
 
     private val _user = MutableStateFlow(User())
@@ -55,9 +59,6 @@ class ExploreViewModel @Inject constructor(
 
     private val _loading = MutableStateFlow(false)
     val isLoading = _loading.asStateFlow()
-
-    private val _filters = MutableStateFlow(Filters())
-    val filters = _filters.asStateFlow()
 
     private val _isSearching = MutableStateFlow(false)
     val isSearching = _isSearching.asStateFlow()
@@ -105,15 +106,7 @@ class ExploreViewModel @Inject constructor(
         } else {
             intolerances.add(intolerance)
         }
-        _filters.value = _filters.value.copy(intolerances = intolerances)
-    }
-
-    fun submitFilters() {
-        val currentPlaces = _places.value
-        val result = currentPlaces.filter { place ->
-            place.allergens.map { it.displayName }.containsAll(_filters.value.intolerances)
-        }
-        Log.d("avb", "submitFilters: ${result.map { it.name }}")
+        _filters.update { filter -> filter.copy(intolerances = intolerances) }
     }
 
     fun onSearchTextChange(text: String) {
