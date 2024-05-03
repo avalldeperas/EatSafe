@@ -14,13 +14,11 @@ import edu.uoc.avalldeperas.eatsafe.favorites.data.FavoritesRepository
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants
 import edu.uoc.avalldeperas.eatsafe.reviews.data.ReviewsRepository
-import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.math.RoundingMode
 import javax.inject.Inject
 
 @HiltViewModel
@@ -44,7 +42,14 @@ class DetailViewModel @Inject constructor(
 
             launch {
                 placeRepository.getPlace(placeId).collectLatest { place ->
-                    _detailState.update { currentState -> currentState.copy(place = place!!) }
+                    val reviews = _detailState.value.place.reviews
+                    if (reviews.isNotEmpty()) {
+                        _detailState.update { currentState ->
+                            currentState.copy(place = place!!.copy(reviews = reviews))
+                        }
+                    } else {
+                        _detailState.update { currentState -> currentState.copy(place = place!!) }
+                    }
                 }
             }
 
@@ -52,12 +57,7 @@ class DetailViewModel @Inject constructor(
                 reviewsRepository.getReviewsByPlace(placeId).collectLatest { reviews ->
                     _detailState.update { currentState ->
                         currentState.copy(
-                            place = currentState.place.copy(
-                                averageRating = calculateAvgRating(reviews),
-                                averageSafety = calculateAvgSafety(reviews),
-                                totalReviews = reviews.size,
-                                reviews = reviews
-                            ),
+                            place = currentState.place.copy(reviews = reviews),
                             isUserReview = reviews.map { it.userId }
                                 .contains(_detailState.value.userId)
                         )
@@ -75,30 +75,6 @@ class DetailViewModel @Inject constructor(
                     }
                 }
         }
-    }
-
-    private fun calculateAvgSafety(reviews: List<Review>): Double {
-        if (reviews.isEmpty()) {
-            return 0.0
-        }
-        val totalSafety = reviews.sumOf { it.safety }
-        val avgSafety = totalSafety.toDouble() / reviews.size
-
-        return roundTo(avgSafety)
-    }
-
-    private fun calculateAvgRating(reviews: List<Review>): Double {
-        if (reviews.isEmpty()) {
-            return 0.0
-        }
-        val totalRating = reviews.sumOf { it.rating }
-        val avgRating = totalRating.toDouble() / reviews.size.toDouble()
-
-        return roundTo(avgRating)
-    }
-
-    private fun roundTo(value: Double): Double {
-        return value.toBigDecimal().setScale(1, RoundingMode.HALF_EVEN).toDouble()
     }
 
     fun addFavourite(context: Context) {

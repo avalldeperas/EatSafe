@@ -26,4 +26,8 @@ class FakePlaceRepository @Inject constructor() : PlaceRepository {
 
         return flow { emit(place) }
     }
+
+    override suspend fun update(place: Place): Boolean {
+        return true
+    }
 }

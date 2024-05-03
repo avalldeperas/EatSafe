@@ -5,6 +5,7 @@ import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
 import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Allergen
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
+import java.math.RoundingMode
 
 data class Place(
     val placeId: String = "",
@@ -25,7 +26,7 @@ data class Place(
     val allergens: MutableList<Allergen> = mutableListOf(),
     val reviews: List<Review> = mutableListOf(),
     @get:Exclude
-    val favorited: List<FavoritePlace> = mutableListOf()
+    val favorited: List<FavoritePlace> = mutableListOf(),
 ) {
     fun doesMatchSearchQuery(query: String): Boolean {
         val matchingCombinations = listOf(
@@ -40,5 +41,25 @@ data class Place(
 
     fun doesMatchFilter(filters: Filters): Boolean {
         return allergens.map { it.displayName }.containsAll(filters.intolerances)
+    }
+
+    fun calculateNewAverageRating(rating: Int): Double {
+        val total = averageRating * totalReviews
+        val newTotal = totalReviews.inc()
+        val newAvgRating = (total + rating) / newTotal
+
+        return if (newAvgRating.rem(1) == (0.0)) newAvgRating else roundTo (newAvgRating)
+    }
+
+    fun calculateNewAverageSafety(safety: Int): Double {
+        val totalSafety = averageSafety * totalReviews
+        val newTotal = totalReviews.inc()
+        val newAvgSafety = (totalSafety + safety) / newTotal
+
+        return if (newAvgSafety.rem(1) == (0.0)) newAvgSafety else roundTo (newAvgSafety)
+    }
+
+    private fun roundTo(value: Double): Double {
+        return value.toBigDecimal().setScale(1, RoundingMode.HALF_EVEN).toDouble()
     }
 }

@@ -47,6 +47,7 @@ class ReviewsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun save(review: Review): Boolean {
+        Log.d("avb", "ReviewsRepository:: save review: $review")
         return try {
             val document = reviewsRef.document()
             review.reviewId = document.id
