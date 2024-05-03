@@ -104,7 +104,7 @@ class EatSafeE2ETests {
         composeRule.onNodeWithText("Save").performClick()
         // Back to Explore Detail
         composeRule.onNodeWithText("Reviews").assertIsDisplayed()
-        // TODO: mimic firestore refresh here
+        // TODO: mimic firestore refresh here!
 //        composeRule.onNodeWithText("Best experience ever, will repeat").assertIsDisplayed()
         // favs
         composeRule.onNodeWithContentDescription(ADD_FAVORITE_BUTTON).performClick()
