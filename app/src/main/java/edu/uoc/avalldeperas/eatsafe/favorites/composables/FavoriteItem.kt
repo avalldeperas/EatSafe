@@ -57,8 +57,8 @@ fun FavoriteItem(favorite: FavoritePlace, onRowClick: (String) -> Unit) {
             contentScale = ContentScale.Crop,
         )
         Column(
-            modifier = Modifier.padding(start = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,

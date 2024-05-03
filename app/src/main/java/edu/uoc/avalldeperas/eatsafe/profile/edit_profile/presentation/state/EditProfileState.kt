@@ -4,6 +4,7 @@ import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
 
 data class EditProfileState(
     val email: String = "",
+    val username: String = "",
     val displayName: String = "",
     val currentCity: String = "",
     val intolerances: MutableList<String> = mutableListOf(),

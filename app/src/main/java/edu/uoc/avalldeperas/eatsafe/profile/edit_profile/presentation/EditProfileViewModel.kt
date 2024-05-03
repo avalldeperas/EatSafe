@@ -26,7 +26,7 @@ import javax.inject.Inject
 class EditProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val usersRepository: UsersRepository,
-    private val validateEditProfileInputUseCase: ValidateEditProfileInputUseCase
+    private val validateEditProfileInputUseCase: ValidateEditProfileInputUseCase,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EditProfileState())
@@ -45,8 +45,9 @@ class EditProfileViewModel @Inject constructor(
                 _uiState.update { state ->
                     state.copy(
                         user = user!!,
-                        currentCity = user.currentCity,
                         email = user.email,
+                        username = user.username,
+                        currentCity = user.currentCity,
                         intolerances = user.intolerances
                     )
                 }

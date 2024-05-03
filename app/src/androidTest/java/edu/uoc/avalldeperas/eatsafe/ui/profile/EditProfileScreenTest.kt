@@ -14,6 +14,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROF
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_EMAIL
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_USERNAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LOGOUT_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.EditProfileContent
@@ -37,7 +38,11 @@ class EditProfileScreenTest {
 
     @Before
     fun setup() {
-        uiState = EditProfileState(email = "anemail@email.com", currentCity = "A city")
+        uiState = EditProfileState(
+            email = "anemail@email.com",
+            username = "username",
+            currentCity = "A city"
+        )
     }
 
     @Test
@@ -55,6 +60,8 @@ class EditProfileScreenTest {
         rule.onNodeWithText("Personal Details").assertIsDisplayed()
         rule.onNodeWithContentDescription(EDIT_PROFILE_EMAIL).assertIsDisplayed()
         rule.onNodeWithText("anemail@email.com").assertIsDisplayed()
+        rule.onNodeWithContentDescription(EDIT_PROFILE_USERNAME).assertIsDisplayed()
+        rule.onNodeWithText("username").assertIsDisplayed()
         rule.onNodeWithContentDescription(EDIT_PROFILE_FULL_NAME).assertIsDisplayed()
         rule.onNodeWithText("Your name").assertIsDisplayed()
         rule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD).assertIsDisplayed()

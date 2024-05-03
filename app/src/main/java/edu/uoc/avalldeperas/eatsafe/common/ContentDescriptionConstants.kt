@@ -32,6 +32,7 @@ object ContentDescriptionConstants {
     const val EDIT_PROFILE_ICON = "edit-profile-icon"
     const val EDIT_PROFILE_IMAGE = "edit-profile-image"
     const val EDIT_PROFILE_EMAIL = "edit-profile-email"
+    const val EDIT_PROFILE_USERNAME = "edit-profile-username"
     const val EDIT_PROFILE_FULL_NAME = "edit-profile-full-name"
     const val EDIT_PROFILE_BACK_ICON = "edit-profile-back-icon"
     const val LOGOUT_ICON = "logout-icon"

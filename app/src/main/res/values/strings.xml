@@ -10,7 +10,8 @@
     <string name="save">Save</string>
     <string name="signup_button">Sign up</string>
     <string name="email">E-mail</string>
-    <string name="user_full_name">Your name</string>
+    <string name="username">Username</string>
+    <string name="user_display_name">Display name</string>
     <string name="password">Password</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="current_city">Current city</string>
@@ -37,4 +38,5 @@
     <string name="reviews_header">Reviews</string>
     <string name="ratings_header">"Ratings: "</string>
     <string name="loading_label">Loading…</string>
+    <string name="allergens_detail_header">"Allergens: "</string>
 </resources>

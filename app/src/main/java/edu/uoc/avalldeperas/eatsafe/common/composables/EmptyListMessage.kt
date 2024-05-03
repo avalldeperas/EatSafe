@@ -32,7 +32,7 @@ fun EmptyListMessage(textResource: Int = R.string.no_elements_yet) {
         Text(
             text = stringResource(id = textResource),
             fontSize = 16.sp,
-            textAlign = TextAlign.Justify
+            textAlign = TextAlign.Center
         )
     }
 }

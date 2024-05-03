@@ -60,7 +60,7 @@ fun RatingItem(
     modifier: Modifier = Modifier,
     value: Number,
     imageVector: ImageVector,
-    fontSize: TextUnit = 16.sp
+    fontSize: TextUnit = 16.sp,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -79,29 +79,34 @@ fun RatingItem(
 @Composable
 fun RatingsSection(
     modifier: Modifier = Modifier,
-    place: Place
+    place: Place,
 ) {
     Row(
-        modifier = modifier.padding(start = 4.dp),
+        modifier = modifier.padding(horizontal = 24.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
     ) {
-        Text(stringResource(R.string.ratings_header), fontWeight = FontWeight.Bold)
-        RatingItem(
-            modifier = Modifier.testTag(RATING_ITEM_AVG_SAFETY),
-            value = place.averageSafety,
-            imageVector = Icons.Default.CheckCircle
+        Text(
+            text = stringResource(R.string.ratings_header),
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
         )
-        RatingItem(
-            modifier = Modifier.testTag(RATING_ITEM_AVG_RATING),
-            value = place.averageRating,
-            imageVector = Icons.Default.Star
-        )
-        RatingItem(
-            modifier = Modifier.testTag(RATING_ITEM_TOTAL_REVIEWS),
-            value = place.totalReviews,
-            imageVector = Icons.Default.Person
-        )
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+            RatingItem(
+                modifier = Modifier.testTag(RATING_ITEM_AVG_SAFETY),
+                value = place.averageSafety,
+                imageVector = Icons.Default.CheckCircle
+            )
+            RatingItem(
+                modifier = Modifier.testTag(RATING_ITEM_AVG_RATING),
+                value = place.averageRating,
+                imageVector = Icons.Default.Star
+            )
+            RatingItem(
+                modifier = Modifier.testTag(RATING_ITEM_TOTAL_REVIEWS),
+                value = place.totalReviews,
+                imageVector = Icons.Default.Person
+            )
+        }
     }
 }
 
@@ -109,7 +114,7 @@ fun RatingsSection(
 fun AverageRatingSection(
     modifier: Modifier = Modifier,
     averageRating: Double,
-    fontSize: TextUnit = 16.sp
+    fontSize: TextUnit = 16.sp,
 ) {
     val isInt = averageRating.rem(1) == (0.0)
     Row(
