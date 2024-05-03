@@ -10,6 +10,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextClearance
 import androidx.compose.ui.test.performTextInput
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.testing.TestNavHostController
@@ -28,6 +29,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROF
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_USERNAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAVORITE_PLACE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_PASSWORD
@@ -93,6 +95,9 @@ class EatSafeE2ETests {
         // Explore Detail
         composeRule.onNodeWithContentDescription(PLACE_IMAGE).assertIsDisplayed()
         composeRule.onNodeWithText("About").assertIsDisplayed()
+        composeRule.waitUntil(timeoutMillis = 10000L) {
+            composeRule.onAllNodesWithText("Reviews").fetchSemanticsNodes().isNotEmpty()
+        }
         composeRule.onNodeWithText("Reviews").assertIsDisplayed()
         composeRule.onNodeWithText("Add a review").performClick()
         // Add review
@@ -131,9 +136,11 @@ class EatSafeE2ETests {
         composeRule.onNodeWithContentDescription(EDIT_PROFILE_IMAGE).assertIsDisplayed()
         composeRule.onNodeWithContentDescription("allergy-icon-Gluten").performClick()
         composeRule.onNodeWithContentDescription(EDIT_PROFILE_EMAIL).assertIsNotEnabled()
+        composeRule.onNodeWithContentDescription(EDIT_PROFILE_USERNAME).assertIsNotEnabled()
         composeRule.onNodeWithContentDescription(EDIT_PROFILE_FULL_NAME).performTextInput("Tester")
+        composeRule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD).performTextClearance()
         composeRule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD)
-            .performTextInput("Madrid")
+            .performTextInput("Other city")
         composeRule.onNodeWithText("Save").performClick()
         composeRule.waitForIdle()
         composeRule.onNodeWithContentDescription(EDIT_PROFILE_BACK_ICON).performClick()

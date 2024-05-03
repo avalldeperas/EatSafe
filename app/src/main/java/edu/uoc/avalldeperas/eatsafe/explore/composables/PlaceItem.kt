@@ -26,6 +26,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.PLACE_ITEM
@@ -56,13 +57,12 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit, distance: String) {
             contentScale = ContentScale.Crop,
         )
         Column(
-            modifier = Modifier.padding(4.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            modifier = Modifier.padding(8.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
-                modifier = Modifier.padding(4.dp)
             ) {
                 Icon(
                     imageVector = place.type.imageVector,
@@ -76,7 +76,19 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit, distance: String) {
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
-                Text(text = distance)
+                Text(text = distance, fontSize = 12.sp)
+            }
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text(
+                    text = "${place.cuisine} ${place.type.name}",
+                    fontSize = 12.sp,
+                    maxLines = 1,
+                    fontStyle = FontStyle.Italic,
+                    overflow = TextOverflow.Ellipsis
+                )
             }
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -85,7 +97,8 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit, distance: String) {
             ) {
                 Icon(
                     imageVector = Icons.Default.Place,
-                    contentDescription = FAV_FAVORITES_BUTTON + place.placeId
+                    contentDescription = FAV_FAVORITES_BUTTON + place.placeId,
+                    tint = MAIN_GREEN
                 )
                 Text(
                     text = place.address,
@@ -97,7 +110,7 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit, distance: String) {
                 )
             }
             Row(modifier = Modifier.padding(start = 4.dp)) {
-                SafetySectionWithNumber(modifier = Modifier.weight(1f), place.averageSafety)
+                SafetySectionWithNumber(modifier = Modifier.weight(1f), place.averageSafety, fontSize = 12.sp)
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(text = place.averageRating.toString())
                     Icon(
@@ -110,4 +123,10 @@ fun PlaceItem(place: Place, onRowClick: (String) -> Unit, distance: String) {
         }
     }
     HorizontalDivider()
+}
+
+@Preview(showBackground = true, showSystemUi = true)
+@Composable
+fun PlaceItemPreview(){
+    PlaceItem(Place(name = "Raco del pla", cuisine = "Italian", address = "Carrer Ciutat de Granada, 67, Barcelona"), {}, distance = "200m")
 }

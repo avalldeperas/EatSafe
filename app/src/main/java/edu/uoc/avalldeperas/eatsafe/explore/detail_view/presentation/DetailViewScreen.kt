@@ -46,7 +46,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -70,6 +72,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.composables.RatingsSection
 import edu.uoc.avalldeperas.eatsafe.explore.composables.SafetySectionWithNumber
 import edu.uoc.avalldeperas.eatsafe.explore.detail_view.state.DetailViewState
 import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Allergen
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
@@ -78,7 +81,7 @@ fun DetailViewScreen(
     navigateBack: () -> Unit,
     toAddReview: (Place) -> Unit,
     detailViewModel: DetailViewModel = hiltViewModel(),
-    context: Context = LocalContext.current
+    context: Context = LocalContext.current,
 ) {
     val detailState by detailViewModel.detailState.collectAsStateWithLifecycle()
     val snackbarState = remember { SnackbarHostState() }
@@ -98,7 +101,7 @@ fun DetailViewContent(
     navigateBack: () -> Unit,
     toAddReview: (Place) -> Unit,
     snackbarState: SnackbarHostState,
-    onAddFav: () -> Unit
+    onAddFav: () -> Unit,
 ) {
     Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarState) }) { paddingValues ->
         if (detailState.isLoading) {
@@ -170,12 +173,12 @@ fun DetailReviews(
     modifier: Modifier,
     toAddReview: (Place) -> Unit,
     place: Place,
-    showAddReviewBtn: Boolean
+    showAddReviewBtn: Boolean,
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 24.dp, end = 8.dp, top = 16.dp),
+            .padding(start = 24.dp, end = 8.dp, top = 20.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ReviewHeader(toAddReview = toAddReview, place = place, showButton = showAddReviewBtn)
@@ -208,7 +211,7 @@ fun ReviewItem(review: Review) {
             modifier = Modifier.padding(4.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            Row() {
+            Row {
                 Text(
                     text = review.userName,
                     Modifier.weight(1f),
@@ -217,7 +220,7 @@ fun ReviewItem(review: Review) {
                 )
                 Text(text = StringUtils.getParsedDate(review.date), fontSize = 12.sp)
             }
-            Row() {
+            Row {
                 Row {
                     SafetySectionWithNumber(
                         modifier = Modifier.weight(0.7f),
@@ -247,7 +250,7 @@ fun ReviewHeader(toAddReview: (Place) -> Unit, place: Place, showButton: Boolean
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(16.dp)
+        horizontalArrangement = Arrangement.spacedBy(24.dp)
     ) {
         Text(
             text = stringResource(R.string.reviews_header),
@@ -280,7 +283,7 @@ fun DetailAbout(modifier: Modifier, place: Place) {
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .padding(start = 24.dp, top = 16.dp),
+            .padding(start = 24.dp, top = 24.dp, bottom = 14.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Text(
@@ -311,7 +314,7 @@ fun InfoElement(imageVector: ImageVector, text: String, modifier: Modifier = Mod
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Icon(imageVector = imageVector, contentDescription = "", tint = MAIN_GREEN)
-        Text(text = text, fontSize = 12.sp, modifier = Modifier.testTag(PLACE_INFO_ELEMENT + text))
+        Text(text = text, fontSize = 14.sp, modifier = Modifier.testTag(PLACE_INFO_ELEMENT + text))
     }
 }
 
@@ -320,7 +323,7 @@ fun DetailHeader(
     onFavClick: () -> Unit,
     paddingValues: PaddingValues,
     place: Place,
-    isFav: Boolean
+    isFav: Boolean,
 ) {
     Row(
         modifier = Modifier
@@ -329,13 +332,33 @@ fun DetailHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
+
         Icon(imageVector = place.type.imageVector, contentDescription = "")
-        Text(
-            text = place.name,
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold,
-            modifier = Modifier.weight(0.7f),
-        )
+        Row(
+            modifier = Modifier.weight(1f),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            Text(
+                text = place.name,
+                textAlign = TextAlign.Center,
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Bold,
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+                modifier = Modifier.weight(0.5f)
+            )
+            Text(
+                text = place.cuisine,
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+                fontStyle = FontStyle.Italic,
+                modifier = Modifier.weight(0.5f),
+                maxLines = 1,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
+
         IconButton(
             onClick = { onFavClick() },
             modifier = Modifier.padding(paddingValues)
@@ -347,22 +370,24 @@ fun DetailHeader(
             )
         }
     }
-    Spacer(modifier = Modifier.padding(vertical = 4.dp))
     RatingsSection(modifier = Modifier.fillMaxWidth(), place = place)
-    Spacer(modifier = Modifier.padding(vertical = 4.dp))
-    AllergensHeader(place = place)
+    AllergensHeader(modifier = Modifier.fillMaxWidth(), place = place)
 }
 
 @Composable
-fun AllergensHeader(place: Place) {
+fun AllergensHeader(modifier: Modifier = Modifier, place: Place) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
-            .padding(start = 28.dp),
+            .padding(horizontal = 24.dp, vertical = 8.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        Text(text = "Allergens: ", fontSize = 16.sp, fontWeight = FontWeight.Bold)
+        Text(
+            text = stringResource(R.string.allergens_detail_header),
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
+        )
         if (place.allergens.isEmpty()) {
             Text(text = stringResource(R.string.no_allergens_yet))
         } else {
@@ -380,10 +405,13 @@ fun AllergensHeader(place: Place) {
 @Composable
 fun DetailViewContentPreview() {
     val place = Place(
-        name = "Place name",
+        name = "Can Culleres",
         telephone = "900 00 00 00",
+        cuisine = "Mediterranean",
         website = "www.webisite.com",
-        address = "Street name, 01, City"
+        address = "Street name, 01, City",
+        allergens = mutableListOf(Allergen.Lactose, Allergen.Gluten),
+        reviews = listOf(Review(description = "tester", placeName = "pepe", userName = "Pepito"))
     )
     DetailViewContent(
         detailState = DetailViewState(place = place),

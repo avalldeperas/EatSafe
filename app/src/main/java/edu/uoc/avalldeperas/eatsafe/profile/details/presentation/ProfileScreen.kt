@@ -223,8 +223,9 @@ fun ProfileHeader(
             )
             Column(
                 modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 8.dp, top = 8.dp, bottom = 8.dp)
                     .weight(1f)
-                    .padding(8.dp)
             ) {
                 Text(
                     text = "Hello ${getDisplayName()}!",
@@ -247,7 +248,7 @@ fun ProfileHeader(
                     Text(
                         text = profileState.user.currentCity,
                         color = DARK_GREEN,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
@@ -269,5 +270,5 @@ fun ProfileHeader(
 @Composable
 fun ProfileContentPreview() {
     val reviews = listOf(Review(placeName = "name", description = "A description"))
-    ProfileContent(ProfileState(reviews = reviews), {}, { "User" })
+    ProfileContent(ProfileState(reviews = reviews, user = User(currentCity = "Barcelona")), {}, { "User" })
 }

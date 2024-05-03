@@ -9,12 +9,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.SupervisorAccount
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -43,6 +46,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROF
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_EMAIL
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_USERNAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LOGOUT_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
@@ -119,7 +123,8 @@ fun EditProfileContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(paddingValues),
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Image(
@@ -167,11 +172,20 @@ fun EditProfileContent(
             )
             Spacer(modifier = Modifier.padding(top = 8.dp))
             AppTextField(
+                value = uiState.username,
+                onValueChange = {},
+                leadingIcon = Icons.Filled.SupervisorAccount,
+                contentDescription = EDIT_PROFILE_USERNAME,
+                label = R.string.username,
+                enabled = false
+            )
+            Spacer(modifier = Modifier.padding(top = 8.dp))
+            AppTextField(
                 value = uiState.displayName,
                 onValueChange = { onUpdateDisplayName(it) },
                 leadingIcon = Icons.Filled.Face,
                 contentDescription = EDIT_PROFILE_FULL_NAME,
-                label = R.string.user_full_name
+                label = R.string.user_display_name
             )
             Spacer(modifier = Modifier.padding(top = 8.dp))
             AppTextField(
@@ -220,9 +234,10 @@ fun EditProfileContentPreview() {
     val state = EditProfileState(
         intolerances = mutableListOf("Gluten", "Lactose"),
         email = "anemail@gmail.com",
+        username = "username",
         currentCity = "A city name",
         displayName = "A display name",
-        isLoading = true
+        isLoading = false
     )
     EditProfileContent(state, {}, {}, {}, {}, {}, {})
 }

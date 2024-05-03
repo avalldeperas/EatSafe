@@ -7,6 +7,7 @@ import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.assertTextEquals
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onChild
 import androidx.compose.ui.test.onChildAt
@@ -16,6 +17,7 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.google.firebase.Timestamp
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.CIRCULAR_PROGRESS_TAG
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.EMPTY_LIST_MESSAGE
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.PLACE_INFO_ELEMENT
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.RATING_ITEM_AVG_RATING
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.RATING_ITEM_AVG_SAFETY
@@ -94,7 +96,10 @@ class DetailViewScreenTest {
             .assertTextEquals(dummyPlace.address)
 
         rule.onNodeWithText("Add a review").assertIsDisplayed().assertHasClickAction()
-        rule.onNodeWithText(emptyReviewsText).assertIsDisplayed()
+        rule.waitUntil {
+            rule.onAllNodesWithTag(EMPTY_LIST_MESSAGE).fetchSemanticsNodes().isNotEmpty()
+        }
+        rule.onNodeWithTag(EMPTY_LIST_MESSAGE).onChild().assertTextContains(emptyReviewsText)
     }
 
     @Test
@@ -122,7 +127,10 @@ class DetailViewScreenTest {
 
         rule.onNodeWithText("Reviews").assertIsDisplayed()
         rule.onNodeWithText("Add a review").assertIsNotDisplayed()
-        rule.onNodeWithText(emptyReviewsText).assertIsNotDisplayed()
+        rule.waitUntil {
+            rule.onAllNodesWithText("This is a long review.").fetchSemanticsNodes().isNotEmpty()
+        }
+        rule.onNodeWithTag(EMPTY_LIST_MESSAGE).assertIsNotDisplayed()
         rule.onNodeWithText(USER_IMAGE_REVIEW).onChild()
         rule.onNodeWithText("This is a long review.").assertIsDisplayed()
         rule.onNodeWithText(date).assertIsDisplayed()

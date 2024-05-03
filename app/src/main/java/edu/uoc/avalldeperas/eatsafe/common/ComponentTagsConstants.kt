@@ -12,4 +12,6 @@ object ComponentTagsConstants {
     const val RATING_ITEM_AVG_RATING = "rating-item-avg-rating"
     const val RATING_ITEM_TOTAL_REVIEWS = "rating-item-total-reviews"
     const val PLACE_INFO_ELEMENT = "place-info-element-"
+
+    const val EMPTY_LIST_MESSAGE = "empty-list-message"
 }
