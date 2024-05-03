@@ -42,14 +42,7 @@ class DetailViewModel @Inject constructor(
 
             launch {
                 placeRepository.getPlace(placeId).collectLatest { place ->
-                    val reviews = _detailState.value.place.reviews
-                    if (reviews.isNotEmpty()) {
-                        _detailState.update { currentState ->
-                            currentState.copy(place = place!!.copy(reviews = reviews))
-                        }
-                    } else {
-                        _detailState.update { currentState -> currentState.copy(place = place!!) }
-                    }
+                    _detailState.update { currentState -> currentState.copy(place = place!!) }
                 }
             }
 
@@ -57,7 +50,7 @@ class DetailViewModel @Inject constructor(
                 reviewsRepository.getReviewsByPlace(placeId).collectLatest { reviews ->
                     _detailState.update { currentState ->
                         currentState.copy(
-                            place = currentState.place.copy(reviews = reviews),
+                            reviews = reviews,
                             isUserReview = reviews.map { it.userId }
                                 .contains(_detailState.value.userId)
                         )
