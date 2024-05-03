@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil.showToast
+import edu.uoc.avalldeperas.eatsafe.explore.list_map.data.PlaceRepository
+import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.GetUserInfoUseCase
@@ -24,6 +26,7 @@ import javax.inject.Inject
 class AddReviewViewModel @Inject constructor(
     private val validateAddReviewInputUseCase: ValidateAddReviewInputUseCase,
     private val getUserInfoUse: GetUserInfoUseCase,
+    private val placeRepository: PlaceRepository,
     private val saveReviewUseCase: SaveReviewUseCase,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
@@ -41,11 +44,18 @@ class AddReviewViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-            getUserInfoUse().collectLatest { user ->
-                _addReviewState.update { state ->
-                    state.copy(review = review.copy(userName = user!!.username, userId = user.uid))
+            launch {
+                getUserInfoUse().collectLatest { user ->
+                    _addReviewState.update { state ->
+                        state.copy(
+                            review = review.copy(userName = user!!.username, userId = user.uid)
+                        )
+                    }
+                    _addReviewState.update { state -> state.copy(isLoading = false) }
                 }
-                _addReviewState.update { state -> state.copy(isLoading = false) }
+            }
+            placeRepository.getPlace(placeId).collect {
+                _addReviewState.update { state -> state.copy(place = it!!) }
             }
         }
     }
@@ -74,16 +84,27 @@ class AddReviewViewModel @Inject constructor(
             return
         }
 
+        val updatedPlace = buildPlace()
         viewModelScope.launch {
-            val isSuccess = saveReviewUseCase(newReview)
-            _addReviewState.update { state -> state.copy(isLoading = false) }
+            val isSuccess = saveReviewUseCase(newReview, updatedPlace)
             if (!isSuccess) {
                 showToast(resource = R.string.error_save_review, context = context)
                 return@launch
             }
-            backToDetail()
+
+            _addReviewState.update { state -> state.copy(isLoading = false) }
             showToast(resource = R.string.review_saved_successfully, context = context)
+            backToDetail()
         }
+    }
+
+    private fun buildPlace(): Place {
+        val place = _addReviewState.value.place
+        return place.copy(
+            averageSafety = place.calculateNewAverageSafety(_addReviewState.value.safety),
+            averageRating = place.calculateNewAverageRating(_addReviewState.value.rating),
+            totalReviews = place.totalReviews + 1
+        )
     }
 
     private fun buildReview(): Review {

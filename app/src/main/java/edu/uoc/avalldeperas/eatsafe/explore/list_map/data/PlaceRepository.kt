@@ -10,4 +10,5 @@ interface PlaceRepository {
     suspend fun getNearbyPlaces(location: LatLng, radiusInKm: Double): List<Place>
 
     fun getPlace(placeId: String): Flow<Place?>
+    suspend fun update(place: Place): Boolean
 }

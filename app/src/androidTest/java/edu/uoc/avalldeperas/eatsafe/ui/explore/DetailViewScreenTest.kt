@@ -111,10 +111,9 @@ class DetailViewScreenTest {
         val place = dummyPlace.copy(
             averageSafety = 4.5,
             averageRating = 4.3,
-            totalReviews = 1,
-            reviews = listOf(review)
+            totalReviews = 1
         )
-        buildScreen(detailState.copy(place = place, isUserReview = true))
+        buildScreen(detailState.copy(place = place, isUserReview = true, reviews = listOf(review)))
 
         rule.onNodeWithTag(RATING_ITEM_AVG_SAFETY).onChildAt(0).assertTextContains("4.5")
         rule.onNodeWithTag(RATING_ITEM_AVG_RATING).onChildAt(0).assertTextContains("4.3")

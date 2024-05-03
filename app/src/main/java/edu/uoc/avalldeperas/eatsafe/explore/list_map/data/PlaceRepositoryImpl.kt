@@ -24,9 +24,7 @@ class PlaceRepositoryImpl @Inject constructor() : PlaceRepository {
     private val ref = Firebase.firestore.collection("establishments")
     override fun getPlaces(): Flow<List<Place>> {
         return try {
-            ref.snapshots().map {
-                it.toObjects<Place>()
-            }
+            ref.snapshots().map { it.toObjects<Place>() }
         } catch (e: Exception) {
             Log.d("avb", "getPlaces: exception = ${e.message}")
             emptyFlow()
@@ -68,7 +66,25 @@ class PlaceRepositoryImpl @Inject constructor() : PlaceRepository {
         }
     }
 
+    override suspend fun update(place: Place): Boolean {
+        Log.d("avb", "PlaceRepository:: update place: $place")
+        return try {
+            ref.document(place.placeId).update(
+                AVERAGE_SAFETY, place.averageSafety,
+                AVERAGE_RATING, place.averageRating,
+                TOTAL_REVIEWS, place.totalReviews
+            ).await()
+            true
+        } catch (e: Exception) {
+            Log.e("avb", "UsersRepository update exception: ${e.message}")
+            false
+        }
+    }
+
     companion object {
         const val GEOHASH_FIELD = "geohash"
+        const val AVERAGE_SAFETY = "averageSafety"
+        const val AVERAGE_RATING = "averageRating"
+        const val TOTAL_REVIEWS = "totalReviews"
     }
 }

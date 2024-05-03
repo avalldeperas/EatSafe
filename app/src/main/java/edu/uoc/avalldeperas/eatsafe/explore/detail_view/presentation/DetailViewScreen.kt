@@ -149,6 +149,7 @@ fun DetailViewContent(
                     modifier = Modifier,
                     toAddReview = toAddReview,
                     place = detailState.place,
+                    reviews = detailState.reviews,
                     showAddReviewBtn = !detailState.isUserReview
                 )
             }
@@ -170,6 +171,7 @@ fun DetailReviews(
     modifier: Modifier,
     toAddReview: (Place) -> Unit,
     place: Place,
+    reviews: List<Review>,
     showAddReviewBtn: Boolean
 ) {
     Column(
@@ -179,10 +181,10 @@ fun DetailReviews(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         ReviewHeader(toAddReview = toAddReview, place = place, showButton = showAddReviewBtn)
-        if (place.reviews.isEmpty()) {
+        if (reviews.isEmpty()) {
             EmptyListMessage(R.string.no_reviews_yet)
         } else {
-            place.reviews.forEach {
+            reviews.forEach {
                 ReviewItem(it)
             }
         }
