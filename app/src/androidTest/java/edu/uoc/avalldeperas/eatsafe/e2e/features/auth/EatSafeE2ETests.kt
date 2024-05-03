@@ -28,6 +28,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROF
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_IMAGE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_USERNAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAVORITE_PLACE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_PASSWORD
@@ -131,6 +132,7 @@ class EatSafeE2ETests {
         composeRule.onNodeWithContentDescription(EDIT_PROFILE_IMAGE).assertIsDisplayed()
         composeRule.onNodeWithContentDescription("allergy-icon-Gluten").performClick()
         composeRule.onNodeWithContentDescription(EDIT_PROFILE_EMAIL).assertIsNotEnabled()
+        composeRule.onNodeWithContentDescription(EDIT_PROFILE_USERNAME).assertIsNotEnabled()
         composeRule.onNodeWithContentDescription(EDIT_PROFILE_FULL_NAME).performTextInput("Tester")
         composeRule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD)
             .performTextInput("Madrid")

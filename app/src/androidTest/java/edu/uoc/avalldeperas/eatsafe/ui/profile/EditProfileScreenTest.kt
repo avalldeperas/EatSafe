@@ -63,7 +63,7 @@ class EditProfileScreenTest {
         rule.onNodeWithContentDescription(EDIT_PROFILE_USERNAME).assertIsDisplayed()
         rule.onNodeWithText("username").assertIsDisplayed()
         rule.onNodeWithContentDescription(EDIT_PROFILE_FULL_NAME).assertIsDisplayed()
-        rule.onNodeWithText("Your name").assertIsDisplayed()
+        rule.onNodeWithText("Display name").assertIsDisplayed()
         rule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD).assertIsDisplayed()
         rule.onNodeWithText("A city").assertIsDisplayed()
         rule.onNodeWithText("Save").assertIsDisplayed().assertHasClickAction()
