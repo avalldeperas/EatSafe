@@ -1,7 +1,7 @@
 [versions]
 accompanistPermissions = "0.34.0"
 agp = "8.4.0"
-firebaseFirestore = "24.11.1"
+firebaseFirestore = "25.0.0"
 geofireAndroidCommon = "3.2.0"
 hiltAndroid = "2.49"
 hiltAndroidTesting = "2.44"
@@ -17,9 +17,9 @@ mapsCompose = "4.3.3"
 mapsKtx = "5.0.0"
 materialIconsExtended = "1.6.7"
 navigationCompose = "2.7.7"
-playServicesAuth = "21.1.0"
+playServicesAuth = "21.1.1"
 googleServices = "4.4.1"
-firebaseAuth = "22.3.1"
+firebaseAuth = "23.0.0"
 runner = "1.5.2"
 
 [libraries]
