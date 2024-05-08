@@ -34,7 +34,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_LOCAT
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_PLACE_TYPE_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FAV_VIEW_HEART_ICON
 import edu.uoc.avalldeperas.eatsafe.common.util.StringUtils
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.PlaceType
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.PlaceType
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 

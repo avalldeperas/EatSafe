@@ -27,7 +27,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.RATING_ITEM_AV
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.RATING_ITEM_TOTAL_REVIEWS
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.AVERAGE_RATING_SECTION_STAR_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.SAFETY_SECTION_CHECK_ICON
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 @Composable

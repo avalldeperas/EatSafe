@@ -10,8 +10,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import edu.uoc.avalldeperas.eatsafe.auth.forgot_password.presentation.ForgotPasswordContent
-import edu.uoc.avalldeperas.eatsafe.auth.forgot_password.presentation.state.ForgotPasswordState
+import edu.uoc.avalldeperas.eatsafe.auth.presentation.forgot_password.ForgotPasswordContent
+import edu.uoc.avalldeperas.eatsafe.auth.presentation.forgot_password.ForgotPasswordState
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.FORGOT_PASSWORD_INFO
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EATSAFE_LOGO
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FORGOT_BACK

@@ -11,8 +11,8 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import edu.uoc.avalldeperas.eatsafe.auth.login.presentation.LoginContent
-import edu.uoc.avalldeperas.eatsafe.auth.login.presentation.state.LoginState
+import edu.uoc.avalldeperas.eatsafe.auth.presentation.login.LoginContent
+import edu.uoc.avalldeperas.eatsafe.auth.presentation.login.LoginState
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.CIRCULAR_PROGRESS_TAG
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EATSAFE_LOGO
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD

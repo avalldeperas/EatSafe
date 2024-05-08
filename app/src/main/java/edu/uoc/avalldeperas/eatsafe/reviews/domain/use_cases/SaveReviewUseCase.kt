@@ -1,7 +1,7 @@
 package edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases
 
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.data.PlaceRepository
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.explore.data.PlaceRepository
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.reviews.data.ReviewsRepository
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import javax.inject.Inject

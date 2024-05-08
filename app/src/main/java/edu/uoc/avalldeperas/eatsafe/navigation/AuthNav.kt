@@ -3,9 +3,9 @@ package edu.uoc.avalldeperas.eatsafe.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import edu.uoc.avalldeperas.eatsafe.auth.forgot_password.presentation.ForgotPasswordScreen
-import edu.uoc.avalldeperas.eatsafe.auth.login.presentation.LoginScreen
-import edu.uoc.avalldeperas.eatsafe.auth.register.presentation.RegisterScreen
+import edu.uoc.avalldeperas.eatsafe.auth.presentation.forgot_password.ForgotPasswordScreen
+import edu.uoc.avalldeperas.eatsafe.auth.presentation.login.LoginScreen
+import edu.uoc.avalldeperas.eatsafe.auth.presentation.register.RegisterScreen
 
 fun NavGraphBuilder.authGraph(navController: NavHostController) {
 

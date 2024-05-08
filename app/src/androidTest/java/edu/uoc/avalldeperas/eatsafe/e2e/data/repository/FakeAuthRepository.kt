@@ -1,7 +1,7 @@
 package edu.uoc.avalldeperas.eatsafe.e2e.data.repository
 
-import edu.uoc.avalldeperas.eatsafe.auth.login.data.AuthRepository
-import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
+import edu.uoc.avalldeperas.eatsafe.auth.data.AuthRepository
+import edu.uoc.avalldeperas.eatsafe.auth.domain.model.User
 import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_EMAIL
 import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_VALID_PASSWORD
 import javax.inject.Inject

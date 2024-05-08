@@ -7,14 +7,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.common.util.ToastUtil.showToast
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.data.PlaceRepository
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.explore.data.PlaceRepository
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.GetUserInfoUseCase
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.SaveReviewUseCase
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases.ValidateAddReviewInputUseCase
-import edu.uoc.avalldeperas.eatsafe.reviews.presentation.state.AddReviewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest

@@ -1,5 +1,7 @@
 package edu.uoc.avalldeperas.eatsafe.profile.details.domain.use_cases
 
+import edu.uoc.avalldeperas.eatsafe.profile.domain.use_cases.EditProfileInputValidationType
+import edu.uoc.avalldeperas.eatsafe.profile.domain.use_cases.ValidateEditProfileInputUseCase
 import org.junit.Assert
 import org.junit.Test
 

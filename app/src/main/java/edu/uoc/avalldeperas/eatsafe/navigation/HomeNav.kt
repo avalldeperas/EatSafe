@@ -3,15 +3,15 @@ package edu.uoc.avalldeperas.eatsafe.navigation
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import edu.uoc.avalldeperas.eatsafe.explore.detail_view.presentation.DetailViewScreen
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreListScreen
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreMapScreen
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.presentation.ExploreViewModel
+import edu.uoc.avalldeperas.eatsafe.explore.presentation.detail_view.DetailViewScreen
+import edu.uoc.avalldeperas.eatsafe.explore.presentation.list_map.ExploreListScreen
+import edu.uoc.avalldeperas.eatsafe.explore.presentation.list_map.ExploreMapScreen
+import edu.uoc.avalldeperas.eatsafe.explore.presentation.list_map.ExploreViewModel
 import edu.uoc.avalldeperas.eatsafe.favorites.presentation.FavoritesScreen
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants.PLACE_ID_PARAM
 import edu.uoc.avalldeperas.eatsafe.navigation.Constants.PLACE_NAME_PARAM
-import edu.uoc.avalldeperas.eatsafe.profile.details.presentation.ProfileScreen
-import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.EditProfileScreen
+import edu.uoc.avalldeperas.eatsafe.profile.presentation.details.ProfileScreen
+import edu.uoc.avalldeperas.eatsafe.profile.presentation.edit_profile.EditProfileScreen
 import edu.uoc.avalldeperas.eatsafe.reviews.presentation.AddReviewScreen
 
 fun NavGraphBuilder.homeGraph(
