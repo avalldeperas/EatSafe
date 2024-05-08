@@ -1,6 +1,5 @@
-package edu.uoc.avalldeperas.eatsafe.auth.login.domain.use_cases
+package edu.uoc.avalldeperas.eatsafe.auth.domain.use_cases
 
-import edu.uoc.avalldeperas.eatsafe.auth.domain.use_cases.ValidateLoginInputUseCase
 import edu.uoc.avalldeperas.eatsafe.auth.domain.model.LoginInputValidationType
 import org.junit.Assert.assertEquals
 import org.junit.Test

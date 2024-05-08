@@ -1,6 +1,5 @@
-package edu.uoc.avalldeperas.eatsafe.auth.forgot_password.domain.use_cases
+package edu.uoc.avalldeperas.eatsafe.auth.domain.use_cases
 
-import edu.uoc.avalldeperas.eatsafe.auth.domain.use_cases.ValidateForgotPasswordUseCase
 import edu.uoc.avalldeperas.eatsafe.auth.domain.model.ForgotPasswordInputValidationType
 import org.junit.Assert
 import org.junit.Test
