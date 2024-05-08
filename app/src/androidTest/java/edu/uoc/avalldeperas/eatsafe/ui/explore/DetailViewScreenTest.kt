@@ -24,9 +24,9 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_FAVOR
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.DETAIL_BACK
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PLACE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_IMAGE_REVIEW
-import edu.uoc.avalldeperas.eatsafe.explore.detail_view.presentation.DetailViewContent
-import edu.uoc.avalldeperas.eatsafe.explore.detail_view.state.DetailViewState
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.explore.presentation.detail_view.DetailViewContent
+import edu.uoc.avalldeperas.eatsafe.explore.presentation.detail_view.DetailViewState
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.Place
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import org.junit.Before
 import org.junit.Rule

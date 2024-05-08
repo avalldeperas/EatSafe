@@ -16,8 +16,8 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROF
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LOGOUT_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD
-import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.EditProfileContent
-import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.state.EditProfileState
+import edu.uoc.avalldeperas.eatsafe.profile.presentation.edit_profile.EditProfileContent
+import edu.uoc.avalldeperas.eatsafe.profile.presentation.edit_profile.EditProfileState
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test

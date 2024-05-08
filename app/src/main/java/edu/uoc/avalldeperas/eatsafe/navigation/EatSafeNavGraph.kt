@@ -11,7 +11,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import edu.uoc.avalldeperas.eatsafe.explore.HomeScreen
+import edu.uoc.avalldeperas.eatsafe.explore.presentation.HomeScreen
 
 @Composable
 fun EatSafeNavGraph(

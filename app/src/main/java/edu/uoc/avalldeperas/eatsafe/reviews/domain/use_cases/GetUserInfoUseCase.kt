@@ -1,8 +1,8 @@
 package edu.uoc.avalldeperas.eatsafe.reviews.domain.use_cases
 
-import edu.uoc.avalldeperas.eatsafe.auth.login.data.AuthRepository
-import edu.uoc.avalldeperas.eatsafe.auth.login.domain.model.User
-import edu.uoc.avalldeperas.eatsafe.auth.register.data.UsersRepository
+import edu.uoc.avalldeperas.eatsafe.auth.data.AuthRepository
+import edu.uoc.avalldeperas.eatsafe.auth.domain.model.User
+import edu.uoc.avalldeperas.eatsafe.auth.data.UsersRepository
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

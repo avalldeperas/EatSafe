@@ -2,7 +2,7 @@ package edu.uoc.avalldeperas.eatsafe.favorites.domain.model
 
 import com.google.firebase.Timestamp
 import edu.uoc.avalldeperas.eatsafe.R
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.PlaceType
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.PlaceType
 import java.util.Date
 
 data class FavoritePlace(

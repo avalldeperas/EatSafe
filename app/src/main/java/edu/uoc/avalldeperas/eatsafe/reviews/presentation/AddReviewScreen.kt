@@ -45,7 +45,6 @@ import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.ADD_REVIEW_DES
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_REVIEW_BACK_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_REVIEW_RATE_BTN
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicator
-import edu.uoc.avalldeperas.eatsafe.reviews.presentation.state.AddReviewState
 import edu.uoc.avalldeperas.eatsafe.ui.theme.DARK_GREEN
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 

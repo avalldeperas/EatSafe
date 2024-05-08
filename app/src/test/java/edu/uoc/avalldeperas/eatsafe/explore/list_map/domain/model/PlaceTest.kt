@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model
 
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.Place
 import junit.framework.TestCase.assertEquals
 import org.junit.Test
 

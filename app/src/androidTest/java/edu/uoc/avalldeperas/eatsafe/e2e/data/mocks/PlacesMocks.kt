@@ -1,7 +1,7 @@
 package edu.uoc.avalldeperas.eatsafe.e2e.data.mocks
 
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
-import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Allergen
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.profile.domain.model.Allergen
 
 object PlacesMocks {
     internal fun dummyPlaces(): List<Place> {

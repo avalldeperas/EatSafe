@@ -3,7 +3,7 @@ package edu.uoc.avalldeperas.eatsafe.favorites.presentation
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import edu.uoc.avalldeperas.eatsafe.auth.login.data.AuthRepository
+import edu.uoc.avalldeperas.eatsafe.auth.data.AuthRepository
 import edu.uoc.avalldeperas.eatsafe.favorites.data.FavoritesRepository
 import edu.uoc.avalldeperas.eatsafe.favorites.domain.model.FavoritePlace
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -18,7 +18,7 @@ import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_REVIE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.ADD_REVIEW_RATE_BTN
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import edu.uoc.avalldeperas.eatsafe.reviews.presentation.AddReviewContent
-import edu.uoc.avalldeperas.eatsafe.reviews.presentation.state.AddReviewState
+import edu.uoc.avalldeperas.eatsafe.reviews.presentation.AddReviewState
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

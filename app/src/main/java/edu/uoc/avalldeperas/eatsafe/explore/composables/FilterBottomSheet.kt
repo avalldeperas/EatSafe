@@ -17,10 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import edu.uoc.avalldeperas.eatsafe.R
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Filters
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.Filters
 import edu.uoc.avalldeperas.eatsafe.profile.composables.AllergyButton
-import edu.uoc.avalldeperas.eatsafe.profile.details.domain.model.Intolerance
-import edu.uoc.avalldeperas.eatsafe.profile.edit_profile.presentation.SectionHeader
+import edu.uoc.avalldeperas.eatsafe.profile.domain.model.Intolerance
+import edu.uoc.avalldeperas.eatsafe.profile.presentation.edit_profile.SectionHeader
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable

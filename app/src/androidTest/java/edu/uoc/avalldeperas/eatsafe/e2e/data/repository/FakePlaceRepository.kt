@@ -2,8 +2,8 @@ package edu.uoc.avalldeperas.eatsafe.e2e.data.repository
 
 import com.google.android.gms.maps.model.LatLng
 import edu.uoc.avalldeperas.eatsafe.e2e.data.mocks.PlacesMocks.dummyPlaces
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.data.PlaceRepository
-import edu.uoc.avalldeperas.eatsafe.explore.list_map.domain.model.Place
+import edu.uoc.avalldeperas.eatsafe.explore.data.PlaceRepository
+import edu.uoc.avalldeperas.eatsafe.explore.domain.model.Place
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
