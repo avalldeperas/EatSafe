@@ -48,7 +48,7 @@ fun AppTextField(
             if (trailingIcon != null)
                 Icon(
                     imageVector = trailingIcon,
-                    contentDescription = SHOW_PASSWORD_ICON_FIELD,
+                    contentDescription = SHOW_PASSWORD_ICON_FIELD + contentDescription,
                     modifier = Modifier.clickable { onTrailingIconClick() }
                 )
         },
