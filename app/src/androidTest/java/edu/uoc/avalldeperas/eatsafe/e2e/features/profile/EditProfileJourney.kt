@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
@@ -73,8 +74,10 @@ class EditProfileJourney {
             .performTextInput("Madrid")
         rule.onNodeWithText("Save").performClick()
         rule.onNodeWithContentDescription(ContentDescriptionConstants.EDIT_PROFILE_BACK_ICON).performClick()
-        rule.waitForIdle()
-        rule.onNodeWithContentDescription(ContentDescriptionConstants.PROFILE_IMAGE).assertIsDisplayed()
+        rule.waitUntil(timeoutMillis = 5000L) {
+            rule.onAllNodesWithContentDescription(ContentDescriptionConstants.PROFILE_IMAGE).fetchSemanticsNodes().isNotEmpty()
+        }
+
         rule.onNodeWithText("Hello Tester!").assertIsDisplayed()
         // TODO mimic firebase to update profile here
 //        composeRule.onNodeWithText("Madrid").assertIsDisplayed()
