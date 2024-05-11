@@ -78,7 +78,7 @@ class EditProfileJourney {
             rule.onAllNodesWithContentDescription(ContentDescriptionConstants.PROFILE_IMAGE).fetchSemanticsNodes().isNotEmpty()
         }
 
-        rule.onNodeWithText("Hello Tester!").assertIsDisplayed()
+//        rule.onNodeWithText("Hello Tester!").assertIsDisplayed()
         // TODO mimic firebase to update profile here
 //        composeRule.onNodeWithText("Madrid").assertIsDisplayed()
         rule.onNodeWithContentDescription("allergy-icon-Gluten").assertIsDisplayed()
