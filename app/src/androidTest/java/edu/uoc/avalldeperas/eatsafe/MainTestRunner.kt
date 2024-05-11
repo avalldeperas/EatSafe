@@ -4,7 +4,11 @@ import android.app.Application
 import android.content.Context
 import androidx.test.runner.AndroidJUnitRunner
 import dagger.hilt.android.testing.HiltTestApplication
-import edu.uoc.avalldeperas.eatsafe.e2e.features.auth.EatSafeE2ETests
+import edu.uoc.avalldeperas.eatsafe.e2e.features.auth.AuthTests
+import edu.uoc.avalldeperas.eatsafe.e2e.features.explore.ExploreJourney
+import edu.uoc.avalldeperas.eatsafe.e2e.features.favorite.FavoritesJourney
+import edu.uoc.avalldeperas.eatsafe.e2e.features.profile.EditProfileJourney
+import edu.uoc.avalldeperas.eatsafe.e2e.features.review.ReviewsJourney
 import edu.uoc.avalldeperas.eatsafe.ui.auth.ForgotPasswordScreenTest
 import edu.uoc.avalldeperas.eatsafe.ui.auth.LoginScreenTest
 import edu.uoc.avalldeperas.eatsafe.ui.auth.RegisterScreenTest
@@ -28,7 +32,11 @@ import org.junit.runners.Suite
     ProfileScreenTest::class,
     EditProfileScreenTest::class,
     // E2E tests
-    EatSafeE2ETests::class
+    AuthTests::class,
+    FavoritesJourney::class,
+    ReviewsJourney::class,
+    EditProfileJourney::class,
+    ExploreJourney::class
 )
 class MainTestRunner : AndroidJUnitRunner() {
 

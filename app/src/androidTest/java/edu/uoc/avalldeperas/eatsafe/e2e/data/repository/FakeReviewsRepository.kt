@@ -27,14 +27,14 @@ class FakeReviewsRepository @Inject constructor() : ReviewsRepository {
     }
 
     override fun getReviewsByPlace(placeId: String): Flow<List<Review>> {
+        Log.d("avb", "FakeReviewsRepository::getReviewsByPlace - placeId = $placeId")
         val placeReviews = reviews.filter { review -> placeId == review.placeId }
-        Log.d("avb", "save: reviews = $placeReviews")
         return flow { emit(placeReviews) }
     }
 
     override suspend fun save(review: Review): Boolean {
+        Log.d("avb", "FakeReviewsRepository::save - review = $review")
         reviews.add(review)
-        Log.d("avb", "save: reviews = $reviews")
         return true
     }
 }
