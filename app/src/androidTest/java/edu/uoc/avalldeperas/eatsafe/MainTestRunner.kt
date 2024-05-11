@@ -6,7 +6,7 @@ import androidx.test.runner.AndroidJUnitRunner
 import dagger.hilt.android.testing.HiltTestApplication
 import edu.uoc.avalldeperas.eatsafe.e2e.features.auth.AuthTests
 import edu.uoc.avalldeperas.eatsafe.e2e.features.explore.ExploreJourney
-import edu.uoc.avalldeperas.eatsafe.e2e.features.favorite.FavouritesJourney
+import edu.uoc.avalldeperas.eatsafe.e2e.features.favorite.FavoritesJourney
 import edu.uoc.avalldeperas.eatsafe.e2e.features.profile.EditProfileJourney
 import edu.uoc.avalldeperas.eatsafe.e2e.features.review.ReviewsJourney
 import edu.uoc.avalldeperas.eatsafe.ui.auth.ForgotPasswordScreenTest
@@ -33,7 +33,7 @@ import org.junit.runners.Suite
     EditProfileScreenTest::class,
     // E2E tests
     AuthTests::class,
-    FavouritesJourney::class,
+    FavoritesJourney::class,
     ReviewsJourney::class,
     EditProfileJourney::class,
     ExploreJourney::class

@@ -31,7 +31,7 @@ import org.junit.Test
 
 @HiltAndroidTest
 @UninstallModules(AppModule::class)
-class FavouritesJourney {
+class FavoritesJourney {
 
     private lateinit var navController: TestNavHostController
 

@@ -20,7 +20,6 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import edu.uoc.avalldeperas.eatsafe.MainActivity
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.FORGOT_PASSWORD_INFO
-import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.GOOGLE_MAP_VIEW
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.CONFIRM_PASSWORD_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.CURRENT_CITY_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EATSAFE_LOGO
@@ -85,7 +84,7 @@ class AuthTests {
         rule.onNodeWithText("Sign up").performClick()
         rule.waitForIdle()
 
-        rule.onNodeWithTag(GOOGLE_MAP_VIEW).assertIsDisplayed()
+        validateCurrentRoute(navController, "explore_home")
     }
 
     @Test
