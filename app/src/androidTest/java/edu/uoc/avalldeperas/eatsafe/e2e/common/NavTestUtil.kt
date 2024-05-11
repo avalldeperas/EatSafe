@@ -21,7 +21,7 @@ object NavTestUtil {
         ).performClick()
     }
 
-    fun validateCurrentRoute(navController: NavController, route: String) {
-        assertEquals(navController.currentBackStackEntry?.destination?.route, route)
+    fun validateCurrentRoute(navController: NavController, expectedRoute: String) {
+        assertEquals(expectedRoute, navController.currentBackStackEntry?.destination?.route)
     }
 }

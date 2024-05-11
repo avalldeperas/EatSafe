@@ -7,6 +7,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertTextContains
 import androidx.compose.ui.test.junit4.AndroidComposeTestRule
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -20,6 +21,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import edu.uoc.avalldeperas.eatsafe.MainActivity
 import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.FORGOT_PASSWORD_INFO
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.GOOGLE_MAP_VIEW
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.CONFIRM_PASSWORD_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.CURRENT_CITY_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EATSAFE_LOGO
@@ -82,9 +84,10 @@ class AuthTests {
             .assertTextContains("password")
         rule.onNodeWithContentDescription(CURRENT_CITY_TEXT_FIELD).performTextInput("Barcelona")
         rule.onNodeWithText("Sign up").performClick()
-        rule.waitForIdle()
 
-        validateCurrentRoute(navController, "explore_home")
+        rule.waitUntil(5000L) {
+            rule.onAllNodesWithTag(GOOGLE_MAP_VIEW).fetchSemanticsNodes().isNotEmpty()
+        }
     }
 
     @Test
