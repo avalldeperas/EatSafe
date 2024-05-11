@@ -72,9 +72,8 @@ class EditProfileJourney {
         rule.onNodeWithContentDescription(ContentDescriptionConstants.USER_LOCATION_TEXT_FIELD)
             .performTextInput("Madrid")
         rule.onNodeWithText("Save").performClick()
-        rule.waitForIdle()
         rule.onNodeWithContentDescription(ContentDescriptionConstants.EDIT_PROFILE_BACK_ICON).performClick()
-
+        rule.waitForIdle()
         rule.onNodeWithContentDescription(ContentDescriptionConstants.PROFILE_IMAGE).assertIsDisplayed()
         rule.onNodeWithText("Hello Tester!").assertIsDisplayed()
         // TODO mimic firebase to update profile here
