@@ -12,36 +12,35 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.BOTTOM_NAV_ITEM
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 
 @Composable
 fun BottomNavBar(homeNavController: NavHostController) {
-    var navigationSelectedItem by rememberSaveable { mutableIntStateOf(0) }
+    val navBackStackEntry by homeNavController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
     NavigationBar(containerColor = Color.White) {
-        BottomNavigationItem().bottomNavigationItems().forEachIndexed { index, navigationItem ->
+        BottomNavigationItem().bottomNavigationItems().forEach { item ->
             NavigationBarItem(
-                selected = index == navigationSelectedItem,
+                selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
                 label = {
-                    Text(navigationItem.label)
+                    Text(item.label)
                 },
                 icon = {
                     Icon(
-                        navigationItem.icon,
-                        contentDescription = BOTTOM_NAV_ITEM + navigationItem.label
+                        item.icon,
+                        contentDescription = BOTTOM_NAV_ITEM + item.label
                     )
                 },
                 onClick = {
-                    navigationSelectedItem = index
-                    homeNavController.navigate(navigationItem.route) {
+                    homeNavController.navigate(item.route) {
                         popUpTo(homeNavController.graph.findStartDestination().id) {
                             saveState = true
                         }
