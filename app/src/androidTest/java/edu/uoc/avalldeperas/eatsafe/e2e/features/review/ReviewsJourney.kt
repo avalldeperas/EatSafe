@@ -24,7 +24,7 @@ import edu.uoc.avalldeperas.eatsafe.di.AppModule
 import edu.uoc.avalldeperas.eatsafe.e2e.common.CommonSteps.accessApplication
 import edu.uoc.avalldeperas.eatsafe.e2e.common.CommonSteps.login
 import edu.uoc.avalldeperas.eatsafe.e2e.common.NavTestUtil.navigateTo
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.FIRST_PLACE_ID
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.FIRST_PLACE_ID
 import edu.uoc.avalldeperas.eatsafe.navigation.EatSafeNavGraph
 import org.junit.Before
 import org.junit.Rule

@@ -34,8 +34,8 @@ import edu.uoc.avalldeperas.eatsafe.di.AppModule
 import edu.uoc.avalldeperas.eatsafe.e2e.common.CommonSteps.accessApplication
 import edu.uoc.avalldeperas.eatsafe.e2e.common.CommonSteps.login
 import edu.uoc.avalldeperas.eatsafe.e2e.common.NavTestUtil.validateCurrentRoute
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_EMAIL
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_VALID_PASSWORD
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.TESTER_EMAIL
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.TESTER_VALID_PASSWORD
 import edu.uoc.avalldeperas.eatsafe.navigation.EatSafeNavGraph
 import org.junit.Before
 import org.junit.Rule

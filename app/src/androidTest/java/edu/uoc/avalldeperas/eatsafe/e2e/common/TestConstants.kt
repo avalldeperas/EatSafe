@@ -1,4 +1,4 @@
-package edu.uoc.avalldeperas.eatsafe.e2e.data.constants
+package edu.uoc.avalldeperas.eatsafe.e2e.common
 
 object TestConstants {
     // Users

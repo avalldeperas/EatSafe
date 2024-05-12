@@ -52,5 +52,5 @@ fun AllergyButtonEnabledPreview() {
 @Preview
 @Composable
 fun AllergyButtonPreview() {
-    AllergyButton(icon = R.drawable.gluten, text = "Gluten", enabled = false)
+    AllergyButton(icon = R.drawable.lactose, text = "Lactose", enabled = false)
 }

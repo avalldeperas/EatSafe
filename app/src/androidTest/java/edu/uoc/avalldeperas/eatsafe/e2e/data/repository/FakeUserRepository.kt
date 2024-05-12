@@ -3,8 +3,8 @@ package edu.uoc.avalldeperas.eatsafe.e2e.data.repository
 import com.google.firebase.Timestamp
 import edu.uoc.avalldeperas.eatsafe.auth.data.UsersRepository
 import edu.uoc.avalldeperas.eatsafe.auth.domain.model.User
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_EMAIL
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_ID
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.TESTER_EMAIL
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.TESTER_ID
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.text.SimpleDateFormat

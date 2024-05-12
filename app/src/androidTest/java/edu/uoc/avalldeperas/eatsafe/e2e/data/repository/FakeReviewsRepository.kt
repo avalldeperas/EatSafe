@@ -1,9 +1,9 @@
 package edu.uoc.avalldeperas.eatsafe.e2e.data.repository
 
 import android.util.Log
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.FIRST_PLACE_ID
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_ID
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_USERNAME
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.FIRST_PLACE_ID
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.TESTER_ID
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.TESTER_USERNAME
 import edu.uoc.avalldeperas.eatsafe.reviews.data.ReviewsRepository
 import edu.uoc.avalldeperas.eatsafe.reviews.domain.model.Review
 import kotlinx.coroutines.flow.Flow

@@ -11,8 +11,8 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import edu.uoc.avalldeperas.eatsafe.MainActivity
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EMAIL_TEXT_FIELD
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PASSWORD_TEXT_FIELD
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_EMAIL
-import edu.uoc.avalldeperas.eatsafe.e2e.data.constants.TestConstants.TESTER_VALID_PASSWORD
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.TESTER_EMAIL
+import edu.uoc.avalldeperas.eatsafe.e2e.common.TestConstants.TESTER_VALID_PASSWORD
 
 object CommonSteps {
 
