@@ -12,27 +12,25 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.BOTTOM_NAV_ITEM
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
 
 @Composable
 fun BottomNavBar(homeNavController: NavHostController) {
-    val navBackStackEntry by homeNavController.currentBackStackEntryAsState()
-    val currentDestination = navBackStackEntry?.destination
+    var navigationSelectedItem by rememberSaveable { mutableIntStateOf(0) }
     NavigationBar(containerColor = Color.White) {
-        BottomNavigationItem().bottomNavigationItems().forEach { item ->
+        BottomNavigationItem().bottomNavigationItems().forEachIndexed { index, item ->
             NavigationBarItem(
-                selected = currentDestination?.hierarchy?.any { it.route == item.route } == true,
-                label = {
-                    Text(item.label)
-                },
+                selected = index == navigationSelectedItem,
+                label = { Text(item.label) },
                 icon = {
                     Icon(
                         item.icon,
@@ -40,6 +38,7 @@ fun BottomNavBar(homeNavController: NavHostController) {
                     )
                 },
                 onClick = {
+                    navigationSelectedItem = index
                     homeNavController.navigate(item.route) {
                         popUpTo(homeNavController.graph.findStartDestination().id) {
                             saveState = true
@@ -61,7 +60,7 @@ fun BottomNavBar(homeNavController: NavHostController) {
 data class BottomNavigationItem(
     val label: String = "",
     val icon: ImageVector = Icons.Filled.Home,
-    val route: String = ""
+    val route: String = "",
 ) {
     fun bottomNavigationItems(): List<BottomNavigationItem> {
         return listOf(
