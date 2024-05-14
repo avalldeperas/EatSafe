@@ -29,7 +29,10 @@ class ReviewsRepositoryImpl @Inject constructor(
 
     override fun getReviewsByUser(userId: String): Flow<List<Review>> {
         return try {
-            reviewsRef.whereEqualTo(USER_ID, userId).snapshots().map { it.toObjects<Review>() }
+            reviewsRef.whereEqualTo(USER_ID, userId)
+                .orderBy(DATE, Query.Direction.DESCENDING)
+                .snapshots()
+                .map { it.toObjects<Review>() }
         } catch (e: Exception) {
             Log.d("avb", "getReviewsByUser: exception = ${e.message}")
             emptyFlow()
