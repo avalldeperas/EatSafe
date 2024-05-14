@@ -2,6 +2,7 @@ package edu.uoc.avalldeperas.eatsafe.favorites.data
 
 import android.util.Log
 import com.google.firebase.Firebase
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import com.google.firebase.firestore.snapshots
 import com.google.firebase.firestore.toObjects
@@ -19,7 +20,9 @@ class FavoritesRepositoryImpl @Inject constructor() : FavoritesRepository {
     override fun getFavoritesByUser(userId: String): Flow<List<FavoritePlace>> {
         Log.d("avb", "getFavoritesByUser: userid = $userId")
         return try {
-            favoritesRef.whereEqualTo(USER_ID, userId).snapshots()
+            favoritesRef.whereEqualTo(USER_ID, userId)
+                .orderBy(DATE, Query.Direction.DESCENDING)
+                .snapshots()
                 .map { it.toObjects<FavoritePlace>() }
         } catch (e: Exception) {
             Log.d("avb", "getFavoritesByUser: exception = ${e.message}")
@@ -27,7 +30,10 @@ class FavoritesRepositoryImpl @Inject constructor() : FavoritesRepository {
         }
     }
 
-    override fun getFavoritesByPlaceAndUser(placeId: String, userId: String): Flow<List<FavoritePlace>> {
+    override fun getFavoritesByPlaceAndUser(
+        placeId: String,
+        userId: String,
+    ): Flow<List<FavoritePlace>> {
         Log.d("avb", "getFavoritesByPlaceAndUser: placeId = $placeId, userid = $userId")
         return try {
             favoritesRef.whereEqualTo(PLACE_ID, placeId).whereEqualTo(USER_ID, userId).snapshots()
@@ -64,5 +70,6 @@ class FavoritesRepositoryImpl @Inject constructor() : FavoritesRepository {
     companion object {
         const val USER_ID = "userId"
         const val PLACE_ID = "placeId"
+        const val DATE = "date"
     }
 }
