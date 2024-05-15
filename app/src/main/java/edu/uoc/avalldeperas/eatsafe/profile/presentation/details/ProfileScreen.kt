@@ -37,7 +37,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import edu.uoc.avalldeperas.eatsafe.R
 import edu.uoc.avalldeperas.eatsafe.auth.domain.model.User
-import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_ICON
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PROFILE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.PROFILE_REVIEW_PLACE_IMAGE
 import edu.uoc.avalldeperas.eatsafe.common.composables.CenteredCircularProgressIndicatorWithText
@@ -56,7 +56,7 @@ import java.time.ZoneId
 @Composable
 fun ProfileScreen(
     toEditProfile: () -> Unit,
-    profileViewModel: ProfileViewModel = hiltViewModel()
+    profileViewModel: ProfileViewModel = hiltViewModel(),
 ) {
     val profileState by profileViewModel.profileState.collectAsStateWithLifecycle()
 
@@ -71,7 +71,7 @@ fun ProfileScreen(
 fun ProfileContent(
     profileState: ProfileState,
     toEditProfile: () -> Unit,
-    getProfileName: () -> String
+    getProfileName: () -> String,
 ) {
     if (profileState.isLoading) {
         CenteredCircularProgressIndicatorWithText()
@@ -198,7 +198,7 @@ fun IntolerancesSection(user: User) {
 fun ProfileHeader(
     profileState: ProfileState,
     onEditClick: () -> Unit,
-    getDisplayName: () -> String
+    getDisplayName: () -> String,
 ) {
     val date = profileState.user.dateJoined.toDate().toInstant().atZone(ZoneId.systemDefault())
         .toLocalDate()
@@ -222,16 +222,35 @@ fun ProfileHeader(
             )
             Column(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(8.dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
             ) {
-                Text(
-                    text = "Hello ${getDisplayName()}!",
-                    color = DARK_GREEN,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Hello ${getDisplayName()}!",
+                        color = DARK_GREEN,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(start = 4.dp)
+                    )
+                    IconButton(
+                        onClick = onEditClick,
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.Edit,
+                            contentDescription = ContentDescriptionConstants.EDIT_PROFILE_ICON
+                        )
+                    }
+                }
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     Icon(
                         imageVector = Icons.Filled.Person, contentDescription = ""
                     )
@@ -241,24 +260,20 @@ fun ProfileHeader(
                         fontSize = 12.sp,
                     )
                 }
-                Row(verticalAlignment = Alignment.CenterVertically) {
+                Spacer(modifier = Modifier.padding(vertical = 4.dp))
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     Icon(imageVector = Icons.Filled.LocationOn, contentDescription = "")
                     Text(
                         text = profileState.user.currentCity,
                         color = DARK_GREEN,
-                        fontSize = 10.sp,
+                        fontSize = 12.sp,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                 }
-            }
-            IconButton(
-                onClick = onEditClick,
-                modifier = Modifier.align(Alignment.Top)
-            ) {
-                Icon(
-                    imageVector = Icons.Filled.Edit, contentDescription = EDIT_PROFILE_ICON
-                )
             }
         }
     }
@@ -268,5 +283,9 @@ fun ProfileHeader(
 @Composable
 fun ProfileContentPreview() {
     val reviews = listOf(Review(placeName = "name", description = "A description"))
-    ProfileContent(ProfileState(reviews = reviews), {}, { "User" })
+    ProfileContent(
+        ProfileState(
+            reviews = reviews,
+            user = User(currentCity = "El Poblenou, Sant Martí, Barcelona, Spain")
+        ), {}, { "User" })
 }

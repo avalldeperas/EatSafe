@@ -269,7 +269,7 @@ fun ReviewHeader(toAddReview: (Place) -> Unit, place: Place, showButton: Boolean
                 Text(
                     text = stringResource(R.string.add_review_header),
                     fontWeight = FontWeight.Bold,
-                    fontSize = 12.sp
+                    fontSize = 16.sp
                 )
             }
         }
@@ -312,7 +312,13 @@ fun InfoElement(imageVector: ImageVector, text: String, modifier: Modifier = Mod
         horizontalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Icon(imageVector = imageVector, contentDescription = "", tint = MAIN_GREEN)
-        Text(text = text, fontSize = 12.sp, modifier = Modifier.testTag(PLACE_INFO_ELEMENT + text))
+        Text(
+            text = text,
+            fontSize = 14.sp,
+            modifier = Modifier.testTag(PLACE_INFO_ELEMENT + text),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
+        )
     }
 }
 
@@ -336,6 +342,8 @@ fun DetailHeader(
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             modifier = Modifier.weight(0.7f),
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis
         )
         IconButton(
             onClick = { onFavClick() },
@@ -348,9 +356,8 @@ fun DetailHeader(
             )
         }
     }
-    Spacer(modifier = Modifier.padding(vertical = 4.dp))
-    RatingsSection(modifier = Modifier.fillMaxWidth(), place = place)
-    Spacer(modifier = Modifier.padding(vertical = 4.dp))
+    RatingsSection(place = place)
+    Spacer(modifier = Modifier.padding(vertical = 8.dp))
     AllergensHeader(place = place)
 }
 
@@ -359,7 +366,7 @@ fun AllergensHeader(place: Place) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 28.dp),
+            .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
@@ -381,7 +388,7 @@ fun AllergensHeader(place: Place) {
 @Composable
 fun DetailViewContentPreview() {
     val place = Place(
-        name = "Place name",
+        name = "Place name supervery long nameeeeeee",
         telephone = "900 00 00 00",
         website = "www.webisite.com",
         address = "Street name, 01, City"

@@ -17,7 +17,7 @@ import javax.inject.Inject
 class ProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val usersRepository: UsersRepository,
-    private val reviewsRepository: ReviewsRepository
+    private val reviewsRepository: ReviewsRepository,
 ) : ViewModel() {
 
     private val _profileState = MutableStateFlow(ProfileState())
@@ -37,7 +37,12 @@ class ProfileViewModel @Inject constructor(
                 }
             }
             reviewsRepository.getReviewsByUser(currentUser.uid).collectLatest { reviews ->
-                _profileState.update { state -> state.copy(reviews = reviews, isLoading = false) }
+                _profileState.update { state ->
+                    state.copy(
+                        reviews = reviews.sortedWith(compareByDescending { it.date }),
+                        isLoading = false
+                    )
+                }
             }
         }
     }

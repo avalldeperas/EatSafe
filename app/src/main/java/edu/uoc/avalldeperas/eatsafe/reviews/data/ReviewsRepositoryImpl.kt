@@ -30,7 +30,6 @@ class ReviewsRepositoryImpl @Inject constructor(
     override fun getReviewsByUser(userId: String): Flow<List<Review>> {
         return try {
             reviewsRef.whereEqualTo(USER_ID, userId)
-                .orderBy(DATE, Query.Direction.DESCENDING)
                 .snapshots()
                 .map { it.toObjects<Review>() }
         } catch (e: Exception) {
@@ -41,8 +40,10 @@ class ReviewsRepositoryImpl @Inject constructor(
 
     override fun getReviewsByPlace(placeId: String): Flow<List<Review>> {
         return try {
-            reviewsRef.whereEqualTo(PLACE_ID, placeId).orderBy(DATE, Query.Direction.DESCENDING)
-                .snapshots().map { it.toObjects<Review>() }
+            reviewsRef.whereEqualTo(PLACE_ID, placeId)
+                .orderBy(DATE, Query.Direction.DESCENDING)
+                .snapshots()
+                .map { it.toObjects<Review>() }
         } catch (e: Exception) {
             Log.d("avb", "getReviewsByPlace: exception = ${e.message}")
             emptyFlow()

@@ -77,16 +77,19 @@ fun RatingItem(
 }
 
 @Composable
-fun RatingsSection(
-    modifier: Modifier = Modifier,
-    place: Place
-) {
+fun RatingsSection(place: Place) {
     Row(
-        modifier = modifier.padding(start = 4.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 24.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceEvenly
+        horizontalArrangement = Arrangement.spacedBy(24.dp)
     ) {
-        Text(stringResource(R.string.ratings_header), fontWeight = FontWeight.Bold)
+        Text(
+            stringResource(R.string.ratings_header),
+            fontWeight = FontWeight.Bold,
+            fontSize = 16.sp
+        )
         RatingItem(
             modifier = Modifier.testTag(RATING_ITEM_AVG_SAFETY),
             value = place.averageSafety,
@@ -131,5 +134,5 @@ fun AverageRatingSection(
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun RatingsSectionPreview() {
-    RatingsSection(modifier = Modifier.fillMaxWidth(), Place())
+    RatingsSection(Place())
 }
