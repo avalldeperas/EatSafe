@@ -26,7 +26,7 @@ class FavoritesViewModel @Inject constructor(
         viewModelScope.launch {
             val currentUser = authRepository.getCurrentUser()
             favoritesRepository.getFavoritesByUser(currentUser.uid).collectLatest { favorites ->
-                _favorites.update { favorites }
+                _favorites.update { favorites.sortedWith(compareByDescending { it.date }) }
             }
         }
     }
