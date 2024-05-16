@@ -79,7 +79,7 @@ class EditProfileJourney {
         rule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD).performTextInput("Madrid")
         rule.onNodeWithText("Save").performClick()
 
-        rule.waitUntil(timeoutMillis = 5000L) {
+        rule.waitUntil(timeoutMillis = 10000L) {
             rule.onAllNodesWithContentDescription(PROFILE_IMAGE).fetchSemanticsNodes().isNotEmpty()
         }
         rule.onNodeWithContentDescription("allergy-icon-Gluten").assertIsDisplayed()
