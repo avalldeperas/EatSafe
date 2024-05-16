@@ -71,7 +71,7 @@ class EditProfileViewModel @Inject constructor(
         _uiState.update { state -> state.copy(intolerances = intolerances) }
     }
 
-    fun onSaveEdit(context: Context) {
+    fun onSaveEdit(context: Context, toProfile: () -> Unit) {
         val validationResult =
             validateEditProfileInputUseCase(_uiState.value.displayName, _uiState.value.currentCity)
 
@@ -108,6 +108,7 @@ class EditProfileViewModel @Inject constructor(
 
             showToast("Profile saved successfully.", context)
             _uiState.update { state -> state.copy(isLoading = false) }
+            toProfile()
         }
     }
 

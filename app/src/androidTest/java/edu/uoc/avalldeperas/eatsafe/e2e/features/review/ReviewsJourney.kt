@@ -72,9 +72,6 @@ class ReviewsJourney {
         rule.onNodeWithText("Save").performClick()
 
         rule.onNodeWithText("Reviews").assertIsDisplayed()
-        // TODO: mimic firestore refresh here
-//        composeRule.onNodeWithText("Best experience ever, will repeat").assertIsDisplayed()
-//        composeRule.onNodeWithText("Add a review").assertIsNotDisplayed()
         navigateTo("Profile", rule)
         rule.waitForIdle()
         rule.onNodeWithText("My Reviews").assertIsDisplayed()

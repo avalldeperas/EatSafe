@@ -67,7 +67,7 @@ fun EditProfileScreen(
         onAllergyClick = editProfileViewModel::onAllergyClick,
         onUpdateDisplayName = editProfileViewModel::updateDisplayName,
         onUpdateCity = editProfileViewModel::updateCurrentCity,
-        onSave = { editProfileViewModel.onSaveEdit(context) }
+        onSave = { editProfileViewModel.onSaveEdit(context, backToProfile) }
     )
 }
 

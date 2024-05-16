@@ -18,7 +18,6 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import dagger.hilt.android.testing.UninstallModules
 import edu.uoc.avalldeperas.eatsafe.MainActivity
-import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_BACK_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_EMAIL
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_FULL_NAME
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.EDIT_PROFILE_ICON
@@ -79,14 +78,10 @@ class EditProfileJourney {
         rule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD).performTextClearance()
         rule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD).performTextInput("Madrid")
         rule.onNodeWithText("Save").performClick()
-        rule.onNodeWithContentDescription(EDIT_PROFILE_BACK_ICON).performClick()
 
         rule.waitUntil(timeoutMillis = 5000L) {
             rule.onAllNodesWithContentDescription(PROFILE_IMAGE).fetchSemanticsNodes().isNotEmpty()
         }
-//        rule.onNodeWithText("Hello Tester!").assertIsDisplayed()
-        // TODO mimic firebase to update profile here
-//        composeRule.onNodeWithText("Madrid").assertIsDisplayed()
         rule.onNodeWithContentDescription("allergy-icon-Gluten").assertIsDisplayed()
     }
 
