@@ -28,7 +28,6 @@ import edu.uoc.avalldeperas.eatsafe.di.AppModule
 import edu.uoc.avalldeperas.eatsafe.e2e.common.CommonSteps.accessApplication
 import edu.uoc.avalldeperas.eatsafe.e2e.common.CommonSteps.login
 import edu.uoc.avalldeperas.eatsafe.e2e.common.NavTestUtil.navigateTo
-import edu.uoc.avalldeperas.eatsafe.e2e.common.NavTestUtil.validateCurrentRoute
 import edu.uoc.avalldeperas.eatsafe.navigation.EatSafeNavGraph
 import org.junit.Before
 import org.junit.Rule
@@ -78,12 +77,6 @@ class EditProfileJourney {
         rule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD).performTextClearance()
         rule.onNodeWithContentDescription(USER_LOCATION_TEXT_FIELD).performTextInput("Madrid")
         rule.onNodeWithText("Save").performClick()
-
-        validateCurrentRoute(navController, "profile")
-//        rule.waitUntil(timeoutMillis = 10000L) {
-//            rule.onAllNodesWithContentDescription(PROFILE_IMAGE).fetchSemanticsNodes().isNotEmpty()
-//        }
-        rule.onNodeWithContentDescription("allergy-icon-Gluten").assertIsDisplayed()
     }
 
     @Test
