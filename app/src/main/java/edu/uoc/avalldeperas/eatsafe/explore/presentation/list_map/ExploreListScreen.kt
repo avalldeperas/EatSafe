@@ -18,8 +18,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.common.composables.EmptyListMessageIcon
 import edu.uoc.avalldeperas.eatsafe.explore.composables.ExploreTopBar
 import edu.uoc.avalldeperas.eatsafe.explore.composables.FilterBottomSheet
 import edu.uoc.avalldeperas.eatsafe.explore.composables.PlaceItem
@@ -59,13 +62,17 @@ fun ExploreListScreen(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                LazyColumn {
-                    items(items = places, key = { place -> place.placeId }) { place ->
-                        PlaceItem(
-                            place = place,
-                            onRowClick = toDetailView,
-                            distance = exploreViewModel.getDistance(place)
-                        )
+                if (places.isEmpty()) {
+                    EmptyListMessageIcon(textResource = R.string.empty_search_results, fontSize = 14.sp)
+                } else {
+                    LazyColumn {
+                        items(items = places, key = { place -> place.placeId }) { place ->
+                            PlaceItem(
+                                place = place,
+                                onRowClick = toDetailView,
+                                distance = exploreViewModel.getDistance(place)
+                            )
+                        }
                     }
                 }
             }

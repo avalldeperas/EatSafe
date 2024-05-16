@@ -67,7 +67,8 @@ fun ExploreTopBar(
                 placeholder = {
                     Text(
                         text = stringResource(R.string.search_hint),
-                        fontSize = 14.sp
+                        fontSize = 14.sp,
+                        maxLines = 1
                     )
                 },
                 leadingIcon = {
