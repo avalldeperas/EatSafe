@@ -82,11 +82,6 @@ class AuthTests {
             .assertTextContains("password")
         rule.onNodeWithContentDescription(CURRENT_CITY_TEXT_FIELD).performTextInput("Barcelona")
         rule.onNodeWithText("Sign up").performClick()
-
-        // TODO: this step fails remotely
-//        rule.waitUntil(5000L) {
-//            rule.onAllNodesWithTag(GOOGLE_MAP_VIEW).fetchSemanticsNodes().isNotEmpty()
-//        }
     }
 
     @Test

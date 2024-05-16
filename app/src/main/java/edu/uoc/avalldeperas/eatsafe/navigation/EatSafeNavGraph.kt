@@ -1,12 +1,9 @@
 package edu.uoc.avalldeperas.eatsafe.navigation
 
-import android.util.Log
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import com.google.firebase.auth.ktx.auth
@@ -17,9 +14,7 @@ import edu.uoc.avalldeperas.eatsafe.explore.presentation.HomeScreen
 fun EatSafeNavGraph(
     navController: NavHostController = rememberNavController(),
 ) {
-    val currentNavBackStackEntry by navController.currentBackStackEntryAsState()
     val startDestination = getStartDestination()
-    Log.d("avb", currentNavBackStackEntry?.destination?.route ?: startDestination)
 
     NavHost(navController = navController, startDestination = startDestination) {
         navigation(

@@ -22,12 +22,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.R
+import edu.uoc.avalldeperas.eatsafe.common.ComponentTagsConstants.SEARCH_BAR_EXPLORE
+import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.FILTER_ICON
 import edu.uoc.avalldeperas.eatsafe.common.ContentDescriptionConstants.LIST_MAP_TOGGLE_ICON
 import edu.uoc.avalldeperas.eatsafe.ui.theme.MAIN_GREEN
 
@@ -62,7 +65,7 @@ fun ExploreTopBar(
                 ),
                 value = searchText,
                 onValueChange = { onSearchTextChange(it) },
-                modifier = Modifier.weight(0.8f),
+                modifier = Modifier.weight(0.8f).testTag(SEARCH_BAR_EXPLORE),
                 shape = RoundedCornerShape(80.dp),
                 placeholder = {
                     Text(
@@ -78,7 +81,7 @@ fun ExploreTopBar(
                     IconButton(onClick = { onFilterClick() }) {
                         Icon(
                             imageVector = Icons.Outlined.FilterAlt,
-                            contentDescription = ""
+                            contentDescription = FILTER_ICON,
                         )
                     }
                 },
@@ -108,5 +111,5 @@ fun ExploreTopBar(
 @Preview(showSystemUi = true, showBackground = true)
 @Composable
 fun ExploreTopBarPreview() {
-    ExploreTopBar({}, Icons.Default.Map, {}, "", "", {})
+    ExploreTopBar({}, Icons.Default.Map, {}, "An address", "", {})
 }

@@ -5,6 +5,7 @@ object ComponentTagsConstants {
 
     const val CIRCULAR_PROGRESS_TAG = "circular-progress-tag"
     const val GOOGLE_MAP_VIEW = "google-map-view"
+    const val SEARCH_BAR_EXPLORE = "search-bar-explore"
 
     const val PLACE_ITEM = "place-item-"
     const val ADD_REVIEW_DESCRIPTION_FIELD = "add-review-description-field"

@@ -12,8 +12,6 @@ object ContentDescriptionConstants {
     const val CURRENT_CITY_TEXT_FIELD = "current-city-text-field"
     const val FORGOT_EMAIL_TEXT_FIELD = "forgot-email-text-field"
     const val FORGOT_BACK = "forgot-back"
-    const val PROFILE_IMAGE = "profile-image"
-    const val USER_LOCATION_TEXT_FIELD = "user-location-text-field"
     const val SHOW_PASSWORD_ICON_FIELD = "show-password-icon-field"
 
     // Explore
@@ -25,6 +23,7 @@ object ContentDescriptionConstants {
     const val PLACE_IMAGE: String = "place-image"
 
     // Profile
+    const val PROFILE_IMAGE = "profile-image"
     const val ALLERGY_ICON = "allergy-icon-"
     const val PROFILE_REVIEW_PLACE_IMAGE = "profile-review-place-image-"
 
@@ -34,6 +33,7 @@ object ContentDescriptionConstants {
     const val EDIT_PROFILE_EMAIL = "edit-profile-email"
     const val EDIT_PROFILE_FULL_NAME = "edit-profile-full-name"
     const val EDIT_PROFILE_BACK_ICON = "edit-profile-back-icon"
+    const val USER_LOCATION_TEXT_FIELD = "user-location-text-field"
     const val LOGOUT_ICON = "logout-icon"
 
     // add review
