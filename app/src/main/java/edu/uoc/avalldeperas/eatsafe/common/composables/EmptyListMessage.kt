@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import edu.uoc.avalldeperas.eatsafe.R
@@ -38,7 +39,7 @@ fun EmptyListMessage(textResource: Int = R.string.no_elements_yet) {
 }
 
 @Composable
-fun EmptyListMessageIcon(textResource: Int = R.string.no_elements_yet) {
+fun EmptyListMessageIcon(textResource: Int = R.string.no_elements_yet, fontSize: TextUnit = 16.sp) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -54,7 +55,7 @@ fun EmptyListMessageIcon(textResource: Int = R.string.no_elements_yet) {
         Spacer(modifier = Modifier.padding(8.dp))
         Text(
             text = stringResource(id = textResource),
-            fontSize = 16.sp,
+            fontSize = fontSize,
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(horizontal = 30.dp)
         )

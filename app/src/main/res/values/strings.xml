@@ -37,4 +37,5 @@
     <string name="reviews_header">Reviews</string>
     <string name="ratings_header">"Ratings: "</string>
     <string name="loading_label">Loading…</string>
+    <string name="empty_search_results">No Results Found! Please try different criteria</string>
 </resources>
