@@ -101,6 +101,8 @@ class DetailViewModel @Inject constructor(
             favoriteId = favoriteId,
             placeId = place.placeId,
             userId = uid,
+            city = place.city,
+            cuisine = place.cuisine,
             name = place.name,
             image = place.image,
             type = place.type,
