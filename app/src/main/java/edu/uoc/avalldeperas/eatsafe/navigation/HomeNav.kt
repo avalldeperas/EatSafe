@@ -31,7 +31,7 @@ fun NavGraphBuilder.homeGraph(
 
     composable(route = Screen.ExploreList.route) {
         ExploreListScreen(
-            toggleView = { navController.navigate(route = Screen.ExploreMap.route) },
+            toggleView = { navController.popBackStack() },
             toDetailView = { placeId ->
                 navController.navigate(route = Screen.ExploreDetail.route + "/$placeId")
             },
@@ -75,7 +75,13 @@ fun NavGraphBuilder.homeGraph(
                     }
                 }
             },
-            onLogout = { authNavController.navigate(route = Screen.Login.route) }
+            onLogout = {
+                authNavController.navigate(route = Screen.Login.route) {
+                    popUpTo(navController.graph.id) {
+                        inclusive = true
+                    }
+                }
+            }
         )
     }
 }

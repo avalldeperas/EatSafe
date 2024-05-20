@@ -13,7 +13,13 @@ fun NavGraphBuilder.authGraph(navController: NavHostController) {
         LoginScreen(
             toForgotPassword = { navController.navigate(route = Screen.ForgotPassword.route) },
             toRegister = { navController.navigate(route = Screen.Register.route) },
-            onSubmit = { navController.navigate(route = Feature.Home.route) }
+            onSubmit = {
+                navController.navigate(route = Feature.Home.route) {
+                     popUpTo(Feature.Auth.route) {
+                         inclusive = true
+                     }
+                }
+            }
         )
     }
 
