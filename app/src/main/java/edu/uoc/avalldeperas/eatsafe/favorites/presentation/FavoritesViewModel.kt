@@ -1,5 +1,6 @@
 package edu.uoc.avalldeperas.eatsafe.favorites.presentation
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,6 +28,17 @@ class FavoritesViewModel @Inject constructor(
             val currentUser = authRepository.getCurrentUser()
             favoritesRepository.getFavoritesByUser(currentUser.uid).collectLatest { favorites ->
                 _favorites.update { favorites.sortedWith(compareByDescending { it.date }) }
+            }
+        }
+    }
+
+    fun deleteFavorite(favoritePlace: FavoritePlace) {
+        viewModelScope.launch {
+            val result = favoritesRepository.delete(favoritePlace)
+            if (result) {
+                Log.d("avb", "deleteFavorite: success")
+            } else {
+                Log.d("avb", "addFavourite: an exception occurred, check logs")
             }
         }
     }

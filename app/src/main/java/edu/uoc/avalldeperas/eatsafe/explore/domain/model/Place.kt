@@ -16,6 +16,7 @@ data class Place(
     val averageSafety: Double = 0.0,
     val type: PlaceType = PlaceType.Restaurant,
     val cuisine: String = "",
+    val city: String = "",
     val geohash: String = "",
     val telephone: String = "",
     val distance: Int = 100,

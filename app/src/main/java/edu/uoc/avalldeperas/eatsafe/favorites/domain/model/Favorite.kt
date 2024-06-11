@@ -13,5 +13,7 @@ data class FavoritePlace(
     val address: String = "",
     val type: PlaceType = PlaceType.Restaurant,
     val image: Int = R.drawable.restaurant_detail,
-    val date: Timestamp = Timestamp(Date())
+    val date: Timestamp = Timestamp(Date()),
+    val cuisine: String = "",
+    val city: String = ""
 )
